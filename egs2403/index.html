@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EGS 2403 Remote Sensing</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
@@ -199,10 +204,21 @@ figcaption b{color:var(--ink2);font-weight:600}
   .ch:first-of-type{break-before:auto}
 
   /* things that must never be split down the middle */
-  pre,table,figure,svg,.worked,.warn,.lo,.prac,.st,.rdg,.defn,.eq,.tbl,
-  .check,.tier,.diag,.matrix{
+  /* Short items that a split ruins. */
+  pre,table,figure,svg,.eq,.defn,.tbl,.diag,.matrix{
     break-inside:avoid; page-break-inside:avoid;
   }
+  /* The long panels — worked examples, practicals, learning outcomes,
+     self-tests, reading lists — can run a page or more. Forcing those whole
+     leaves half-empty pages and buys nothing, so let them flow and just keep
+     each heading with what follows it. */
+  /* A code block's language label is a span sitting just before its <pre>.
+     Without this it strands at the foot of a page while the code it names
+     moves to the next one. */
+  .lang{display:block;break-after:avoid;page-break-after:avoid}
+  .worked,.warn,.lo,.prac,.st,.rdg,.check,.tier{break-inside:auto}
+  .worked>h3,.worked>h4,.prac>h3,.lo>h3,.st>h3,.rdg>h3{
+    break-after:avoid;page-break-after:avoid}
   h1,h2,h3,h4,.ch-head,.wkl{break-after:avoid;page-break-after:avoid}
   p,li{orphans:3;widows:3}
 
@@ -227,8 +243,33 @@ figcaption b{color:var(--ink2);font-weight:600}
       font-family:"IBM Plex Mono",monospace;color:var(--ink3);
       word-break:break-all}
   .toc a::after,a[href^="#"]::after{content:none}
+
+  /* The screen design breathes generously; on paper that whitespace is
+     charged to whoever is paying for the printing, which here is usually the
+     student. Tighten the vertical rhythm without touching type size. */
+  section{padding:0.7rem 0 !important}
+  .band{border-top:0.5pt solid var(--rule-soft)}
+  .mast{padding:0 0 1rem}
+  .mast h1{font-size:26pt;margin-bottom:0.3rem}
+  .mast .sub{font-size:12pt;margin-bottom:0.8rem}
+  .ch{padding-top:0.2rem}
+  .ch-head{margin-bottom:0.7rem}
+  .ch-n{font-size:20pt;line-height:1}
+  .ch-t h2{font-size:15pt;margin-bottom:0.2rem}
+  h2.sec{font-size:13.5pt;margin:0 0 0.45rem}
+  h3{font-size:11.4pt;margin:0.9rem 0 0.3rem}
+  h4{margin:0.7rem 0 0.25rem}
+  p{margin:0 0 0.5rem}
+  ul,ol{margin:0.35rem 0 0.6rem}
+  li{margin-bottom:0.12rem}
+  pre{margin:0.45rem 0;padding:6pt 8pt}
+  table{margin:0.45rem 0}
+  .toc ol{grid-template-columns:repeat(2,1fr)}
 }
 </style>
+</head>
+<body>
+
 
 <header class="mast">
   <div class="wrap">
@@ -1907,3 +1948,5 @@ ndvi.compute().rio.to_raster(<span class="st">"ndvi_kiambu_2025.tif"</span>)</co
 
   <p class="rdg"><b>Reading.</b> The STAC specification and the <code>pystac-client</code> documentation. The Cloud-Native Geospatial Foundation's introductory material. The openEO API documentation and the Copernicus Data Space Ecosystem. Gorelick <em>et al.</em> (2017) for what Earth Engine set out to be, read alongside Google's current Earth Engine terms of service — the comparison is itself instructive.</p>
 </div></section>
+</body>
+</html>
