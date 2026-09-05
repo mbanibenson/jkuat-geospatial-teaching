@@ -1,0 +1,40 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "EGS 2403 study area",
+        "crs": "EPSG:32737",
+        "area_km2": 900.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              262000.0,
+              9908000.0
+            ],
+            [
+              292000.0,
+              9908000.0
+            ],
+            [
+              292000.0,
+              9878000.0
+            ],
+            [
+              262000.0,
+              9878000.0
+            ],
+            [
+              262000.0,
+              9908000.0
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

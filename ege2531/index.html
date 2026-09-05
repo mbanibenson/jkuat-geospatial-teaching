@@ -1,0 +1,1801 @@
+<title>EGE 2531 Web Mapping</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F0F3F2; --surface:#F9FBFA; --surface2:#E3EAE9;
+  --ink:#111A1B; --ink2:#384748; --ink3:#667778;
+  --rule:#CCD8D7; --rule-soft:#DEE7E6;
+  --acc:#0E6E78; --acc2:#0F8792; --wash:#DFEDEE;
+  --warn:#B8443A; --warn-wash:#F6E7E4;
+  --ok:#2F6E4F; --ok-wash:#E2EEE7;
+  --code-bg:#EBF0EF;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1213; --surface:#131A1B; --surface2:#1B2425;
+    --ink:#E4EBEA; --ink2:#AFBDBC; --ink3:#788888;
+    --rule:#263233; --rule-soft:#1E2829;
+    --acc:#42B4BE; --acc2:#5FC7D0; --wash:#0F2D30;
+    --warn:#E8877C; --warn-wash:#31201E;
+    --ok:#7FC49F; --ok-wash:#14261C;
+    --code-bg:#171F20;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1213; --surface:#131A1B; --surface2:#1B2425;
+  --ink:#E4EBEA; --ink2:#AFBDBC; --ink3:#788888;
+  --rule:#263233; --rule-soft:#1E2829;
+  --acc:#42B4BE; --acc2:#5FC7D0; --wash:#0F2D30;
+  --warn:#E8877C; --warn-wash:#31201E;
+  --ok:#7FC49F; --ok-wash:#14261C;
+  --code-bg:#171F20;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);margin:0;
+  font-family:"Spectral",Georgia,serif;font-size:17.5px;line-height:1.66;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6,.ui{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;text-wrap:balance}
+code,kbd,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+a{color:var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(1.1rem,4vw,3rem)}
+.col{max-width:70ch}
+
+.mast{padding:clamp(3rem,7vw,5rem) 0 clamp(2rem,4vw,3rem);border-bottom:2px solid var(--acc)}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--acc);margin:0 0 1.3rem}
+.mast h1{font-size:clamp(2.4rem,6.5vw,4.2rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .5rem}
+.mast .sub{font-size:clamp(1.05rem,2.2vw,1.35rem);color:var(--ink2);margin:0 0 2.2rem;max-width:56ch;line-height:1.45}
+.mast-meta{display:flex;flex-wrap:wrap;gap:.45rem 2.2rem;font-family:"IBM Plex Mono",monospace;
+  font-size:.73rem;letter-spacing:.05em;color:var(--ink3)}
+.mast-meta b{color:var(--ink2);font-weight:500}
+
+.toc{background:var(--surface);border-bottom:1px solid var(--rule);padding:2.2rem 0 2.4rem}
+.toc h2{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 1.1rem;font-weight:500}
+.toc ol{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:0 2.4rem}
+.toc li{border-bottom:1px solid var(--rule-soft)}
+.toc a{display:flex;gap:.85rem;align-items:baseline;padding:.5rem 0;text-decoration:none;color:var(--ink2);font-size:.94rem}
+.toc a:hover{color:var(--acc)}
+.toc a .n{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--acc);min-width:1.9em;font-weight:500}
+.toc .front a .n{color:var(--ink3)}
+
+section{padding:clamp(2.6rem,5vw,4rem) 0}
+.band{border-top:1px solid var(--rule)}
+h2.sec{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-.025em;margin:0 0 1.2rem;line-height:1.15}
+
+.ch{border-top:1px solid var(--rule);padding-top:clamp(2.4rem,5vw,3.6rem)}
+.ch-head{display:grid;grid-template-columns:auto 1fr;gap:0 1.6rem;align-items:start;margin-bottom:1.8rem}
+.ch-n{font-family:"IBM Plex Mono",monospace;font-size:clamp(2.4rem,6vw,3.8rem);font-weight:600;
+  color:var(--acc);line-height:.82;letter-spacing:-.04em;opacity:.9}
+.ch-t h2{font-size:clamp(1.55rem,3.4vw,2.25rem);font-weight:700;letter-spacing:-.028em;margin:0 0 .35rem;line-height:1.12}
+.ch-t .wkl{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink3);margin:0 0 .55rem}
+p{margin:0 0 1.05rem}
+h3{font-size:1.22rem;font-weight:700;letter-spacing:-.015em;margin:2.3rem 0 .7rem;line-height:1.25}
+h4{font-size:1.02rem;font-weight:600;margin:1.6rem 0 .45rem}
+ul,ol.body{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin-bottom:.45rem}
+strong{font-weight:600}
+
+.lo{background:var(--wash);padding:1.1rem 1.3rem;margin:0 0 2rem;max-width:70ch}
+.lo h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acc);margin:0 0 .6rem;font-weight:600}
+.lo ul{margin:0;padding-left:1.1rem;font-size:.94rem;line-height:1.5}
+.lo li{margin-bottom:.3rem;color:var(--ink2)}
+
+.defn{border-left:3px solid var(--acc);padding:.15rem 0 .15rem 1.15rem;margin:1.6rem 0;max-width:70ch}
+.defn p{margin:0;font-size:.97rem}
+.defn p + p{margin-top:.6rem}
+.defn b.term{font-weight:600;color:var(--acc)}
+
+.eq{margin:1.5rem 0;padding:1rem 1.2rem;background:var(--surface);border:1px solid var(--rule-soft);
+  max-width:70ch;overflow-x:auto}
+.eq .f{font-family:"Spectral",Georgia,serif;font-size:1.08rem;text-align:center;display:block;line-height:2}
+.eq .whr{font-size:.87rem;color:var(--ink3);margin:.7rem 0 0;text-align:left;line-height:1.5}
+var,.v{font-style:italic;font-family:"Spectral",Georgia,serif}
+sub,sup{line-height:0}
+.frac{display:inline-block;vertical-align:-.55em;text-align:center;font-size:.86em;margin:0 .18em}
+.frac .t{display:block;padding:0 .3em;border-bottom:1px solid currentColor;line-height:1.35}
+.frac .b{display:block;padding:0 .3em;line-height:1.35}
+
+pre{background:var(--code-bg);border:1px solid var(--rule-soft);padding:1rem 1.15rem;margin:1.4rem 0;
+  overflow-x:auto;max-width:76ch;font-size:.82rem;line-height:1.62;border-radius:2px}
+pre code{font-family:"IBM Plex Mono",monospace;color:var(--ink)}
+.cm{color:var(--ink3);font-style:italic}
+.kw{color:var(--acc)}
+.st{color:var(--ok)}
+.fn{color:var(--warn)}
+p code,li code,td code{font-family:"IBM Plex Mono",monospace;font-size:.85em;
+  background:var(--surface2);padding:.1em .34em;border-radius:2px}
+.lang{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink3);margin:1.4rem 0 -1.1rem;display:block}
+
+.worked{background:var(--surface);border:1px solid var(--rule);padding:1.35rem 1.5rem;margin:1.8rem 0;max-width:76ch}
+.worked > h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acc);margin:0 0 .9rem;font-weight:600}
+.worked p{font-size:.96rem}
+.worked p:last-child{margin-bottom:0}
+
+.warn{border-left:3px solid var(--warn);background:var(--warn-wash);padding:1rem 1.25rem;margin:1.7rem 0;max-width:72ch}
+.warn h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--warn);margin:0 0 .5rem;font-weight:600}
+.warn p{margin:0;font-size:.95rem;line-height:1.55}
+.warn p + p{margin-top:.6rem}
+
+.prac{border:1px solid var(--acc);margin:2.2rem 0;max-width:76ch}
+.prac .ph{background:var(--acc);color:#F0F3F2;padding:.55rem 1.2rem;
+  font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;font-weight:500}
+:root[data-theme="dark"] .prac .ph{color:#0C1213}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .prac .ph{color:#0C1213}}
+.prac .pb{padding:1.15rem 1.3rem}
+.prac h6{font-family:"Archivo",sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.03em;
+  text-transform:uppercase;margin:1.3rem 0 .5rem;color:var(--acc)}
+.prac h6:first-child{margin-top:0}
+.prac ol,.prac ul{margin:0 0 .3rem;padding-left:1.2rem;font-size:.94rem;line-height:1.55}
+.prac li{margin-bottom:.35rem;color:var(--ink2)}
+.prac p{font-size:.94rem;margin-bottom:.7rem}
+.tier{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid currentColor;padding:.1rem .38rem;margin-left:.5rem;vertical-align:.15em}
+
+.check{background:var(--surface);border-top:2px solid var(--rule);padding:1.2rem 0 0;margin:2.2rem 0 0;max-width:72ch}
+.check h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 .7rem;font-weight:500}
+.check ol{padding-left:1.3rem;margin:0 0 1rem;font-size:.94rem;line-height:1.55}
+.check li{margin-bottom:.4rem;color:var(--ink2)}
+.rdg{font-size:.9rem;color:var(--ink3);max-width:72ch;margin:1.2rem 0 0;
+  padding-top:.9rem;border-top:1px solid var(--rule-soft)}
+.rdg b{color:var(--ink2);font-weight:600}
+
+figure{margin:1.9rem 0;max-width:76ch}
+figure svg{display:block;width:100%;height:auto;max-width:560px}
+figcaption{font-size:.85rem;color:var(--ink3);margin-top:.6rem;line-height:1.5;max-width:62ch}
+figcaption b{color:var(--ink2);font-weight:600}
+
+.tbl{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem;max-width:76ch}
+.tbl th,.tbl td{text-align:left;padding:.5rem .8rem .5rem 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.tbl th{font-family:"Archivo",sans-serif;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink3);font-weight:600;border-bottom:1px solid var(--rule)}
+.tbl td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.scroll{overflow-x:auto}
+
+@media (max-width:720px){
+  body{font-size:16.5px}
+  .ch-head{grid-template-columns:1fr;gap:.5rem}
+  .ch-n{font-size:2rem}
+  .toc ol{grid-template-columns:1fr}
+}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="kicker">EGE 2531 · Jomo Kenyatta University of Agriculture and Technology</p>
+    <h1>Web Mapping</h1>
+    <p class="sub">A course reader for undergraduate Geomatic Engineering and Geospatial Information Systems.</p>
+    <div class="mast-meta">
+      <span><b>11</b> teaching weeks</span>
+      <span><b>2 h</b> lecture + <b>2 h</b> laboratory</span>
+      <span><b>Leaflet · PostGIS · GeoServer · Flask</b></span>
+      <span>Assessment <b>30 / 70</b></span>
+      <span>Edition <b>1.0</b> · Sept 2026</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <h2>Contents</h2>
+    <ol>
+      <li class="front"><a href="#using"><span class="n">§0</span><span>How to use this reader</span></a></li>
+      <li class="front"><a href="#setup"><span class="n">§0</span><span>Software setup</span></a></li>
+      <li><a href="#w1"><span class="n">1</span><span>Anatomy of a web map</span></a></li>
+      <li><a href="#w2"><span class="n">2</span><span>Web fundamentals and GeoJSON</span></a></li>
+      <li><a href="#w3"><span class="n">3</span><span>Leaflet I — making a map</span></a></li>
+      <li><a href="#w4"><span class="n">4</span><span>Leaflet II — thematic cartography</span></a></li>
+      <li><a href="#w5"><span class="n">5</span><span>Spatial databases with PostGIS</span></a></li>
+      <li><a href="#w6"><span class="n">6</span><span>Serving data out of the database</span></a></li>
+      <li><a href="#w7"><span class="n">7</span><span>GeoServer and the OGC services</span></a></li>
+      <li><a href="#w8"><span class="n">8</span><span>Applications that collect data</span></a></li>
+      <li><a href="#w9"><span class="n">9</span><span>Performance and cloud-native</span></a></li>
+      <li><a href="#w10"><span class="n">10</span><span>Deployment, VGI and ethics</span></a></li>
+      <li><a href="#w11"><span class="n">11</span><span>Build week and critique</span></a></li>
+      <li class="front"><a href="#appA"><span class="n">A</span><span>JavaScript self-check</span></a></li>
+      <li class="front"><a href="#appB"><span class="n">B</span><span>Quick reference</span></a></li>
+      <li class="front"><a href="#appC"><span class="n">C</span><span>Data and services</span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<section id="using" class="band">
+  <div class="wrap col">
+    <h2 class="sec">How to use this reader</h2>
+    <p>This is a build unit. By week 11 you will have deployed a working application, at a public URL, backed by a spatial database, that someone other than you can use. Everything in the reader is arranged toward that.</p>
+    <p>Each chapter covers one week and has the same parts: <strong>learning outcomes</strong>, the <strong>reading</strong>, a two-tier <strong>practical</strong>, <strong>self-test questions</strong>, and <strong>further reading</strong>. The <strong>Core</strong> practical is what everyone completes; the <strong>Extension</strong> is for those who finish early.</p>
+    <div class="warn" style="border-color:var(--acc);background:var(--wash)">
+      <h5 style="color:var(--acc)">This unit is in two languages you have not used</h5>
+      <p>Your programming unit was Python. This unit is <strong>JavaScript</strong> and <strong>SQL</strong>. Nothing about that is beyond you — but do not assume the transfer is automatic, because the two most common ways to struggle here are treating JavaScript as though it were Python, and treating SQL as though it were a programming language rather than a declarative one.</p>
+      <p>Work through <a href="#appA">Appendix A</a> before week 2. It is a self-check, not a test, and it will tell you privately which of the two you need to spend a weekend on.</p>
+    </div>
+    <p>One habit to form now: <strong>keep the browser developer tools open at all times.</strong> Not when something breaks — always. The Network tab shows you every request your map makes, its size and its timing; the Console shows you the errors that would otherwise present as a silent blank grey box. Students who work with devtools open debug in minutes what students who do not debug in hours. This is the single highest-value habit in the unit.</p>
+  </div>
+</section>
+
+<section id="setup" class="band">
+  <div class="wrap col">
+    <h2 class="sec">Software setup</h2>
+    <p>Five things, installed in this order. Weeks 1–4 need only the first two.</p>
+    <table class="tbl">
+      <tr><th>What</th><th>Why</th><th>When</th></tr>
+      <tr><td><strong>A code editor</strong> — VS Code</td><td>With the Live Server extension, which serves your folder over HTTP</td><td class="n">week 1</td></tr>
+      <tr><td><strong>A modern browser</strong> — Firefox or Chrome</td><td>For the developer tools, which are half of this unit</td><td class="n">week 1</td></tr>
+      <tr><td><strong>PostgreSQL + PostGIS</strong></td><td>The spatial database</td><td class="n">week 5</td></tr>
+      <tr><td><strong>GDAL</strong> — for <code>ogr2ogr</code></td><td>Loading data into the database and converting between formats</td><td class="n">week 5</td></tr>
+      <tr><td><strong>Python + Flask</strong></td><td>The API layer. This part <em>is</em> in Python — your existing skills apply</td><td class="n">week 6</td></tr>
+      <tr><td><strong>GeoServer</strong> (needs Java)</td><td>Publishing OGC services</td><td class="n">week 7</td></tr>
+    </table>
+    <div class="warn">
+      <h5>Do not open your HTML file by double-clicking it</h5>
+      <p>Opening a file directly gives it a <code>file://</code> address. Under that scheme the browser's security model blocks <code>fetch()</code>, so the moment you try to load GeoJSON from a separate file — week 3 — it fails with a CORS error that has nothing to do with CORS and everything to do with how you opened the file.</p>
+      <p>Always serve over HTTP. Use the Live Server extension, or run <code>python -m http.server 8000</code> in your project folder and visit <code>http://localhost:8000</code>. Every hour of confusion this prevents is an hour you get to spend on maps.</p>
+    </div>
+    <p>Leaflet itself needs no installation — it is a CSS file and a JavaScript file loaded from a CDN, which is how week 3 starts.</p>
+  </div>
+</section>
+
+<!-- ================= WEEK 1 ================= -->
+<section class="ch" id="w1"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">01</div>
+    <div class="ch-t">
+      <p class="wkl">Week one</p>
+      <h2>Anatomy of a web map</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Trace what happens between a user's click and the pixels that appear</li>
+    <li>Explain the tile pyramid and compute the tile index for a given point and zoom</li>
+    <li>Say what Web Mercator distorts, by how much, and where it does not matter</li>
+    <li>Distinguish raster tiles, vector tiles and GeoJSON, and say when each is appropriate</li>
+    <li>Read a map's network traffic in developer tools</li>
+  </ul></div>
+
+  <h3>What actually happens</h3>
+  <p>You open a web map centred on Nairobi. In the second before it appears, this happens:</p>
+  <ol class="body">
+    <li>The browser requests an HTML page. That page loads the Leaflet CSS and JavaScript.</li>
+    <li>Leaflet creates a <code>&lt;div&gt;</code> and works out which geographic area it must cover at the requested zoom.</li>
+    <li>It calculates which <strong>tiles</strong> — small fixed square images, conventionally 256 × 256 pixels — cover that area, typically nine to twenty of them.</li>
+    <li>It issues one HTTP request per tile, in parallel, to a tile server.</li>
+    <li>Each tile arrives as a PNG and is positioned absolutely inside the div by CSS.</li>
+    <li>Your own data — points, boundaries — arrives separately as GeoJSON and is drawn as SVG or canvas on top.</li>
+  </ol>
+  <p>The whole design rests on one decision: <strong>pre-render the base map once, into fixed tiles, and serve them as static images.</strong> Nothing is computed per user. A tile is just a file, so it caches in the browser, in the CDN, and at every proxy in between. This is why a web map can serve millions of users on modest infrastructure, and it is why the "slippy map" replaced the older approach of asking a server to render a fresh image for every pan.</p>
+
+  <h3>The tile pyramid</h3>
+
+  <figure>
+    <svg viewBox="0 0 500 215" role="img" aria-label="Tile pyramid at zoom levels 0, 1 and 2">
+      <g stroke="var(--acc)" stroke-width="1.8" fill="var(--wash)">
+        <rect x="34" y="32" width="96" height="96"/>
+        <rect x="196" y="32" width="96" height="96"/>
+        <rect x="358" y="32" width="96" height="96"/>
+      </g>
+      <g stroke="var(--acc)" stroke-width="1" opacity=".75">
+        <line x1="244" y1="32" x2="244" y2="128"/>
+        <line x1="196" y1="80" x2="292" y2="80"/>
+      </g>
+      <g stroke="var(--acc)" stroke-width=".8" opacity=".55">
+        <line x1="382" y1="32" x2="382" y2="128"/><line x1="406" y1="32" x2="406" y2="128"/>
+        <line x1="430" y1="32" x2="430" y2="128"/>
+        <line x1="358" y1="56" x2="454" y2="56"/><line x1="358" y1="80" x2="454" y2="80"/>
+        <line x1="358" y1="104" x2="454" y2="104"/>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ink2)" text-anchor="middle">
+        <text x="82" y="150">z = 0</text><text x="244" y="150">z = 1</text><text x="406" y="150">z = 2</text>
+        <text x="82" y="166" fill="var(--ink3)" font-size="9.5">1 tile</text>
+        <text x="244" y="166" fill="var(--ink3)" font-size="9.5">4 tiles</text>
+        <text x="406" y="166" fill="var(--ink3)" font-size="9.5">16 tiles</text>
+      </g>
+      <g stroke="var(--ink3)" stroke-width="1.2" fill="none">
+        <path d="M142,80 L184,80"/><path d="M178,76 L184,80 L178,84" fill="var(--ink3)"/>
+        <path d="M304,80 L346,80"/><path d="M340,76 L346,80 L340,84" fill="var(--ink3)"/>
+      </g>
+      <text x="244" y="196" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--acc)" text-anchor="middle">4ᶻ tiles at zoom z  ·  z = 19 → 275 billion</text>
+      <text x="82" y="22" font-family="Spectral, serif" font-style="italic" font-size="10" fill="var(--ink3)" text-anchor="middle">whole world</text>
+    </svg>
+    <figcaption><b>Each zoom level quarters every tile of the one above.</b> Zoom 0 is the entire world in one 256-pixel image. Every step doubles the linear resolution and quadruples the tile count. Nobody stores all of level 19 — tiles are generated on demand and cached, which is what GeoWebCache does in week 7.</figcaption>
+  </figure>
+
+  <p>A tile is addressed by three numbers: <code>z</code> (zoom), <code>x</code> (column, west to east) and <code>y</code> (row, <em>north to south</em> — the origin is the top-left corner, which surprises people used to y increasing northward). A tile URL is a template with those three slots:</p>
+<pre><code>https://tile.openstreetmap.org/{z}/{x}/{y}.png</code></pre>
+  <p>The conversion from longitude and latitude to tile indices is:</p>
+  <div class="eq">
+    <span class="f"><var>x</var> = ⌊ <span class="frac"><span class="t">λ + 180</span><span class="b">360</span></span> · 2<sup><var>z</var></sup> ⌋</span>
+    <span class="f"><var>y</var> = ⌊ <span class="frac"><span class="t">1 − asinh(tan φ) / π</span><span class="b">2</span></span> · 2<sup><var>z</var></sup> ⌋</span>
+    <p class="whr">λ is longitude and φ latitude in radians. The asinh term is the Mercator projection of latitude; everything peculiar about web maps traces back to it.</p>
+  </div>
+
+  <div class="worked">
+    <h5>Worked example — which tile is Nairobi in?</h5>
+    <p>Nairobi city centre: λ = 36.8219°E, φ = −1.2921°. Take zoom 12, so 2<sup>12</sup> = 4096.</p>
+    <p><strong>Column.</strong> (36.8219 + 180) / 360 = 216.8219 / 360 = 0.602283. Multiply by 4096 → 2466.95, floor → <strong>x = 2466</strong>.</p>
+    <p><strong>Row.</strong> φ = −1.2921° = −0.022551 rad. tan φ = −0.0225548. asinh(tan φ) = ln(−0.0225548 + 1.0002544) = ln(0.9776996) = −0.0225528.<br>
+    (1 − (−0.0225528)/π) / 2 = (1 + 0.0071785) / 2 = 0.5035893. Multiply by 4096 → 2062.70, floor → <strong>y = 2062</strong>.</p>
+    <p>So Nairobi at zoom 12 is tile <code>12/2466/2062</code>. Paste <code>https://tile.openstreetmap.org/12/2466/2062.png</code> into your browser and you will get a 256-pixel image of central Nairobi. <em>Do this before the lecture.</em> A web map is a great deal less mysterious once you have fetched a tile by hand.</p>
+  </div>
+
+  <h3>Web Mercator, and where it lies</h3>
+  <p>Almost every web map uses <strong>EPSG:3857</strong>, "Web Mercator". It was chosen for one practical reason: Mercator is conformal, so shapes and angles are locally correct and north is always up, which makes tiles that stitch seamlessly and pan intuitively. The price is area. Mercator inflates area by a factor of sec²φ — that is, 1/cos²(latitude).</p>
+  <table class="tbl">
+    <tr><th>Latitude</th><th>Area inflation</th><th>Where</th></tr>
+    <tr><td class="n">0°</td><td class="n">×1.00</td><td>Nairobi, Kampala, Kisumu</td></tr>
+    <tr><td class="n">30°</td><td class="n">×1.33</td><td>Cairo</td></tr>
+    <tr><td class="n">45°</td><td class="n">×2.00</td><td>Milan</td></tr>
+    <tr><td class="n">60°</td><td class="n">×4.00</td><td>Oslo, Anchorage</td></tr>
+    <tr><td class="n">75°</td><td class="n">×14.9</td><td>Northern Greenland</td></tr>
+  </table>
+  <p>This is the source of the familiar Greenland problem. Greenland's true area is about 2.17 million km²; the Democratic Republic of the Congo's is about 2.34 million km². The DRC is genuinely the larger country. On a Web Mercator map Greenland appears roughly fourteen times bigger.</p>
+  <p>There is a local point worth noticing here. <strong>Kenya sits on the equator, so Web Mercator distortion across Kenya is negligible</strong> — at 1.3° the inflation factor is 1.0005, five parts in ten thousand. For a map of Nairobi County you may reason about Web Mercator areas without much guilt. For a map of Africa, or of the world, you may not. Knowing which situation you are in is the professional skill; assuming one or the other is how errors happen.</p>
+
+  <div class="warn">
+    <h5>Never compute area or distance in Web Mercator</h5>
+    <p>Even where the distortion is small it is not zero, and the habit is what matters. A Web Mercator area is in metres that are not real metres, and the scale factor varies across your map. Project to an equal-area or a local projection first — for Kenya, UTM zone 36S (<code>EPSG:32736</code>) or 37S (<code>EPSG:32737</code>). Week 5 shows the SQL version of this mistake, which is even easier to make and even harder to see.</p>
+  </div>
+
+  <h3>Three ways to get data onto the map</h3>
+  <table class="tbl">
+    <tr><th style="width:9em">Approach</th><th>How it works</th><th>Use when</th></tr>
+    <tr><td><strong>Raster tiles</strong></td><td>Pre-rendered PNG/JPEG images. Styling is baked in at render time.</td><td>Base maps; imagery; anything that does not change and need not be interactive.</td></tr>
+    <tr><td><strong>Vector tiles</strong></td><td>Compressed geometry in tiles, styled and drawn by the browser.</td><td>Large datasets needing interactivity, restyling or smooth zoom. Week 9.</td></tr>
+    <tr><td><strong>GeoJSON</strong></td><td>The whole dataset as one text file, drawn client-side.</td><td>Small to moderate datasets — up to a few thousand features. Weeks 3–4.</td></tr>
+  </table>
+  <p>The failure mode you will meet is loading a national dataset as a single GeoJSON, discovering it is 40 MB, and watching the browser freeze. The fix is not to optimise the GeoJSON; it is to recognise that you have chosen the wrong delivery mechanism. Week 9 covers the right one.</p>
+
+  <h3>Standards, and why they exist</h3>
+  <p>The <strong>Open Geospatial Consortium</strong> publishes the specifications that let software from different vendors interoperate. WMS returns a rendered image; WFS returns actual features; WMTS returns tiles. All are covered in week 7. Their value is concrete: a county publishing a WMS endpoint can be consumed in QGIS, ArcGIS, Leaflet and OpenLayers with no bespoke work by anyone. Standards are what stop every dataset needing its own client.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 1 — Take a web map apart</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Compute the tile index for the JKUAT main campus at zoom levels 10, 14 and 17. Do it by hand with a calculator first. Then fetch each tile in the browser and confirm you got what you expected.</li>
+        <li>Open OpenStreetMap with the Network tab recording. Pan and zoom. Record: how many tile requests per pan, the size of a typical tile, and the total transferred for one screen.</li>
+        <li>Repeat on Google Maps. The traffic looks different — describe how, and infer what is being delivered.</li>
+        <li>Calculate how many tiles cover Kenya at zoom 14, given Kenya's bounding box. At an average 15 kB per tile, what would the full set weigh?</li>
+        <li>Find a Kenyan government or NGO web map. Using devtools alone, work out what technology it is built with and where its data comes from. Write half a page.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Write a function converting longitude/latitude/zoom to tile x/y, and its inverse returning the tile's bounding box. Verify the round trip.</li>
+        <li>Compute the ground resolution in metres per pixel at the equator for zoom 0 to 20 and tabulate it. At which zoom does one pixel first represent less than one metre?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why does the tile scheme make web maps cheap to serve at scale?</li>
+    <li>How many tiles exist at zoom 15? Show the calculation.</li>
+    <li>A colleague computes county areas from a Web Mercator layer and reports them in km². What is wrong, and does it matter more for Turkana or for Nunavut?</li>
+    <li>Give one case each where raster tiles, vector tiles and GeoJSON is the right choice.</li>
+    <li>In the tile scheme, does <code>y</code> increase northward or southward? Why is that worth remembering?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> The OpenStreetMap wiki article "Slippy map tilenames" — the authoritative statement of the tile maths, with reference implementations. Peterson, <em>Mapping in the Cloud</em>, ch. 1–3. The OGC's own overview of its standards baseline.</p>
+</div></section>
+
+<!-- ================= WEEK 2 ================= -->
+<section class="ch" id="w2"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">02</div>
+    <div class="ch-t">
+      <p class="wkl">Week two</p>
+      <h2>Web fundamentals and GeoJSON</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Write HTML structure and CSS layout sufficient for a map page</li>
+    <li>Use JavaScript's core constructs, and explain how it differs from Python where it matters</li>
+    <li>Read and write GeoJSON by hand, correctly, including coordinate order</li>
+    <li>Fetch remote JSON asynchronously and handle the response</li>
+    <li>Read an HTTP exchange in developer tools and diagnose a failed request</li>
+  </ul></div>
+
+  <h3>JavaScript for people who know Python</h3>
+  <p>The syntax is learnable in an afternoon. What causes trouble is the handful of places where JavaScript behaves differently from what your Python instincts predict.</p>
+  <table class="tbl">
+    <tr><th style="width:11em">Concept</th><th>Python</th><th>JavaScript</th></tr>
+    <tr><td>Block structure</td><td>Indentation</td><td>Braces; indentation is decorative</td></tr>
+    <tr><td>Variables</td><td><code>x = 5</code></td><td><code>const</code> if it never changes, <code>let</code> if it does. Never <code>var</code>.</td></tr>
+    <tr><td>Dictionaries</td><td><code>d["key"]</code></td><td><code>obj.key</code> or <code>obj["key"]</code></td></tr>
+    <tr><td>Equality</td><td><code>==</code></td><td><code>===</code>, always. <code>==</code> coerces types and will hurt you.</td></tr>
+    <tr><td>String formatting</td><td>f-strings</td><td>Template literals with backticks and <code>${...}</code></td></tr>
+    <tr><td>Waiting for I/O</td><td>Blocks by default</td><td><strong>Never blocks.</strong> Callbacks, promises, <code>async</code>/<code>await</code>.</td></tr>
+  </table>
+  <p>The last row is the one that matters, and it is not a syntax difference — it is a difference in how the language runs. Python executes a line, waits for it to finish, moves on. JavaScript in the browser must never wait, because waiting would freeze the page. So an operation that takes time — fetching a file over the network — returns immediately with a <em>promise</em> of a future result, and your code says what to do when it arrives.</p>
+
+  <div class="warn">
+    <h5>The bug every student writes in week 3</h5>
+    <p>You fetch some GeoJSON, then on the next line try to use it, and it is <code>undefined</code>. Nothing is broken: the fetch has not finished. Your next line ran immediately, because JavaScript did not wait.</p>
+    <p>The fix is to put the work <em>inside</em> the response handler — either <code>.then(data =&gt; { ... })</code> or by marking the function <code>async</code> and writing <code>await</code>. Once you have seen this once and understood it, you have understood asynchrony, and most of what makes browser JavaScript feel strange goes away.</p>
+  </div>
+
+<span class="lang">JavaScript</span>
+<pre><code><span class="cm">// WRONG — data is undefined, because fetch has not finished</span>
+<span class="kw">let</span> data;
+fetch(<span class="st">"facilities.geojson"</span>).then(r =&gt; r.json()).then(d =&gt; { data = d; });
+console.log(data.features.length);          <span class="cm">// TypeError</span>
+
+<span class="cm">// RIGHT — do the work inside the handler</span>
+fetch(<span class="st">"facilities.geojson"</span>)
+  .then(r =&gt; {
+    <span class="kw">if</span> (!r.ok) <span class="kw">throw new</span> Error(<span class="st">`HTTP ${r.status}`</span>);   <span class="cm">// fetch does NOT throw on 404</span>
+    <span class="kw">return</span> r.json();
+  })
+  .then(data =&gt; { console.log(data.features.length); })
+  .catch(err =&gt; console.error(<span class="st">"failed to load:"</span>, err));
+
+<span class="cm">// RIGHT — the same thing, more readable</span>
+<span class="kw">async function</span> load() {
+  <span class="kw">const</span> r = <span class="kw">await</span> fetch(<span class="st">"facilities.geojson"</span>);
+  <span class="kw">if</span> (!r.ok) <span class="kw">throw new</span> Error(<span class="st">`HTTP ${r.status}`</span>);
+  <span class="kw">const</span> data = <span class="kw">await</span> r.json();
+  console.log(data.features.length);
+}</code></pre>
+
+  <h3>HTTP, in the amount you need</h3>
+  <p>Every piece of data on your map arrives through an HTTP request. Four things to know:</p>
+  <ul>
+    <li><strong>Methods.</strong> <code>GET</code> retrieves and must not change anything. <code>POST</code> creates. <code>PUT</code> replaces, <code>PATCH</code> modifies, <code>DELETE</code> removes. Week 8 uses all of them.</li>
+    <li><strong>Status codes.</strong> 200 fine; 301/302 moved; 400 your request was malformed; 401 not authenticated; 403 authenticated but not allowed; 404 not found; 500 the server broke. The distinction between 401 and 403, and between 400 and 500, tells you which side of the wire to debug.</li>
+    <li><strong>Headers.</strong> Metadata on both sides. <code>Content-Type</code> says what the body is; the CORS headers decide whether your JavaScript is allowed to read the response.</li>
+    <li><strong>CORS.</strong> By default, JavaScript on your page may not read a response from a different origin. The <em>server</em> must opt in with an <code>Access-Control-Allow-Origin</code> header. You will meet this in week 7 with GeoServer, and it is the most common cause of a map that works locally and fails when deployed.</li>
+  </ul>
+
+  <h3>GeoJSON, properly</h3>
+  <p>GeoJSON (RFC 7946) is the interchange format of the web mapping world. It is JSON with a specified structure.</p>
+
+<span class="lang">GeoJSON</span>
+<pre><code>{
+  <span class="st">"type"</span>: <span class="st">"FeatureCollection"</span>,
+  <span class="st">"features"</span>: [
+    {
+      <span class="st">"type"</span>: <span class="st">"Feature"</span>,
+      <span class="st">"geometry"</span>: {
+        <span class="st">"type"</span>: <span class="st">"Point"</span>,
+        <span class="st">"coordinates"</span>: [36.8219, -1.2921]        <span class="cm">// [longitude, latitude] — in that order</span>
+      },
+      <span class="st">"properties"</span>: {
+        <span class="st">"name"</span>: <span class="st">"Kenyatta National Hospital"</span>,
+        <span class="st">"level"</span>: 6,
+        <span class="st">"beds"</span>: 1800
+      }
+    }
+  ]
+}</code></pre>
+
+  <p>Seven rules that the specification actually imposes, and that people actually break:</p>
+  <ol class="body">
+    <li><strong>Coordinates are [longitude, latitude].</strong> X before Y. This is the opposite of how you say it aloud and the opposite of Leaflet's own <code>L.latLng</code>.</li>
+    <li><strong>The CRS is always WGS84</strong> (CRS84, equivalent to <code>EPSG:4326</code>). RFC 7946 removed the ability to declare any other. If your data is in UTM, transform it before writing GeoJSON — a file with UTM coordinates in it is not GeoJSON, whatever the extension says.</li>
+    <li><strong>Seven geometry types:</strong> Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection.</li>
+    <li><strong>Polygon rings must close</strong> — the last coordinate pair repeats the first.</li>
+    <li><strong>Ring winding order:</strong> exterior rings counter-clockwise, interior rings (holes) clockwise, by the right-hand rule.</li>
+    <li><strong>No comments, no trailing commas, no <code>NaN</code>.</strong> It is JSON, and JSON has none of these.</li>
+    <li><strong>A geometry may be <code>null</code></strong> — a valid Feature with attributes and no location.</li>
+  </ol>
+
+  <div class="warn">
+    <h5>Longitude first. Except in Leaflet, where it is latitude first.</h5>
+    <p>GeoJSON writes <code>[36.8219, -1.2921]</code>. Leaflet's <code>L.marker</code> and <code>L.latLng</code> take <code>[-1.2921, 36.8219]</code>. Both are internally consistent; the two conventions simply disagree, and you must hold both in your head.</p>
+    <p>The symptom of getting it wrong is unmistakable and worth memorising: <strong>your Kenyan data appears in the Indian Ocean off Somalia</strong>, because you have plotted (36.8°N, −1.3°E) instead of (1.3°S, 36.8°E). If a point lands in the sea, check the coordinate order before you check anything else. Note that <code>L.geoJSON()</code> does the swap for you automatically — so this bites specifically when you hand-build markers from parsed coordinates.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 2 — GeoJSON by hand</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Write, by hand in a text editor, a GeoJSON FeatureCollection containing five JKUAT campus features: at least one Point, one LineString and one Polygon, each with two or more properties. No tools, no export — type it.</li>
+        <li>Validate it at geojson.io. Fix every error until it renders where you expect. If the polygon does not close, or the coordinates are reversed, you will see it immediately.</li>
+        <li>Deliberately break it four ways — reverse a coordinate pair, omit the closing point of the ring, add a trailing comma, put a UTM coordinate in. Record the error message each produces. You are building a mental index of symptoms.</li>
+        <li>Build a page with a full-height map container using flexbox, and confirm it fills the viewport on both a laptop and a phone.</li>
+        <li>Write JavaScript that fetches your GeoJSON, counts the features, and writes the count into the page. Handle the 404 case with a message a user could understand.</li>
+        <li>With the Network tab open, load your page and record the size and timing of every request.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Write a validator that checks a FeatureCollection for closed rings, correct winding order, and coordinates within Kenya's bounding box. Report line numbers.</li>
+        <li>Convert a shapefile to GeoJSON with <code>ogr2ogr</code>, then compare the file sizes and explain the difference.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why does <code>console.log(data)</code> immediately after a <code>fetch</code> print <code>undefined</code>?</li>
+    <li>What coordinate order does GeoJSON use, and what does Leaflet's <code>L.marker</code> use?</li>
+    <li>Your points plot in the Indian Ocean. Give the most likely cause and the check that confirms it.</li>
+    <li>Distinguish HTTP 401 from 403, and 400 from 500. Which side do you debug in each case?</li>
+    <li>May a GeoJSON file declare <code>EPSG:32737</code>? What should you do if your data is in that CRS?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> RFC 7946, the GeoJSON specification — short, readable, and worth reading in full. MDN's "JavaScript first steps" and "Using Fetch". Eloquent JavaScript ch. 1–5 (free online) if you need the language properly rather than quickly.</p>
+</div></section>
+
+<!-- ================= WEEK 3 ================= -->
+<section class="ch" id="w3"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">03</div>
+    <div class="ch-t">
+      <p class="wkl">Week three</p>
+      <h2>Leaflet I — making a map</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Build a working Leaflet map from an empty file</li>
+    <li>Add tile layers, and meet the attribution obligations that come with them</li>
+    <li>Add markers, popups and tooltips, and style them</li>
+    <li>Load GeoJSON with <code>onEachFeature</code> and <code>pointToLayer</code></li>
+    <li>Respond to map and layer events</li>
+  </ul></div>
+
+  <h3>The smallest working map</h3>
+  <p>Leaflet needs three things: a CSS file, a JavaScript file, and a <code>&lt;div&gt;</code> that has a height. The third catches everyone.</p>
+
+<span class="lang">HTML</span>
+<pre><code>&lt;<span class="kw">link</span> rel=<span class="st">"stylesheet"</span>
+      href=<span class="st">"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"</span>&gt;
+&lt;<span class="kw">script</span> src=<span class="st">"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"</span>&gt;&lt;/<span class="kw">script</span>&gt;
+
+&lt;<span class="kw">style</span>&gt;
+  html, body { height: 100%; margin: 0; }
+  #map { height: 100%; }        <span class="cm">/* without a height, the map is invisible */</span>
+&lt;/<span class="kw">style</span>&gt;
+
+&lt;<span class="kw">div</span> id=<span class="st">"map"</span>&gt;&lt;/<span class="kw">div</span>&gt;
+
+&lt;<span class="kw">script</span>&gt;
+  <span class="cm">// note the order: LATITUDE first in Leaflet</span>
+  <span class="kw">const</span> map = L.map(<span class="st">"map"</span>).setView([-1.0996, 37.0134], 15);   <span class="cm">// JKUAT main campus</span>
+
+  L.tileLayer(<span class="st">"https://tile.openstreetmap.org/{z}/{x}/{y}.png"</span>, {
+    maxZoom: 19,
+    attribution: <span class="st">'&amp;copy; &lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'</span>
+  }).addTo(map);
+&lt;/<span class="kw">script</span>&gt;</code></pre>
+
+  <div class="warn">
+    <h5>A blank grey box is almost always one of four things</h5>
+    <p><strong>The div has no height.</strong> Leaflet cannot infer one, and a div with no content is zero pixels tall. Give it an explicit height in CSS.<br>
+    <strong>The script runs before the div exists.</strong> Put your script after the div, or wrap it in a load handler.<br>
+    <strong>You opened the file with <code>file://</code>.</strong> Serve it over HTTP.<br>
+    <strong>You forgot the Leaflet CSS.</strong> The map works, but every tile is stacked at the origin, which looks like chaos rather than a grey box.<br>
+    Check the Console before you change anything. It usually names the problem outright.</p>
+  </div>
+
+  <h3>Attribution is not optional</h3>
+  <p>OpenStreetMap data is licensed under the ODbL, which requires attribution — the credit line in the corner is a licence condition, not decoration. Removing it is a licence breach. Some tile providers additionally cap usage: <strong>OSM's own tile servers are for development and low-volume use only</strong>, and a deployed application sending them significant traffic will be blocked. For anything real, use a provider with terms you have read — Carto, Stadia, MapTiler, or your own tile server. This comes up in week 10.</p>
+
+  <h3>Markers, popups and tooltips</h3>
+  <p>A <strong>marker</strong> is a point with an icon. A <strong>popup</strong> opens on click and holds arbitrary HTML. A <strong>tooltip</strong> appears on hover and should be short. The default marker icon is a blue pin; a custom icon needs its size and, critically, its <em>anchor</em> — the pixel within the image that sits on the geographic point. Get the anchor wrong and every marker is offset by half an icon, which looks fine on its own and is wrong everywhere.</p>
+
+<span class="lang">JavaScript</span>
+<pre><code><span class="kw">const</span> clinicIcon = L.icon({
+  iconUrl:     <span class="st">"icons/clinic.png"</span>,
+  iconSize:    [32, 32],
+  iconAnchor:  [16, 32],    <span class="cm">// bottom centre — the tip of the pin</span>
+  popupAnchor: [0, -32]     <span class="cm">// popup opens above the icon, not over it</span>
+});
+
+L.marker([-1.0996, 37.0134], { icon: clinicIcon })
+  .addTo(map)
+  .bindPopup(<span class="st">"&lt;strong&gt;JKUAT Health Centre&lt;/strong&gt;&lt;br&gt;Level 3 · Open 24 h"</span>)
+  .bindTooltip(<span class="st">"JKUAT Health Centre"</span>);</code></pre>
+
+  <h3>GeoJSON layers — where the real work happens</h3>
+  <p><code>L.geoJSON()</code> takes a FeatureCollection and turns it into a layer. It also handles the coordinate-order swap for you. Four options carry almost all of its power:</p>
+  <ul>
+    <li><code>pointToLayer(feature, latlng)</code> — decides what a Point becomes. Return an <code>L.circleMarker</code> instead of a pin and you can size and colour it by an attribute.</li>
+    <li><code>style(feature)</code> — returns a style object for lines and polygons. Called once per feature, so it can depend on the data.</li>
+    <li><code>onEachFeature(feature, layer)</code> — runs once per feature after creation. Bind popups and event handlers here.</li>
+    <li><code>filter(feature)</code> — return <code>false</code> to drop a feature before it is drawn.</li>
+  </ul>
+
+<span class="lang">JavaScript</span>
+<pre><code><span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="st">"facilities.geojson"</span>);
+<span class="kw">const</span> data = <span class="kw">await</span> res.json();
+
+<span class="kw">const</span> layer = L.geoJSON(data, {
+
+  filter: f =&gt; f.properties.operational === <span class="kw">true</span>,
+
+  pointToLayer: (f, latlng) =&gt; L.circleMarker(latlng, {
+    radius: Math.sqrt(f.properties.beds) / 2,   <span class="cm">// area ∝ beds, not radius ∝ beds</span>
+    fillColor: <span class="st">"#0E6E78"</span>,
+    color: <span class="st">"#ffffff"</span>,
+    weight: 1,
+    fillOpacity: 0.75
+  }),
+
+  onEachFeature: (f, lyr) =&gt; {
+    <span class="kw">const</span> p = f.properties;
+    lyr.bindPopup(<span class="st">`&lt;strong&gt;${p.name}&lt;/strong&gt;&lt;br&gt;Level ${p.level} · ${p.beds} beds`</span>);
+    lyr.on(<span class="st">"mouseover"</span>, e =&gt; e.target.setStyle({ weight: 3 }));
+    lyr.on(<span class="st">"mouseout"</span>,  e =&gt; e.target.setStyle({ weight: 1 }));
+  }
+
+}).addTo(map);
+
+map.fitBounds(layer.getBounds(), { padding: [20, 20] });   <span class="cm">// let the data set the view</span></code></pre>
+
+  <p>Two details in that code are worth dwelling on. <code>fitBounds</code> lets the data decide the view rather than a hard-coded <code>setView</code> — so the map still works when the dataset changes. And the radius uses a square root: human perception reads circle <em>area</em>, so scaling the radius directly by the value makes a facility with four times the beds look sixteen times bigger. Getting this wrong is one of the most common quantitative errors in thematic mapping.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 3 — A facility map for a county</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li><strong>From an empty file, with only the Leaflet documentation open.</strong> No template, no AI assistant, no copying from these notes. Build a working map centred on your home county. You will do this once; it is what makes the rest of the unit make sense.</li>
+        <li>Add two base layers — OSM and one satellite or terrain source — and a layer control to switch between them. Attribute both correctly.</li>
+        <li>Convert the supplied health-facility CSV to GeoJSON. Load it with <code>L.geoJSON</code>.</li>
+        <li>Render facilities as circle markers sized by bed count using a square-root scale, and coloured by facility level.</li>
+        <li>Bind a popup showing name, level, beds and ownership. Bind a tooltip showing just the name.</li>
+        <li>Use <code>fitBounds</code> so the map opens framed on the data.</li>
+        <li>Add a click handler on the map that shows the clicked coordinates, to four decimal places, in a corner of the page.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Add a search box filtering facilities by name as the user types, updating the map live.</li>
+        <li>Add a control that reports how many facilities are currently within the map view, updating on every <code>moveend</code>.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Your map is a blank grey box. List your first four checks, in order.</li>
+    <li>What does <code>iconAnchor</code> control, and what is the symptom of getting it wrong?</li>
+    <li>Why scale circle radius by the square root of the value?</li>
+    <li>Which <code>L.geoJSON</code> option would you use to bind a popup, and which to change a polygon's fill?</li>
+    <li>Why may you not remove the attribution control from a map using OSM tiles?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> The Leaflet quick-start guide and the "Using GeoJSON with Leaflet" tutorial — this week's primary text. The full API reference, skimmed once so you know what exists.</p>
+</div></section>
+
+<!-- ================= WEEK 4 ================= -->
+<section class="ch" id="w4"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">04</div>
+    <div class="ch-t">
+      <p class="wkl">Week four</p>
+      <h2>Leaflet II — thematic cartography</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Build a choropleth with a defensible classification</li>
+    <li>Explain how the classification scheme changes the map's message</li>
+    <li>Normalise data correctly and say why counts are usually the wrong variable</li>
+    <li>Choose colour schemes that survive colour-vision deficiency</li>
+    <li>Build a legend, and make a map usable by keyboard</li>
+  </ul></div>
+
+  <h3>Counts are almost always the wrong variable</h3>
+  <p>Start here, because it is the error that invalidates whole maps. A choropleth colours areas by a value. If that value is a raw count, the map shows you where the <em>people</em> are, not where the phenomenon is. A map of the absolute number of health facilities per county is, to a first approximation, a map of county population — and it will be read as a map of health provision, which is a different and false claim.</p>
+  <p>Normalise: facilities per 100,000 people, cases per 1,000, hectares per km². The choropleth is a map of intensity, and intensity requires a denominator. There is exactly one exception — mapping a total that genuinely is the quantity of interest, such as total budget allocated — and even then a proportional symbol is usually the better form.</p>
+
+  <h3>Classification changes the message</h3>
+  <p>Having chosen a variable, you must choose how to cut it into classes. This is not a technical detail; it determines what the reader concludes.</p>
+
+  <div class="worked">
+    <h5>Worked example — the same data, two honest maps</h5>
+    <p>Health facilities per 100,000 population, ten counties:</p>
+    <table class="tbl" style="margin:.7rem 0">
+      <tr><th>County</th><td>Mandera</td><td>Turkana</td><td>Kilifi</td><td>Meru</td><td>Machakos</td><td>Kisumu</td><td>Mombasa</td><td>Nakuru</td><td>Kiambu</td><td>Nairobi</td></tr>
+      <tr><th>Rate</th><td class="n">5</td><td class="n">7</td><td class="n">12</td><td class="n">17</td><td class="n">19</td><td class="n">21</td><td class="n">22</td><td class="n">24</td><td class="n">28</td><td class="n">34</td></tr>
+    </table>
+    <p><strong>Equal interval</strong>, 5 classes. Range 5–34, so class width 5.8:</p>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:.86rem;line-height:1.8">5.0–10.8 → Mandera, Turkana <span style="color:var(--ink3)">(2)</span><br>
+    10.8–16.6 → Kilifi <span style="color:var(--ink3)">(1)</span><br>
+    16.6–22.4 → Meru, Machakos, Kisumu, Mombasa <span style="color:var(--ink3)">(4)</span><br>
+    22.4–28.2 → Nakuru, Kiambu <span style="color:var(--ink3)">(2)</span><br>
+    28.2–34.0 → Nairobi <span style="color:var(--ink3)">(1)</span></p>
+    <p><strong>Quantile</strong>, 5 classes, two counties each:</p>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:.86rem;line-height:1.8">Mandera, Turkana │ Kilifi, Meru │ Machakos, Kisumu │ Mombasa, Nakuru │ Kiambu, Nairobi</p>
+    <p><strong>Read the difference.</strong> Under equal interval, four counties share the middle class — the centre of the distribution looks flat and homogeneous — and Nairobi stands alone at the top as a visible outlier, which is what the numbers actually say. Under quantile, every class holds exactly two counties, so the middle counties are spread across three shades and look far more differentiated than a 3-point spread warrants; Nairobi loses its distinctness by sharing a class with Kiambu.</p>
+    <p>Neither map is dishonest. They answer different questions: equal interval preserves the true numeric gaps, quantile guarantees visual contrast. What <em>is</em> dishonest is producing both, choosing the one that supports your preferred conclusion, and not saying so.</p>
+  </div>
+
+  <table class="tbl">
+    <tr><th style="width:9em">Scheme</th><th>What it does</th><th>Use when</th></tr>
+    <tr><td><strong>Equal interval</strong></td><td>Equal-width classes across the range</td><td>The data are roughly uniform; the reader needs true magnitudes</td></tr>
+    <tr><td><strong>Quantile</strong></td><td>Equal count of areas per class</td><td>You need guaranteed visual contrast; ranking matters more than magnitude</td></tr>
+    <tr><td><strong>Natural breaks</strong> (Jenks)</td><td>Minimises within-class variance</td><td>The data cluster naturally; the default good general choice</td></tr>
+    <tr><td><strong>Standard deviation</strong></td><td>Classes in σ from the mean</td><td>Emphasising departure from average; needs a diverging scheme</td></tr>
+    <tr><td><strong>Manual</strong></td><td>Breaks you choose</td><td>There are meaningful external thresholds — a guideline value, a poverty line</td></tr>
+  </table>
+  <p>Manual is underrated. If the WHO guideline is 1.5 mg/L, put a class break at 1.5. A statistically optimal break at 1.43 tells the reader nothing; the guideline tells them everything.</p>
+
+  <h3>Colour</h3>
+  <ul>
+    <li><strong>Sequential</strong> — light to dark in one hue, for ordered data from low to high.</li>
+    <li><strong>Diverging</strong> — two hues meeting at a neutral midpoint, for data with a meaningful centre: change from a baseline, above and below a target.</li>
+    <li><strong>Qualitative</strong> — distinct hues of similar lightness, for categories with no order. Land cover, ownership type. Never use a sequential ramp for categories; it implies an ordering that does not exist.</li>
+  </ul>
+  <p>Use ColorBrewer rather than choosing colours by eye — the schemes are perceptually ordered and tested. Around <strong>8% of men</strong> have a red–green colour vision deficiency, so a red-to-green diverging scheme is unreadable to roughly one in twelve of your male users; use ColorBrewer's colourblind-safe schemes, such as brown–blue-green or purple–green. And check your map in greyscale: if the classes are still distinguishable, lightness is doing the work and the map will survive both photocopying and colour blindness.</p>
+  <p>Five to seven classes is the practical maximum. Beyond that readers cannot match a polygon to a legend swatch reliably, and the extra precision is illusory.</p>
+
+<span class="lang">JavaScript</span>
+<pre><code><span class="cm">// Manual breaks — chosen, documented, defensible</span>
+<span class="kw">const</span> BREAKS = [0, 10, 15, 20, 25];
+<span class="kw">const</span> COLORS = [<span class="st">"#edf8fb"</span>, <span class="st">"#b2e2e2"</span>, <span class="st">"#66c2a4"</span>, <span class="st">"#2ca25f"</span>, <span class="st">"#006d2c"</span>];
+
+<span class="kw">function</span> colorFor(rate) {
+  <span class="kw">if</span> (rate == <span class="kw">null</span>) <span class="kw">return</span> <span class="st">"#cccccc"</span>;        <span class="cm">// no data ≠ zero — show it differently</span>
+  <span class="kw">for</span> (<span class="kw">let</span> i = BREAKS.length - 1; i &gt;= 0; i--) {
+    <span class="kw">if</span> (rate &gt;= BREAKS[i]) <span class="kw">return</span> COLORS[i];
+  }
+}
+
+L.geoJSON(counties, {
+  style: f =&gt; ({
+    fillColor: colorFor(f.properties.fac_per_100k),
+    weight: 1, color: <span class="st">"#ffffff"</span>, fillOpacity: 0.85
+  })
+}).addTo(map);
+
+<span class="cm">// --- legend, built from the same arrays so it can never disagree ------</span>
+<span class="kw">const</span> legend = L.control({ position: <span class="st">"bottomright"</span> });
+legend.onAdd = () =&gt; {
+  <span class="kw">const</span> div = L.DomUtil.create(<span class="st">"div"</span>, <span class="st">"legend"</span>);
+  div.innerHTML = <span class="st">"&lt;h4&gt;Facilities per 100,000&lt;/h4&gt;"</span>;
+  BREAKS.forEach((b, i) =&gt; {
+    <span class="kw">const</span> hi = BREAKS[i + 1];
+    div.innerHTML += <span class="st">`&lt;i style="background:${COLORS[i]}"&gt;&lt;/i&gt; ${b}${hi ? "–" + hi : "+"}&lt;br&gt;`</span>;
+  });
+  <span class="kw">return</span> div;
+};
+legend.addTo(map);</code></pre>
+
+  <div class="warn">
+    <h5>Missing data is not zero</h5>
+    <p>A county with no reported figure must not be shaded as though its rate were zero. Give it a distinct neutral grey, label it "no data" in the legend, and say in the caption how many areas are affected. Mapping absent data as low data has caused real misallocation of real resources — the areas with the worst reporting are frequently the areas with the greatest need, so the error runs in the most damaging possible direction.</p>
+  </div>
+
+  <h3>Accessibility, briefly and seriously</h3>
+  <p>A map built only for a mouse excludes people who navigate by keyboard, and a map whose only information channel is colour excludes people who cannot distinguish those colours. Three things cost you almost nothing:</p>
+  <ul>
+    <li>Ensure everything reachable by click is reachable by <kbd>Tab</kbd> and activated by <kbd>Enter</kbd>. Leaflet gives markers keyboard focus by default — do not remove it.</li>
+    <li>Never carry information in colour alone. Add a pattern, a label, or a value in the popup.</li>
+    <li>Provide the underlying data as a table or a download. It is the most robust accessibility feature a map can have, and it also serves the person who wants to check your numbers.</li>
+  </ul>
+
+  <div class="prac">
+    <div class="ph">Practical 4 — A choropleth you can defend</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Join the county boundary GeoJSON to the facility and population tables. Compute facilities per 100,000.</li>
+        <li>Map the raw counts first. Then map the rate. Put them side by side and write two sentences on how the reader's conclusion changes.</li>
+        <li>Implement all three of equal interval, quantile and natural breaks. Add a control to switch between them live.</li>
+        <li>Screenshot all three and write a paragraph on which you would publish and why. This paragraph is the assessed part.</li>
+        <li>Build a legend generated from the same break array as the styling, so the two cannot drift apart.</li>
+        <li>Handle counties with missing data explicitly, in both the map and the legend.</li>
+        <li>Add hover highlighting and a click popup showing county name, count, population and rate.</li>
+        <li>Check the map in a colour-blindness simulator and in greyscale. Fix what fails.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Add a bivariate choropleth — two variables on a 3×3 colour grid — with a matching two-dimensional legend. Then write 100 words on whether it communicated better than two separate maps.</li>
+        <li>Add a linked histogram showing the distribution with the current class breaks drawn on it, updating when the scheme changes.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why is a choropleth of raw counts usually misleading? Give the exception.</li>
+    <li>Under what circumstance does quantile classification exaggerate differences, and when is that acceptable?</li>
+    <li>Why is a red-to-green diverging scheme a poor choice, and what would you use instead?</li>
+    <li>How should a county with no data be shown, and why does the direction of this error matter?</li>
+    <li>Name two things that make a web map usable without a mouse.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Muehlenhaus, <em>Web Cartography</em>, ch. 4–6. Brewer, <em>Designing Better Maps</em>, on classification and colour. The ColorBrewer 2.0 tool. Monmonier, <em>How to Lie with Maps</em>, ch. 3 — short, and it will change how you read every choropleth you see afterwards.</p>
+</div></section>
+
+<!-- ================= WEEK 5 ================= -->
+<section class="ch" id="w5"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">05</div>
+    <div class="ch-t">
+      <p class="wkl">Week five · CAT 1 this week</p>
+      <h2>Spatial databases with PostGIS</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Say why a database beats a folder of shapefiles for a web application</li>
+    <li>Load spatial data with <code>ogr2ogr</code> and set the SRID correctly</li>
+    <li>Distinguish <code>geometry</code> from <code>geography</code> and choose between them</li>
+    <li>Write spatial SQL using the core predicate and measurement functions</li>
+    <li>Create a spatial index and demonstrate its effect with <code>EXPLAIN ANALYZE</code></li>
+  </ul></div>
+
+  <h3>Why not just serve files?</h3>
+  <p>You have been loading GeoJSON files. For a static map of a few hundred features that is entirely correct. It stops working when any of the following becomes true, and in a real application all of them do:</p>
+  <ul>
+    <li>The data changes, and several people change it — a file has no concurrency control, and two simultaneous writers lose each other's work.</li>
+    <li>You need a subset. Serving a 40 MB file so the browser can discard 39 MB of it is indefensible on a mobile connection.</li>
+    <li>You need a computed answer — facilities within 5 km of this point, the county containing this click. That is a query, not a file read.</li>
+    <li>You need transactions, backups, permissions, or an audit trail.</li>
+  </ul>
+  <p>PostGIS extends PostgreSQL with spatial types, several hundred spatial functions, and spatial indexing. It is the standard open-source spatial database and the back end of a large share of the world's public-sector GIS.</p>
+
+  <h3>Getting data in</h3>
+
+<span class="lang">Shell</span>
+<pre><code>createdb webmap
+psql -d webmap -c <span class="st">"CREATE EXTENSION postgis;"</span>
+
+<span class="cm"># load a shapefile, reprojecting to WGS84 on the way in</span>
+ogr2ogr -f <span class="st">"PostgreSQL"</span> PG:<span class="st">"dbname=webmap user=postgres"</span> counties.shp \
+  -nln counties -nlt PROMOTE_TO_MULTI \
+  -t_srs EPSG:4326 -lco GEOMETRY_NAME=geom -lco FID=id
+
+<span class="cm"># load a CSV of points</span>
+ogr2ogr -f <span class="st">"PostgreSQL"</span> PG:<span class="st">"dbname=webmap user=postgres"</span> facilities.csv \
+  -nln facilities -oo X_POSSIBLE_NAMES=lon -oo Y_POSSIBLE_NAMES=lat \
+  -a_srs EPSG:4326 -lco GEOMETRY_NAME=geom</code></pre>
+
+  <p>Note <code>-t_srs</code> (transform to) against <code>-a_srs</code> (assign, without transforming). Use <code>-a_srs</code> only when the data is already in that CRS but is not labelled. Using it when the data is in a different CRS silently mislabels everything, and nothing will tell you.</p>
+
+  <h3>geometry or geography?</h3>
+  <table class="tbl">
+    <tr><th style="width:8em"></th><th><code>geometry</code></th><th><code>geography</code></th></tr>
+    <tr><td><strong>Model</strong></td><td>Flat plane</td><td>Sphere/spheroid</td></tr>
+    <tr><td><strong>Units</strong></td><td>Whatever the SRID uses — degrees for 4326</td><td>Always metres</td></tr>
+    <tr><td><strong>Speed</strong></td><td>Fast</td><td>Slower</td></tr>
+    <tr><td><strong>Functions</strong></td><td>All of them</td><td>A useful subset</td></tr>
+    <tr><td><strong>Use for</strong></td><td>Data in a projected CRS; heavy analysis</td><td>Global lon/lat data where you want correct metres cheaply</td></tr>
+  </table>
+  <p>The practical pattern: store as <code>geometry</code> with SRID 4326 because that is what the web wants, and either cast to <code>geography</code> or transform to UTM whenever you measure.</p>
+
+  <div class="worked">
+    <h5>Worked example — the square-degree disaster</h5>
+    <p>Nairobi County has an area of roughly 696 km². Here is what three queries return.</p>
+<span class="lang">SQL</span>
+<pre style="max-width:100%;margin:.7rem 0"><code><span class="cm">-- WRONG: geometry is in EPSG:4326, so this is SQUARE DEGREES</span>
+<span class="kw">SELECT</span> name, ST_Area(geom) <span class="kw">FROM</span> counties <span class="kw">WHERE</span> name = <span class="st">'Nairobi'</span>;
+<span class="cm">--  Nairobi | 0.0565          ← a number, with no meaning</span>
+
+<span class="cm">-- RIGHT: project to UTM 37S, divide to km²</span>
+<span class="kw">SELECT</span> name, ST_Area(ST_Transform(geom, 32737)) / 1e6 <span class="kw">FROM</span> counties
+<span class="kw">WHERE</span> name = <span class="st">'Nairobi'</span>;
+<span class="cm">--  Nairobi | 696.1           ← km²</span>
+
+<span class="cm">-- ALSO RIGHT: cast to geography, which always works in metres</span>
+<span class="kw">SELECT</span> name, ST_Area(geom::geography) / 1e6 <span class="kw">FROM</span> counties
+<span class="kw">WHERE</span> name = <span class="st">'Nairobi'</span>;
+<span class="cm">--  Nairobi | 696.0</span></code></pre>
+    <p>The first query does not fail. It returns a plausible-looking decimal number that a student will paste into a report. Distance behaves identically: <code>ST_Distance</code> between Nairobi and Mombasa in EPSG:4326 returns <strong>3.96</strong> — the Pythagorean distance in degrees — while the same query cast to geography returns <strong>438,900</strong> metres, which is the real answer.</p>
+    <p>This is the single most consequential error in spatial SQL, and it is invisible: no error, no warning, just a wrong number. <strong>Rule: if a query contains <code>ST_Area</code>, <code>ST_Length</code>, <code>ST_Distance</code> or <code>ST_Buffer</code>, it must also contain <code>ST_Transform</code> or <code>::geography</code>.</strong> Make this automatic.</p>
+  </div>
+
+  <h3>The core function set</h3>
+  <table class="tbl">
+    <tr><th style="width:12em">Function</th><th>Returns</th></tr>
+    <tr><td><code>ST_Intersects(a, b)</code></td><td>true if they share any point — the workhorse predicate</td></tr>
+    <tr><td><code>ST_Within(a, b)</code> / <code>ST_Contains</code></td><td>true if a is entirely inside b, and the converse</td></tr>
+    <tr><td><code>ST_DWithin(a, b, d)</code></td><td>true if within distance d — <em>index-aware</em>, unlike <code>ST_Distance(...) &lt; d</code></td></tr>
+    <tr><td><code>ST_Distance(a, b)</code></td><td>Shortest distance, in the units of the CRS</td></tr>
+    <tr><td><code>ST_Buffer(g, d)</code></td><td>A polygon d units around g</td></tr>
+    <tr><td><code>ST_Transform(g, srid)</code></td><td>Reprojected geometry</td></tr>
+    <tr><td><code>ST_Centroid(g)</code></td><td>Centre of mass — may fall outside a concave polygon</td></tr>
+    <tr><td><code>ST_MakeValid(g)</code></td><td>Repairs self-intersections, which real data is full of</td></tr>
+    <tr><td><code>ST_AsGeoJSON(g)</code></td><td>GeoJSON geometry as text — the bridge to your map</td></tr>
+  </table>
+
+  <h3>Indexes, and the difference they make</h3>
+  <p>Without an index, a spatial query compares your search geometry against every row in the table. A GiST index stores each geometry's bounding box in a tree, so the database can eliminate most rows before doing any real geometric work.</p>
+
+<span class="lang">SQL</span>
+<pre><code><span class="kw">CREATE INDEX</span> facilities_geom_idx <span class="kw">ON</span> facilities <span class="kw">USING</span> GIST (geom);
+<span class="kw">ANALYZE</span> facilities;                <span class="cm">-- update the planner's statistics</span>
+
+<span class="cm">-- prove it worked: run this before and after creating the index</span>
+<span class="kw">EXPLAIN ANALYZE</span>
+<span class="kw">SELECT</span> f.name
+<span class="kw">FROM</span> facilities f <span class="kw">JOIN</span> counties c <span class="kw">ON</span> ST_Intersects(f.geom, c.geom)
+<span class="kw">WHERE</span> c.name = <span class="st">'Kiambu'</span>;
+<span class="cm">-- before: Seq Scan on facilities</span>
+<span class="cm">-- after:  Index Scan using facilities_geom_idx</span></code></pre>
+
+  <div class="warn">
+    <h5>Two ways to accidentally disable your index</h5>
+    <p><strong>Wrapping the indexed column in a function.</strong> <code>WHERE ST_Transform(geom, 32737) &amp;&amp; box</code> cannot use the index on <code>geom</code>, because the index knows nothing about the transformed values. Transform the <em>other</em> side of the comparison instead, or build a functional index.</p>
+    <p><strong>Using <code>ST_Distance(a, b) &lt; 5000</code> instead of <code>ST_DWithin(a, b, 5000)</code>.</strong> The first computes an exact distance for every row and then filters; the second uses the index to eliminate rows first. They return the same answer, and on a large table one takes milliseconds and the other takes minutes.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 5 — Answer real questions in SQL</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Create the database, enable PostGIS, load counties, facilities, roads and population.</li>
+        <li>Confirm every table's SRID with <code>ST_SRID</code>. Fix anything reporting 0.</li>
+        <li>Answer these five in SQL, each in one statement:
+          <ul>
+            <li>How many facilities are in each county, ordered descending?</li>
+            <li>Which facilities are within 5 km of Thika town centre? Use <code>ST_DWithin</code>.</li>
+            <li>What is the area of each county in km²?</li>
+            <li>Which county contains the JKUAT main campus?</li>
+            <li>What is the total length of classified road in Kiambu, in km?</li>
+          </ul>
+        </li>
+        <li>For the area query, run it first without transforming. Record the wrong number alongside the right one in your submission — you are building the reflex to notice.</li>
+        <li>Create GiST indexes. Run <code>EXPLAIN ANALYZE</code> before and after on the county-join query and record both plans and both timings.</li>
+        <li>Run <code>ST_IsValid</code> across the county table. Repair any failures with <code>ST_MakeValid</code> and report what was wrong.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>For every facility, find its nearest neighbour and the distance, using the <code>&lt;-&gt;</code> operator with a lateral join.</li>
+        <li>Compute, per county, the share of population living within 5 km of a level-4-or-higher facility. State your assumptions, because this question hides several.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Give three things a database does for a web map that a folder of GeoJSON cannot.</li>
+    <li><code>ST_Area(geom)</code> on a 4326 layer returns 0.0565. What is that number and what should you have written?</li>
+    <li>When would you choose <code>geography</code> over <code>geometry</code>?</li>
+    <li>Why is <code>ST_DWithin(a, b, 5000)</code> preferable to <code>ST_Distance(a, b) &lt; 5000</code>?</li>
+    <li>What is the difference between <code>-a_srs</code> and <code>-t_srs</code> in <code>ogr2ogr</code>, and what happens if you confuse them?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Obe &amp; Hsu, <em>PostGIS in Action</em>, 3rd ed., ch. 1–5. The PostGIS manual's function reference — learn to navigate it; it is the text you will still be using in ten years. The Crunchy Data "Introduction to PostGIS" workshop is free and excellent.</p>
+</div></section>
+
+<!-- ================= WEEK 6 ================= -->
+<section class="ch" id="w6"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">06</div>
+    <div class="ch-t">
+      <p class="wkl">Week six</p>
+      <h2>Serving data out of the database</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Write spatial joins and aggregations that answer a map's question</li>
+    <li>Return GeoJSON directly from SQL</li>
+    <li>Build a minimal Flask endpoint and consume it from Leaflet</li>
+    <li>Keep payloads small through simplification, bounding-box filters and column selection</li>
+    <li>Describe the shape of a well-designed spatial API</li>
+  </ul></div>
+
+  <h3>The architecture you are building</h3>
+
+  <figure>
+    <svg viewBox="0 0 540 250" role="img" aria-label="Architecture: browser, tile server, API and database">
+      <g fill="var(--wash)" stroke="var(--acc)" stroke-width="1.6">
+        <rect x="18"  y="118" width="118" height="62"/>
+        <rect x="211" y="118" width="118" height="62"/>
+        <rect x="404" y="118" width="118" height="62"/>
+        <rect x="211" y="24"  width="118" height="52"/>
+      </g>
+      <g font-family="Archivo, sans-serif" font-size="12" font-weight="600" fill="var(--ink)" text-anchor="middle">
+        <text x="77"  y="145">Browser</text>
+        <text x="270" y="145">Flask API</text>
+        <text x="463" y="145">PostGIS</text>
+        <text x="270" y="46">Tile server</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink3)" text-anchor="middle">
+        <text x="77"  y="162">Leaflet</text>
+        <text x="270" y="162">your code</text>
+        <text x="463" y="162">SQL + GiST</text>
+        <text x="270" y="62">GeoServer / OSM</text>
+      </g>
+      <g stroke="var(--acc)" stroke-width="1.4" fill="none">
+        <path d="M136,140 L205,140"/><path d="M199,136 L205,140 L199,144" fill="var(--acc)"/>
+        <path d="M205,160 L136,160"/><path d="M142,156 L136,160 L142,164" fill="var(--acc)"/>
+        <path d="M329,140 L398,140"/><path d="M392,136 L398,140 L392,144" fill="var(--acc)"/>
+        <path d="M398,160 L329,160"/><path d="M335,156 L329,160 L335,164" fill="var(--acc)"/>
+        <path d="M100,118 L100,50 L205,50"/><path d="M199,46 L205,50 L199,54" fill="var(--acc)"/>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="8.5" fill="var(--ink3)">
+        <text x="170" y="133" text-anchor="middle">GET /api/…</text>
+        <text x="170" y="176" text-anchor="middle">GeoJSON</text>
+        <text x="363" y="133" text-anchor="middle">SQL</text>
+        <text x="363" y="176" text-anchor="middle">rows</text>
+        <text x="112" y="44">tiles</text>
+      </g>
+      <text x="270" y="220" font-family="Spectral, serif" font-style="italic" font-size="10.5" fill="var(--ink3)" text-anchor="middle">Base map and data travel by separate paths — and fail independently</text>
+    </svg>
+    <figcaption><b>Base map and data are two different journeys.</b> When your map shows terrain but no points, the API path has failed; when it shows points on a grey void, the tile path has. Knowing which arrow broke is most of the diagnosis, and the Network tab tells you in seconds.</figcaption>
+  </figure>
+
+  <h3>GeoJSON straight from SQL</h3>
+  <p>PostGIS can assemble a complete FeatureCollection in the database, so your API becomes a thin pipe rather than a place where objects are laboriously rebuilt in Python.</p>
+
+<span class="lang">SQL</span>
+<pre><code><span class="kw">SELECT</span> json_build_object(
+  <span class="st">'type'</span>,     <span class="st">'FeatureCollection'</span>,
+  <span class="st">'features'</span>, COALESCE(json_agg(feature), <span class="st">'[]'</span>::json)   <span class="cm">-- [] not null when empty</span>
+)
+<span class="kw">FROM</span> (
+  <span class="kw">SELECT</span> json_build_object(
+    <span class="st">'type'</span>,       <span class="st">'Feature'</span>,
+    <span class="st">'geometry'</span>,   ST_AsGeoJSON(geom)::json,
+    <span class="st">'properties'</span>, json_build_object(<span class="st">'id'</span>, id, <span class="st">'name'</span>, name, <span class="st">'beds'</span>, beds)
+  ) <span class="kw">AS</span> feature
+  <span class="kw">FROM</span> facilities
+  <span class="kw">WHERE</span> geom &amp;&amp; ST_MakeEnvelope(%s, %s, %s, %s, 4326)   <span class="cm">-- bbox, index-aware</span>
+  <span class="kw">LIMIT</span> 5000
+) f;</code></pre>
+
+  <p>Two things there earn their place. <code>COALESCE(..., '[]')</code> means an empty result is a valid empty FeatureCollection rather than <code>null</code>, which would crash your JavaScript. And the <code>&amp;&amp;</code> bounding-box operator uses the GiST index, so a request for the current map view touches only the rows in view — which is what makes the whole approach scale.</p>
+
+  <h3>A minimal API</h3>
+
+<span class="lang">Python</span>
+<pre><code><span class="kw">from</span> flask <span class="kw">import</span> Flask, jsonify, request, abort
+<span class="kw">import</span> psycopg2, psycopg2.extras
+
+app = Flask(__name__)
+
+<span class="fn">@app.route</span>(<span class="st">"/api/facilities"</span>)
+<span class="kw">def</span> facilities():
+    <span class="kw">try</span>:
+        bbox = [float(v) <span class="kw">for</span> v <span class="kw">in</span> request.args[<span class="st">"bbox"</span>].split(<span class="st">","</span>)]
+        <span class="kw">assert</span> len(bbox) == <span class="st">4</span>
+    <span class="kw">except</span> (KeyError, ValueError, AssertionError):
+        abort(<span class="st">400</span>, <span class="st">"bbox required as minx,miny,maxx,maxy"</span>)
+
+    <span class="kw">with</span> psycopg2.connect(DSN) <span class="kw">as</span> conn, conn.cursor() <span class="kw">as</span> cur:
+        cur.execute(SQL, bbox)          <span class="cm"># parameterised — NEVER f-string user input</span>
+        <span class="kw">return</span> jsonify(cur.fetchone()[<span class="st">0</span>])</code></pre>
+
+<span class="lang">JavaScript</span>
+<pre><code><span class="kw">let</span> layer = L.geoJSON(<span class="kw">null</span>).addTo(map);
+
+<span class="kw">async function</span> refresh() {
+  <span class="kw">const</span> b = map.getBounds();
+  <span class="kw">const</span> bbox = [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()].join(<span class="st">","</span>);
+  <span class="kw">const</span> r = <span class="kw">await</span> fetch(<span class="st">`/api/facilities?bbox=${bbox}`</span>);
+  <span class="kw">if</span> (!r.ok) <span class="kw">return</span> console.error(<span class="st">"API error"</span>, r.status);
+  layer.clearLayers().addData(<span class="kw">await</span> r.json());
+}
+
+map.on(<span class="st">"moveend"</span>, refresh);   <span class="cm">// moveend, not move — one request per pan, not hundreds</span>
+refresh();</code></pre>
+
+  <p>Binding to <code>moveend</code> rather than <code>move</code> is the difference between one request per pan and several hundred. On a laboratory network you might not notice; on a phone you will.</p>
+
+  <h3>Keeping payloads small</h3>
+  <ul>
+    <li><strong>Select only the columns the map uses.</strong> A table has thirty attributes; the popup shows four. Sending thirty is thirty.</li>
+    <li><strong>Filter by bounding box.</strong> Always.</li>
+    <li><strong>Simplify by zoom.</strong> <code>ST_Simplify</code> with a tolerance scaled to the zoom level: national boundaries at zoom 6 do not need centimetre vertices. Use <code>ST_SimplifyPreserveTopology</code> for polygons, or adjacent counties will develop gaps between them.</li>
+    <li><strong>Reduce coordinate precision.</strong> <code>ST_AsGeoJSON(geom, 5)</code> gives about one metre — plenty for a web map, and it can cut file size by a third against the fifteen decimal places PostGIS emits by default.</li>
+    <li><strong>Cap the result.</strong> A <code>LIMIT</code> with an honest message beats a request that times out.</li>
+  </ul>
+
+  <div class="prac">
+    <div class="ph">Practical 6 — Connect the map to the database</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Write SQL returning a valid FeatureCollection of facilities. Validate the output at geojson.io.</li>
+        <li>Write a spatial join returning facility counts and per-100,000 rates by county, as GeoJSON with the county geometry.</li>
+        <li>Build a Flask API with three endpoints: facilities filtered by bbox, county summaries, and one facility by id. Return 404 for a missing id and 400 for a malformed bbox.</li>
+        <li>Rewrite week 4's map to load from the API instead of a static file. Refresh on <code>moveend</code>.</li>
+        <li>Measure the payload for one screen at zoom 8 and at zoom 14. Then add column selection, precision reduction and zoom-dependent <code>ST_Simplify</code>, and measure again. Report the reduction as a percentage.</li>
+        <li>Add a loading indicator and a visible, human-readable error message when the API fails. Test it by stopping the server.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Add an endpoint returning the <var>n</var> nearest facilities to a clicked point using the <code>&lt;-&gt;</code> operator, and wire it to a map click.</li>
+        <li>Add cursor-based pagination and an <code>ETag</code> so unchanged responses return 304.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why build the GeoJSON in SQL rather than in Python?</li>
+    <li>What does <code>COALESCE(json_agg(...), '[]')</code> protect against?</li>
+    <li>Why bind to <code>moveend</code> rather than <code>move</code>?</li>
+    <li>Name four ways to reduce the size of a GeoJSON response.</li>
+    <li>Why <code>ST_SimplifyPreserveTopology</code> rather than <code>ST_Simplify</code> for administrative boundaries?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Obe &amp; Hsu, ch. 9 on PostGIS output functions. The Flask quickstart. Crunchy Data's writing on serving GeoJSON and vector tiles directly from PostgreSQL.</p>
+</div></section>
+
+<!-- ================= WEEK 7 ================= -->
+<section class="ch" id="w7"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">07</div>
+    <div class="ch-t">
+      <p class="wkl">Week seven</p>
+      <h2>GeoServer and the OGC services</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Publish a PostGIS table as an OGC service</li>
+    <li>Distinguish WMS, WFS and WMTS and choose between them</li>
+    <li>Read a <code>GetCapabilities</code> document</li>
+    <li>Style a layer with SLD</li>
+    <li>Diagnose a CORS failure</li>
+  </ul></div>
+
+  <h3>What GeoServer is for</h3>
+  <p>Last week you wrote your own API. It works, and for a bespoke application it is often the right choice. But it is <em>yours</em> — nobody else's software knows how to talk to it. GeoServer instead speaks the OGC standards, which means that the moment you publish a layer, it can be consumed by QGIS, ArcGIS, OpenLayers, Leaflet and a dozen other clients with no further work by anyone. That interoperability is the entire value proposition, and it is why national mapping agencies and county governments run GeoServer rather than bespoke APIs.</p>
+
+  <h3>The object model</h3>
+  <ul>
+    <li><strong>Workspace</strong> — a namespace grouping related layers, e.g. <code>kiambu</code>.</li>
+    <li><strong>Store</strong> — a connection to a data source: your PostGIS database, a directory of GeoTIFFs.</li>
+    <li><strong>Layer</strong> — one publishable table or coverage from a store.</li>
+    <li><strong>Layer group</strong> — several layers served as one, in a fixed draw order.</li>
+    <li><strong>Style</strong> — an SLD document describing how a layer is drawn.</li>
+  </ul>
+
+  <h3>Three services, three jobs</h3>
+  <table class="tbl">
+    <tr><th style="width:6em">Service</th><th>Returns</th><th>Use for</th></tr>
+    <tr><td><strong>WMS</strong></td><td>A rendered image of the requested area</td><td>Complex cartography, large datasets, styling controlled server-side. The client cannot interrogate the features.</td></tr>
+    <tr><td><strong>WFS</strong></td><td>The actual features, as GML or GeoJSON</td><td>When the client needs the geometry and attributes — to analyse, restyle, or edit. Heavier.</td></tr>
+    <tr><td><strong>WMTS</strong></td><td>Pre-rendered tiles on a fixed grid</td><td>Base maps and any layer that changes rarely. Cacheable, so much faster than WMS.</td></tr>
+  </table>
+  <p>The decision is nearly always: <em>does the browser need the geometry?</em> If it only needs to look at it, WMS or WMTS — the server does the drawing and sends pixels, and a million-feature layer costs the same as a hundred-feature one. If the user must click a feature and get its attributes, or you want to restyle without a server round trip, WFS or your own GeoJSON API.</p>
+
+  <h3>GetCapabilities</h3>
+  <p>Every OGC service answers a <code>GetCapabilities</code> request with an XML document listing what it offers: layer names, titles, supported coordinate systems, bounding boxes, available formats, and the operations it supports. It is a machine-readable contract, and it is how QGIS populates its layer list when you paste in a WMS URL.</p>
+
+<span class="lang">HTTP</span>
+<pre><code><span class="cm"># what does this server offer?</span>
+http://localhost:8080/geoserver/wms?service=WMS&amp;version=1.3.0&amp;request=GetCapabilities
+
+<span class="cm"># a rendered image</span>
+http://localhost:8080/geoserver/kiambu/wms?service=WMS&amp;version=1.3.0
+  &amp;request=GetMap&amp;layers=kiambu:facilities&amp;styles=
+  &amp;bbox=36.6,-1.3,37.2,-0.9&amp;width=768&amp;height=512&amp;crs=EPSG:4326&amp;format=image/png
+
+<span class="cm"># the features themselves, as GeoJSON</span>
+http://localhost:8080/geoserver/kiambu/wfs?service=WFS&amp;version=2.0.0
+  &amp;request=GetFeature&amp;typeName=kiambu:facilities&amp;outputFormat=application/json
+  &amp;count=100</code></pre>
+
+  <p>Learning to read these URLs is worth an hour. When a layer fails to appear in Leaflet, constructing the equivalent <code>GetMap</code> request by hand and pasting it into the address bar tells you immediately whether the problem is GeoServer or your client code.</p>
+
+<span class="lang">JavaScript</span>
+<pre><code>L.tileLayer.wms(<span class="st">"http://localhost:8080/geoserver/kiambu/wms"</span>, {
+  layers: <span class="st">"kiambu:facilities"</span>,
+  format: <span class="st">"image/png"</span>,
+  transparent: <span class="kw">true</span>,          <span class="cm">// without this you get an opaque white rectangle</span>
+  version: <span class="st">"1.3.0"</span>,
+  attribution: <span class="st">"Kiambu County"</span>
+}).addTo(map);</code></pre>
+
+  <h3>SLD in one page</h3>
+  <p>Styled Layer Descriptor is the OGC's XML styling language. It is verbose, and it is also a genuine standard that transfers between servers. The structure is a set of rules, each with an optional filter and one or more symbolizers.</p>
+
+<span class="lang">XML</span>
+<pre><code>&lt;Rule&gt;
+  &lt;Name&gt;Level 4 and above&lt;/Name&gt;
+  &lt;ogc:Filter&gt;
+    &lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;
+      &lt;ogc:PropertyName&gt;level&lt;/ogc:PropertyName&gt;
+      &lt;ogc:Literal&gt;4&lt;/ogc:Literal&gt;
+    &lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;
+  &lt;/ogc:Filter&gt;
+  &lt;PointSymbolizer&gt;
+    &lt;Graphic&gt;
+      &lt;Mark&gt;
+        &lt;WellKnownName&gt;circle&lt;/WellKnownName&gt;
+        &lt;Fill&gt;&lt;CssParameter name="fill"&gt;#0E6E78&lt;/CssParameter&gt;&lt;/Fill&gt;
+      &lt;/Mark&gt;
+      &lt;Size&gt;12&lt;/Size&gt;
+    &lt;/Graphic&gt;
+  &lt;/PointSymbolizer&gt;
+&lt;/Rule&gt;</code></pre>
+
+  <p>Rules can also carry <code>MinScaleDenominator</code> and <code>MaxScaleDenominator</code>, which is how a layer shows only labels at small scales and full symbology at large ones. Writing SLD by hand is tedious; generate a first version by styling the layer in QGIS and exporting as SLD, then edit. That is standard professional practice, not a shortcut.</p>
+
+  <div class="warn">
+    <h5>CORS: why it works on your machine and fails when deployed</h5>
+    <p>WMS layers are loaded as images, and images are exempt from the cross-origin rule — so a WMS layer usually works everywhere. WFS returns JSON, which your JavaScript must <em>read</em>, and reading a cross-origin response requires the server's permission.</p>
+    <p>If your page is served from <code>example.com</code> and GeoServer runs on <code>gis.example.com:8080</code>, those are different origins, and the browser blocks the WFS response unless GeoServer sends <code>Access-Control-Allow-Origin</code>. It works in the lab because both are on <code>localhost</code>. The symptom is a Console message naming CORS explicitly and a Network tab showing the request <em>succeeded</em> with status 200 — the data arrived, and the browser refused to hand it to your code. The fix is on the server: enable GeoServer's CORS filter, or put both behind one reverse proxy so there is only one origin.</p>
+  </div>
+
+  <h3>Caching</h3>
+  <p>GeoServer bundles GeoWebCache, which stores rendered tiles so that repeat requests are served as files rather than re-rendered. For any layer that changes less often than it is viewed — which is nearly all base data — this is the difference between a map that feels instant and one that does not. Seed the cache for the zoom levels you actually serve, and remember to invalidate it when the underlying data changes, because a stale tile cache is a genuinely confusing bug: the database is right and the map is wrong.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 7 — Publish and consume</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Install GeoServer, create a workspace, and connect a PostGIS store to last week's database.</li>
+        <li>Publish counties and facilities as layers. Set the bounding boxes and the declared SRS correctly.</li>
+        <li>Style facilities in QGIS by level, export as SLD, upload, and apply. Then hand-edit the SLD to add a scale-dependent rule that hides labels below zoom 12.</li>
+        <li>Fetch the <code>GetCapabilities</code> document. Find and record: the layer's name, its bounding box, its supported CRS list, and the formats offered.</li>
+        <li>Consume the layer in Leaflet as WMS. Then construct the equivalent <code>GetMap</code> URL by hand and open it directly.</li>
+        <li>Query the same layer as WFS with <code>outputFormat=application/json</code> and load the result with <code>L.geoJSON</code>.</li>
+        <li>Add the WMS endpoint to QGIS. This is the interoperability point of the whole week — one publication, many clients.</li>
+        <li>Seed the tile cache for zooms 8–14 and compare first-load timing against the uncached layer.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Implement <code>GetFeatureInfo</code> so clicking a WMS layer returns attributes, and compare the user experience with the WFS approach.</li>
+        <li>Deliberately trigger a CORS failure by serving your page from a different port, then fix it with GeoServer's CORS filter. Document both states with screenshots of the Console.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>When would you publish WMS rather than WFS? Give the deciding question.</li>
+    <li>What is in a <code>GetCapabilities</code> document, and who reads it?</li>
+    <li>Your WMS layer draws an opaque white rectangle over the base map. What did you omit?</li>
+    <li>Why do WMS layers rarely hit CORS problems while WFS layers often do?</li>
+    <li>The database is updated but the map still shows old data. Give the most likely cause.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> The GeoServer user manual, sections on data, styling and security. The OGC WMS 1.3.0 and WFS 2.0 specifications — skim the operations, do not read cover to cover. The GeoServer SLD cookbook, which is the fastest route to working styles.</p>
+</div></section>
+
+<!-- ================= WEEK 8 ================= -->
+<section class="ch" id="w8"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">08</div>
+    <div class="ch-t">
+      <p class="wkl">Week eight</p>
+      <h2>Applications that collect data</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Design a CRUD API over spatial data</li>
+    <li>Let users draw and edit geometry in the browser</li>
+    <li>Validate input on both the client and the server, and know why both</li>
+    <li>Write SQL that is not vulnerable to injection</li>
+    <li>Handle secrets so they never reach the browser</li>
+  </ul></div>
+
+  <h3>From reading to writing</h3>
+  <p>Everything so far has been read-only. The moment users can write, three new problems appear that did not exist before: <strong>validation</strong> (is this input sane?), <strong>authorisation</strong> (may this person do this?) and <strong>integrity</strong> (what happens if two people edit the same feature?). These are what separate an application from a demo.</p>
+  <p>Map HTTP methods onto operations conventionally, because clients and proxies rely on the conventions — in particular that <code>GET</code> never changes anything, which is why a crawler must never be able to delete your data by following a link:</p>
+  <table class="tbl">
+    <tr><th style="width:14em">Route</th><th>Does</th></tr>
+    <tr><td><code>GET /api/reports</code></td><td>List, filtered by bbox and query parameters</td></tr>
+    <tr><td><code>GET /api/reports/&lt;id&gt;</code></td><td>One report, or 404</td></tr>
+    <tr><td><code>POST /api/reports</code></td><td>Create; returns 201 and the new id</td></tr>
+    <tr><td><code>PATCH /api/reports/&lt;id&gt;</code></td><td>Modify some fields</td></tr>
+    <tr><td><code>DELETE /api/reports/&lt;id&gt;</code></td><td>Remove; usually a soft delete in practice</td></tr>
+  </table>
+
+  <h3>Drawing on the map</h3>
+  <p>Leaflet.draw and Leaflet-Geoman both add drawing and editing controls. The workflow is the same: the user draws, you receive a layer, you convert it to GeoJSON, you post it with the form data.</p>
+
+<span class="lang">JavaScript</span>
+<pre><code><span class="kw">const</span> drawn = <span class="kw">new</span> L.FeatureGroup().addTo(map);
+
+map.addControl(<span class="kw">new</span> L.Control.Draw({
+  edit: { featureGroup: drawn },
+  draw: { polygon: <span class="kw">true</span>, marker: <span class="kw">true</span>, polyline: <span class="kw">false</span>,
+          circle: <span class="kw">false</span>, rectangle: <span class="kw">false</span>, circlemarker: <span class="kw">false</span> }
+}));
+
+map.on(L.Draw.Event.CREATED, e =&gt; {
+  drawn.clearLayers().addLayer(e.layer);       <span class="cm">// one feature at a time</span>
+  document.querySelector(<span class="st">"#report-form"</span>).hidden = <span class="kw">false</span>;
+});
+
+<span class="kw">async function</span> submit(ev) {
+  ev.preventDefault();
+  <span class="kw">const</span> layers = drawn.getLayers();
+  <span class="kw">if</span> (!layers.length) <span class="kw">return</span> showError(<span class="st">"Draw the location on the map first."</span>);
+
+  <span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="st">"/api/reports"</span>, {
+    method:  <span class="st">"POST"</span>,
+    headers: { <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span> },
+    body: JSON.stringify({
+      geometry:    layers[0].toGeoJSON().geometry,
+      category:    form.category.value,
+      description: form.description.value
+    })
+  });
+
+  <span class="kw">if</span> (res.status === <span class="st">201</span>) { drawn.clearLayers(); refresh(); showOk(<span class="st">"Report saved."</span>); }
+  <span class="kw">else</span> showError((<span class="kw">await</span> res.json()).error ?? <span class="st">"Could not save the report."</span>);
+}</code></pre>
+
+  <h3>Validate twice</h3>
+  <p>Client-side validation is for the user: fast feedback, no wasted round trip. Server-side validation is for correctness, because <strong>anything a browser can send, an attacker can send without using a browser.</strong> Disabling a submit button prevents nothing — <code>curl</code> does not run your JavaScript. Every rule that must hold has to be enforced on the server; the client copy is a convenience.</p>
+  <p>For spatial data specifically, check: the geometry is the type you expected; it is valid (<code>ST_IsValid</code>); it falls inside your area of interest; polygons are not absurdly large or self-intersecting; and the vertex count is bounded, or someone will post a polygon with a million points.</p>
+
+  <div class="warn">
+    <h5>SQL injection, and the one habit that prevents it</h5>
+    <p>Never build SQL by string formatting with values that came from a user. This is not a stylistic preference.</p>
+<pre style="background:var(--warn-wash);border-color:var(--warn);margin:.8rem 0;max-width:100%"><code><span class="cm"># CATASTROPHIC — the user controls your SQL</span>
+cur.execute(f<span class="st">"SELECT * FROM reports WHERE category = '{cat}'"</span>)
+
+<span class="cm"># A category of:  x' OR '1'='1
+#   returns every row, including rows the user should never see.</span>
+
+<span class="cm"># CORRECT — the driver sends the value separately from the statement</span>
+cur.execute(<span class="st">"SELECT * FROM reports WHERE category = %s"</span>, (cat,))</code></pre>
+    <p>With a parameterised query the value can never be parsed as SQL, whatever it contains. The habit to build is simple and absolute: <strong>if a value came from outside your program, it goes in the parameter tuple, never in the string.</strong> This applies to <code>ORDER BY</code> columns and table names too — those cannot be parameterised, so validate them against an allow-list of permitted names instead.</p>
+  </div>
+
+  <h3>Secrets</h3>
+  <p>Anything in your JavaScript is public. Not "hard to find" — public: it is delivered to every visitor and readable with two clicks. Database passwords, API keys with billing attached, and admin tokens must live in server-side environment variables, never in client code and never committed to git.</p>
+  <p>Where a third-party key must be used from the browser — some tile providers require this — restrict it at the provider: lock it to your domain, cap the request rate, and set a spending limit. Treat a leaked key as a bill you will personally receive, because that is how it usually presents.</p>
+
+  <h3>Authentication, in the amount this unit needs</h3>
+  <p>You are not building a production identity system. You do need to understand the shape: authentication establishes <em>who</em> a user is; authorisation decides <em>what they may do</em>. Store password hashes, never passwords — use a library, never your own hashing. Serve everything over HTTPS, because a session cookie sent over plain HTTP is readable by anyone on the same network. And check authorisation on the server for every write, on every request; hiding a delete button is presentation, not security.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 8 — A field reporting application</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Create a <code>reports</code> table with geometry, category, description, reporter, status and timestamp.</li>
+        <li>Build the five CRUD endpoints. Use parameterised queries throughout. Return correct status codes: 201 on create, 400 on bad input, 404 on missing, 204 on delete.</li>
+        <li>Add drawing controls so a user can place a point or draw a polygon.</li>
+        <li>Build a form for the attributes. Validate on the client for usability and on the server for correctness — and make the two rule sets visibly the same rules.</li>
+        <li>Server-side, reject geometries outside Kenya's bounding box, invalid geometries, and polygons with more than 1,000 vertices. Return a message explaining what was wrong and how to fix it.</li>
+        <li>Show all reports on the map, coloured by status, refreshing after each submission.</li>
+        <li><strong>Attack your own application.</strong> Try to inject SQL through every text field. Try to POST a malformed geometry with <code>curl</code>. Try to delete a report you did not create. Document what you tried and what happened.</li>
+        <li>Move the database credentials into environment variables and confirm nothing sensitive appears in the page source.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Add login with hashed passwords, and restrict editing to the report's creator.</li>
+        <li>Add photo upload with a size and type restriction, storing files outside the web root.</li>
+        <li>Add optimistic concurrency: reject a <code>PATCH</code> whose version does not match the current row, and handle the conflict in the interface.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why is client-side validation insufficient? Give a concrete way to bypass it.</li>
+    <li>Rewrite <code>cur.execute(f"... WHERE id = {uid}")</code> safely, and explain why yours cannot be injected.</li>
+    <li>Why must <code>GET</code> never modify data?</li>
+    <li>A student puts a tile-provider API key in their JavaScript. What is the exposure, and what mitigations exist?</li>
+    <li>Name three server-side checks specific to user-submitted geometry.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> The OWASP Top Ten — read the injection and access-control entries properly. The Flask documentation on request handling and configuration. Leaflet-Geoman's documentation for the drawing interface.</p>
+</div></section>
+
+<!-- ================= WEEK 9 ================= -->
+<section class="ch" id="w9"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">09</div>
+    <div class="ch-t">
+      <p class="wkl">Week nine</p>
+      <h2>Performance and cloud-native geospatial</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Measure a map's payload and time-to-first-map, and act on the numbers</li>
+    <li>Explain vector tiles and when they beat GeoJSON</li>
+    <li>Describe COG and PMTiles and the range-request idea behind both</li>
+    <li>Apply zoom-dependent generalisation</li>
+    <li>Judge when a tile server is unnecessary</li>
+  </ul></div>
+
+  <h3>Measure before you optimise</h3>
+  <p>Open the Network tab, hard-reload, and record three numbers: <strong>total bytes transferred</strong>, <strong>number of requests</strong>, and <strong>time until the map is usable</strong>. Then throttle the connection to "Slow 3G" and record them again. That second set is the real number for a large share of your users.</p>
+  <p>This is not an abstract concern in Kenya. Most users reach your map on a phone, over mobile data bought in bundles. A 40 MB GeoJSON is not merely slow — it consumes a measurable fraction of a monthly bundle to display one screen, and the user pays for the 39 MB they never see. A map that is expensive to open is a map that does not get opened. Payload is a design constraint, not a technicality, and it belongs in your project's requirements alongside the cartography.</p>
+  <table class="tbl">
+    <tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+    <tr><td>Slow first load, one huge request</td><td>Whole dataset as GeoJSON</td><td>Bbox filtering, or vector tiles</td></tr>
+    <tr><td>Fine at low zoom, freezes at high</td><td>Too many DOM elements</td><td>Canvas rendering, clustering, vector tiles</td></tr>
+    <tr><td>Hundreds of small requests</td><td>Bound to <code>move</code> not <code>moveend</code>; no caching</td><td>Debounce; cache headers</td></tr>
+    <tr><td>Fast locally, slow deployed</td><td>No compression; distant server</td><td>Enable gzip/brotli; use a CDN</td></tr>
+    <tr><td>Boundaries with millions of vertices</td><td>Survey-grade data on a web map</td><td>Zoom-dependent <code>ST_Simplify</code></td></tr>
+  </table>
+
+  <h3>Vector tiles</h3>
+  <p>A vector tile is the same tile pyramid idea applied to geometry instead of pixels: each tile holds the features intersecting it, clipped, simplified to that zoom, and encoded compactly as protobuf (the MVT format). The browser draws them.</p>
+  <p>Compared with GeoJSON: only the visible area is transferred; each zoom gets appropriately generalised geometry; the encoding is far denser than JSON text; and styling stays client-side, so you can restyle instantly without re-fetching. Compared with raster tiles: features remain interactive and restylable, and the tiles are usually smaller.</p>
+  <p>The cost is complexity — you need something to generate and serve them (<code>tippecanoe</code> to build, <code>pg_tileserv</code> or <code>ST_AsMVT</code> to serve dynamically) and MapLibre GL rather than plain Leaflet to get the full benefit. The rule of thumb: <strong>under a few thousand features, GeoJSON with bbox filtering is simpler and fine. Above roughly ten thousand, vector tiles.</strong></p>
+
+<span class="lang">SQL</span>
+<pre><code><span class="cm">-- vector tiles straight from PostGIS, no tile server needed</span>
+<span class="kw">WITH</span> bounds <span class="kw">AS</span> (<span class="kw">SELECT</span> ST_TileEnvelope(%(z)s, %(x)s, %(y)s) <span class="kw">AS</span> geom),
+     mvtgeom <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> ST_AsMVTGeom(ST_Transform(f.geom, 3857), bounds.geom) <span class="kw">AS</span> geom,
+         f.id, f.name, f.level
+  <span class="kw">FROM</span> facilities f, bounds
+  <span class="kw">WHERE</span> ST_Intersects(ST_Transform(f.geom, 3857), bounds.geom)
+)
+<span class="kw">SELECT</span> ST_AsMVT(mvtgeom, <span class="st">'facilities'</span>) <span class="kw">FROM</span> mvtgeom;</code></pre>
+
+  <h3>Cloud-native: the range request</h3>
+  <p>One idea underlies the whole cloud-native geospatial movement. HTTP lets a client request <em>part</em> of a file — a byte range — rather than the whole thing. So if a file is organised so that its useful pieces sit in known places, a client can read just the pieces it needs, straight from cheap static storage, with no server-side software at all.</p>
+  <ul>
+    <li><strong>COG — Cloud-Optimised GeoTIFF.</strong> A GeoTIFF internally tiled with overviews, and an index at the front. A client reads the header, works out which byte ranges hold the tiles it needs, and fetches only those. A 5 GB satellite scene becomes usable over the web without downloading it.</li>
+    <li><strong>PMTiles.</strong> An entire tile pyramid in a single file with an embedded directory. The client range-requests individual tiles. No tile server, no database — a static file on any web host. For a base map that changes rarely this is a strikingly good answer, and it removes an entire class of operational work.</li>
+    <li><strong>STAC.</strong> A JSON standard for cataloguing spatiotemporal assets, so a client can search "Sentinel-2 over Kiambu, June 2026, under 10% cloud" and get back COG URLs.</li>
+  </ul>
+
+  <div class="defn">
+    <p><b class="term">When you do not need GeoServer.</b> You have learned it, and it is genuinely the right tool for OGC interoperability, complex server-side styling, and datasets that change constantly.</p>
+    <p>But if your data is static and you want a fast base map, PMTiles on static hosting will outperform it at a fraction of the operational cost — nothing to patch, nothing to restart, nothing to run out of memory at 3 a.m. Knowing when <em>not</em> to deploy the heavy tool is a professional judgement, and it is one this unit expects you to be able to make and justify.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 9 — Make it fast</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Take a large dataset — national roads or all facilities — and load it as a single GeoJSON. Record payload, request count and time to usable map. Then repeat throttled to Slow 3G.</li>
+        <li>Add bbox filtering. Measure again.</li>
+        <li>Add zoom-dependent <code>ST_Simplify</code> and coordinate precision reduction. Measure again.</li>
+        <li>Switch to canvas rendering with <code>preferCanvas: true</code>. Measure interaction smoothness at high zoom with many features.</li>
+        <li>Serve the same data as vector tiles via <code>ST_AsMVT</code>. Measure again.</li>
+        <li>Produce one table of all five configurations with all three metrics, and a short paragraph recommending one for a specified user on a specified connection.</li>
+        <li>Enable gzip on your server and record the change in transferred bytes.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Build a PMTiles archive with <code>tippecanoe</code>, host it as a static file, and load it in MapLibre. Compare operational complexity with the GeoServer route.</li>
+        <li>Load a Sentinel-2 COG from a public bucket and display one band, fetching only the visible tiles.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Which three numbers do you record before optimising anything?</li>
+    <li>Above roughly what feature count would you move from GeoJSON to vector tiles, and why?</li>
+    <li>Explain the range request and why COG and PMTiles both depend on it.</li>
+    <li>Your map is fine at zoom 8 and unusable at zoom 15. What is the likely cause and the fix?</li>
+    <li>Give a concrete case where deploying GeoServer would be the wrong decision.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> The Mapbox Vector Tile specification. The Cloud Optimized GeoTIFF and PMTiles project documentation. Crunchy Data's writing on <code>ST_AsMVT</code>. The Cloud-Native Geospatial Foundation's introductory material.</p>
+</div></section>
+
+<!-- ================= WEEK 10 ================= -->
+<section class="ch" id="w10"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">10</div>
+    <div class="ch-t">
+      <p class="wkl">Week ten · CAT 2 this week</p>
+      <h2>Deployment, volunteered data, and ethics</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Deploy an application to a public URL with HTTPS</li>
+    <li>Explain the OpenStreetMap data model and the obligations of the ODbL</li>
+    <li>Assess the quality of volunteered geographic information</li>
+    <li>Identify locational privacy risks in a mapping project</li>
+    <li>Write a data-ethics statement for your own work</li>
+  </ul></div>
+
+  <h3>Getting it online</h3>
+  <p>Two routes, and the choice follows from what you built.</p>
+  <ul>
+    <li><strong>Static hosting</strong> — GitHub Pages, Netlify, Cloudflare Pages. If your map is HTML, CSS, JavaScript and data files with no server-side code, this is free, fast, HTTPS by default, and needs no maintenance. It cannot run your Flask API.</li>
+    <li><strong>A virtual private server</strong> — a small Linux machine you administer. Required once you have a database and an API. You install and maintain everything, and the machine is yours to secure.</li>
+  </ul>
+  <p>On a VPS the pieces are: a WSGI server (<code>gunicorn</code>) running your Flask app; a reverse proxy (<code>nginx</code>) in front of it serving static files and terminating TLS; PostgreSQL; and a certificate from Let's Encrypt via <code>certbot</code>, which is free and automatic. Configuration lives in environment variables, never in the repository. Docker Compose is worth the afternoon it takes to learn, because it turns that whole stack into one file that runs identically on your laptop and the server — which is what makes "it worked on my machine" stop being a sentence you say.</p>
+  <p>HTTPS is not optional. Browsers restrict features on insecure origins — geolocation, among others, simply does not work over plain HTTP — and any credential sent over HTTP is readable by everyone between the user and your server.</p>
+
+  <h3>OpenStreetMap</h3>
+  <p>OSM is a free, editable map of the world built by volunteers. Its data model has three primitives and one organising idea:</p>
+  <ul>
+    <li><strong>Node</strong> — a point with a coordinate. May carry tags, or exist only as part of a way.</li>
+    <li><strong>Way</strong> — an ordered list of nodes. Open for a road, closed for a building.</li>
+    <li><strong>Relation</strong> — an ordered list of members with roles: a bus route, a multipolygon with holes, an administrative boundary.</li>
+    <li><strong>Tags</strong> — free-form key/value pairs on any element. There is no fixed schema; conventions are documented on the wiki and enforced only by community agreement, which is both OSM's flexibility and its main data-quality problem.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>The ODbL follows your data</h5>
+    <p>OSM data is licensed under the Open Database Licence. Two obligations matter. <strong>Attribution</strong> — credit OpenStreetMap contributors visibly. <strong>Share-alike</strong> — if you publish a derived database, you must publish it under the ODbL too.</p>
+    <p>The consequential subtlety is what counts as "derived". Producing a map image from OSM is a <em>produced work</em>, which needs attribution but not share-alike. Merging OSM geometry into your own database and publishing that is a <em>derivative database</em>, and share-alike bites. Students frequently plan a commercial project on OSM data without noticing that they may be obliged to open their database. Check before you build, not after.</p>
+  </div>
+
+  <h3>Volunteered geographic information</h3>
+  <p>Goodchild's phrase "citizens as sensors" named a genuine shift: the people who know a place best now have the tools to map it. The results can be extraordinary. <strong>Humanitarian OpenStreetMap Team</strong> mobilises remote volunteers to trace buildings and roads from imagery within hours of a disaster, and that data has routed real responders. <strong>Map Kibera</strong>, begun in 2009, is the case worth studying closely: Kibera appeared on official maps as a blank space, and residents mapped their own settlement — schools, clinics, water points, toilets — producing data that was used in service planning and advocacy. The people mapping were the people mapped.</p>
+  <p>Quality is the standing question. VGI has no formal accuracy specification and no accountable producer. In practice it is uneven in a predictable way: excellent where many contributors are active, thin where few are. Assess it as you would any dataset — check completeness against an independent source, look at edit history and contributor count, compare geometry against recent imagery, and be explicit in your report about what you checked. "It came from OSM" is a provenance statement, not a quality statement.</p>
+
+  <h3>The ethics, which are not optional in this unit</h3>
+  <p>A map is an intervention. It makes some things visible and leaves others out, and both have consequences for real people. Four issues arise directly in the projects you are building.</p>
+
+  <h4>Locational privacy</h4>
+  <p>A person's location over time is among the most sensitive data there is. It reveals where they live, work, worship, seek medical care, and who they associate with. Aggregate before publishing, coarsen precision, and think hard before mapping individuals at all. Note that de-identification is weaker than it looks: a "de-identified" set of home locations is trivially re-identifiable, because a home location <em>is</em> an identifier.</p>
+
+  <h4>Mapping vulnerable people</h4>
+  <p>Publishing precise locations of a group can expose them to targeting. This is not hypothetical: locations of refugees, of people receiving HIV care, of survivors of violence, of undocumented residents, of rhino populations. The rule is to ask who else can read this map and what they might do with it. Sometimes the correct professional decision is a coarser map, or no map.</p>
+
+  <h4>Consent and benefit</h4>
+  <p>If you map a community, did they agree, and do they gain? The distinction between mapping <em>with</em> a community and mapping it as a subject is the distinction between Map Kibera and extraction. This applies to student projects too: the residents whose settlement you map for coursework are not a dataset.</p>
+
+  <h4>Absence is a decision</h4>
+  <p>What a map omits shapes what gets funded and served. A settlement absent from official maps is absent from planning. Choosing what to include, and at what resolution, is an exercise of power, and pretending it is a neutral technical choice is itself a choice.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 10 — Deploy, contribute, and account for it</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Deploy your week 8 application to a public URL with HTTPS. Confirm it works from a phone on mobile data, not campus wifi.</li>
+        <li>Move every secret to environment variables. Confirm none appears in the page source or in the repository history.</li>
+        <li>Write a README that lets a stranger run your project: prerequisites, setup, environment variables, how to load the data, how to start it.</li>
+        <li>Create an OSM account and make at least three accepted edits in an area you know personally. Add something genuinely missing. Document what you added and why you were confident it was correct.</li>
+        <li>Assess OSM building coverage for one ward against recent imagery. Estimate completeness as a percentage, and describe your method — including its weaknesses.</li>
+        <li>Write a one-page data-ethics statement for your own project: what data you hold, whose it is, what could go wrong if it leaked, what you have done about that, and what you would change if the project ran for real.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Containerise the stack with Docker Compose and demonstrate a clean deployment on a fresh machine.</li>
+        <li>Set up automated deployment from your git repository, with the application rebuilt on every push to the main branch.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>When is static hosting sufficient, and what forces you onto a VPS?</li>
+    <li>Distinguish an OSM way from a relation, and give a case needing each.</li>
+    <li>Under the ODbL, when does share-alike apply and when does attribution alone suffice?</li>
+    <li>You are asked to publish a map of households receiving food aid, at building level. What are your concerns and what do you propose instead?</li>
+    <li>Give two concrete checks on the quality of an OSM extract.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Goodchild (2007), "Citizens as sensors", <em>GeoJournal</em> 69(4). Hagen (2011) on Map Kibera, <em>Innovations</em> 6(1). The OSM wiki on the ODbL and on the licence's "produced work" distinction. Crampton, <em>Mapping: A Critical Introduction to Cartography and GIS</em>, ch. 1–3.</p>
+</div></section>
+
+<!-- ================= WEEK 11 ================= -->
+<section class="ch" id="w11"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">11</div>
+    <div class="ch-t">
+      <p class="wkl">Week eleven</p>
+      <h2>Build week and critique</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Present and defend a technical build under questioning</li>
+    <li>Review another developer's code and give useful criticism</li>
+    <li>Document a project so someone else can run and extend it</li>
+  </ul></div>
+
+  <h3>What a finished project looks like</h3>
+  <p>Not "it runs on my laptop". A finished web mapping project has: a public URL over HTTPS; a README that a stranger can follow to a running instance; data whose source and licence are stated; secrets outside the repository; sensible behaviour when the network is slow or the API is down; and a map that is legible on a phone.</p>
+  <p>That last one is not a nicety. Test on an actual phone, on actual mobile data. A surprising number of otherwise good student projects are unusable on the device most of their users would have.</p>
+
+  <h3>Reviewing code</h3>
+  <p>You will review a peer's project and be reviewed. Useful review is specific and about the code, never the person. "This is confusing" is not review; "this function does three things — fetching, transforming and rendering — which makes the transform impossible to test on its own" is.</p>
+  <p>Work through in this order, because it puts the things that matter first:</p>
+  <ol class="body">
+    <li><strong>Does it run?</strong> Follow the README exactly, on a clean machine, and note every place you had to guess.</li>
+    <li><strong>Is it correct?</strong> Are areas and distances computed in a projected CRS? Are rates normalised? Is missing data distinguished from zero?</li>
+    <li><strong>Is it safe?</strong> Parameterised queries? Secrets out of the client? Server-side validation on every write?</li>
+    <li><strong>Is it usable?</strong> On a phone. On a slow connection. With a keyboard. In greyscale.</li>
+    <li><strong>Is it maintainable?</strong> Could you add a layer next month without rereading everything?</li>
+  </ol>
+
+  <div class="prac">
+    <div class="ph">Practical 11 — Presentation, defence and review</div>
+    <div class="pb">
+      <h6>Format</h6>
+      <p>Ten minutes of live demonstration — the deployed application, not slides and not a video — then five minutes of questions from the class and from me. The reasoning behind your decisions is what is being examined, not the polish of the interface.</p>
+      <h6>You must be able to answer</h6>
+      <ul>
+        <li>Show me the Network tab. What is the payload for one screen, and what did you do to get it there?</li>
+        <li>Why this classification scheme, and what does the map look like under a different one?</li>
+        <li>Show me a query that measures a distance or an area. Where is the projection handled?</li>
+        <li>Where does user input enter your SQL, and why can it not be injected?</li>
+        <li>What happens if the API is down? Show me.</li>
+        <li>What are the privacy implications of your dataset, and what did you do about them?</li>
+        <li>What would you rebuild differently, and why?</li>
+      </ul>
+      <h6>Deliverables</h6>
+      <ul>
+        <li>The deployed URL.</li>
+        <li>The repository, with a README that works and no secrets in the history.</li>
+        <li>A report of no more than six pages: the problem, the users, the architecture with a diagram, the data and its licences, the cartographic decisions with justification, the performance measurements, the ethics statement, and the known limitations.</li>
+        <li>A written review of your assigned peer's project, following the five-point order above.</li>
+        <li>The AI-use declaration: which tools, which prompts, what they produced, what you changed and why.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>What to carry out of this unit</h3>
+  <p>The specific technologies will move. Leaflet may be displaced by MapLibre; GeoServer is already optional for a large class of problems that PMTiles solves more simply. What will not move is the structure underneath: a tile pyramid; a projection with known distortions; a client and a server with a network between them that is slower and more expensive than you think; a database that is better at spatial questions than your application code will ever be; and a user on a phone, paying for every megabyte you send.</p>
+  <p>And one more thing, which is the reason week 10 is in this unit at all: the map you build will be read as true. That is what maps do. Building them carefully — normalising the right denominator, distinguishing missing from zero, thinking about who is exposed by what you publish — is not extra credit. It is the job.</p>
+
+  <p class="rdg"><b>Reading.</b> Monmonier, <em>How to Lie with Maps</em>, 3rd ed. — the whole book, and it is short. Nielsen's usability heuristics, applied to your own interface.</p>
+</div></section>
+
+<!-- ================= APPENDIX A ================= -->
+<section class="ch" id="appA"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">A</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix A</p>
+      <h2>JavaScript and SQL self-check</h2>
+    </div>
+  </div>
+
+  <p>Your programming unit was in Python. This unit is in JavaScript and SQL. Work through the tasks below before week 2, without help of any kind — no notes, no search, no AI assistant. The point is to find out what you have, and using help defeats it entirely.</p>
+
+  <div class="lo" style="background:var(--surface);border:1px solid var(--rule)">
+    <h5 style="color:var(--ink3)">Scoring yourself honestly</h5>
+    <ul>
+      <li><strong>Most of both sets</strong> — go straight to the Extension tasks; the Core will not stretch you.</li>
+      <li><strong>Comfortable in one, lost in the other</strong> — the usual position, and entirely normal. Spend a weekend on the weaker one using the resources below.</li>
+      <li><strong>Struggling with both</strong> — fixable, but not by hoping. See me in week 1. There is a supported route through this unit, and taking it early beats discovering the problem in week 5.</li>
+    </ul>
+  </div>
+
+  <h3>JavaScript — eight tasks</h3>
+  <ol class="body">
+    <li>Declare a constant holding an array of five numbers. Print its length.</li>
+    <li>Write a function that takes an array of numbers and returns their mean. Write it twice — once with a <code>for</code> loop, once with <code>reduce</code>.</li>
+    <li>Given an array of objects each with <code>name</code> and <code>beds</code>, return an array of just the names of those with more than 100 beds. Use <code>filter</code> and <code>map</code>.</li>
+    <li>Explain in one sentence what <code>const x = {a: 1}; x.a = 2;</code> does, and why it is not an error.</li>
+    <li>Write a template literal producing <code>"Nairobi has 34 facilities"</code> from variables <code>county</code> and <code>n</code>.</li>
+    <li>Explain what this prints, and why:<br><code style="display:block;margin:.4rem 0 0">console.log("5" == 5, "5" === 5);</code></li>
+    <li>Write an <code>async</code> function that fetches JSON from a URL, throws on a non-200 status, and returns the parsed object.</li>
+    <li>Explain what is wrong here and fix it:<br><code style="display:block;margin:.4rem 0 0">let d; fetch(u).then(r =&gt; r.json()).then(j =&gt; d = j); console.log(d.length);</code></li>
+  </ol>
+
+  <h3>SQL — six tasks</h3>
+  <ol class="body">
+    <li>Select the name and population of all counties with population above one million, ordered descending.</li>
+    <li>Count the rows in <code>facilities</code> grouped by <code>level</code>.</li>
+    <li>Join <code>facilities</code> to <code>counties</code> on <code>county_id</code> and return county name with facility count. Include counties with zero facilities.</li>
+    <li>Explain the difference between <code>WHERE</code> and <code>HAVING</code>, with an example of each.</li>
+    <li>Explain the difference between an <code>INNER JOIN</code> and a <code>LEFT JOIN</code>, and say which task 3 needs.</li>
+    <li>Explain what is dangerous here and rewrite it safely:<br><code style="display:block;margin:.4rem 0 0">cur.execute(f"SELECT * FROM users WHERE name = '{n}'")</code></li>
+  </ol>
+  <p>Tasks JS 1–5 and SQL 1–3 are the floor. JS 6–8 and SQL 4–6 are the working level for this unit — JS 8 is week 2's central concept and SQL 6 is week 8's.</p>
+
+  <h3>Six things that will actually bite you</h3>
+  <ul>
+    <li><strong><code>this</code> in JavaScript.</strong> It means different things in different call contexts. Arrow functions inherit <code>this</code> from where they were written, which is nearly always what you want — prefer them in callbacks.</li>
+    <li><strong><code>==</code> versus <code>===</code>.</strong> The double equals coerces types, so <code>"" == 0</code> is true and <code>null == undefined</code> is true. Use <code>===</code> always, without exception.</li>
+    <li><strong>Everything asynchronous is asynchronous.</strong> If a value is <code>undefined</code> right after a fetch, nothing is broken — the fetch has not finished. Week 2 covers this properly.</li>
+    <li><strong>SQL is declarative.</strong> You describe the result you want; the planner decides how to get it. Do not write loops in SQL. If you are reaching for a cursor, you are usually one <code>JOIN</code> or one window function away from the right answer.</li>
+    <li><strong><code>NULL</code> is not a value.</strong> <code>NULL = NULL</code> is not true, it is <code>NULL</code>. Use <code>IS NULL</code>. This bites in outer joins, where the absent side is all nulls.</li>
+    <li><strong>Semicolons and braces.</strong> JavaScript will insert semicolons for you in ways that occasionally surprise. Use a formatter — Prettier is one click in VS Code — and stop thinking about it.</li>
+  </ul>
+
+  <h3>Where to go</h3>
+  <ul>
+    <li><strong>MDN Web Docs</strong> — the reference for everything browser-side. Its "JavaScript first steps" and "Using Fetch" guides cover most of what this unit needs.</li>
+    <li><strong>Eloquent JavaScript</strong> by Marijn Haverbeke, chapters 1–5 and 11 (promises), free online. The best free route into the language properly.</li>
+    <li><strong>PostgreSQL Tutorial</strong> and <strong>Select Star SQL</strong> — both free, both practical.</li>
+    <li><strong>The Leaflet tutorials</strong> — short, well written, and they teach JavaScript patterns alongside the mapping.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>On using AI assistants in this unit</h5>
+    <p>They are permitted, and declared. Use them for what they are good at — explaining an error message, reminding you of an option name, drafting the boilerplate of a form.</p>
+    <p>Do not use them for the self-check above, or for the task in practical 3 marked <em>from an empty file</em>. And be aware of the specific way they fail here: generated web mapping code confidently computes areas in EPSG:4326, maps raw counts as choropleths, loads whole datasets client-side, builds SQL by string formatting, and puts API keys in the browser. Every one of those is an error this unit trains you to catch, and every one produces a map that looks completely normal. The tool is only an asset if you can catch them; otherwise it is a liability with a professional-looking interface.</p>
+  </div>
+</div></section>
+
+<!-- ================= APPENDIX B ================= -->
+<section class="ch" id="appB"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">B</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix B</p>
+      <h2>Quick reference</h2>
+    </div>
+  </div>
+
+  <h3>Coordinate reference systems you will use</h3>
+  <table class="tbl">
+    <tr><th style="width:8em">EPSG</th><th>Name</th><th>Use for</th></tr>
+    <tr><td class="n">4326</td><td>WGS 84, lon/lat degrees</td><td>Storage and interchange. GeoJSON requires it. <strong>Never</strong> measure in it.</td></tr>
+    <tr><td class="n">3857</td><td>Web Mercator</td><td>Tiles and web display. Never measure in it either.</td></tr>
+    <tr><td class="n">32736</td><td>UTM zone 36S</td><td>Measurement in Kenya west of 36°E — Kisumu, Kakamega, Eldoret</td></tr>
+    <tr><td class="n">32737</td><td>UTM zone 37S</td><td>Measurement in Kenya east of 36°E — Nairobi, Thika, Mombasa</td></tr>
+    <tr><td class="n">21037</td><td>Arc 1960 / UTM 37S</td><td>Older Kenyan survey data. Check the datum before mixing with WGS 84 sources.</td></tr>
+  </table>
+
+  <h3>HTTP status codes worth recognising</h3>
+  <table class="tbl">
+    <tr><td class="n">200 / 201 / 204</td><td>OK · Created · No content (a successful delete)</td></tr>
+    <tr><td class="n">304</td><td>Not modified — your cached copy is still good</td></tr>
+    <tr><td class="n">400 / 404</td><td>Your request was malformed · Nothing at that address</td></tr>
+    <tr><td class="n">401 / 403</td><td>Not authenticated · Authenticated but not permitted</td></tr>
+    <tr><td class="n">500 / 502 / 504</td><td>Server error · Bad gateway · Gateway timeout</td></tr>
+  </table>
+
+  <h3>The errors you will actually hit</h3>
+  <table class="tbl">
+    <tr><th style="width:16em">Symptom</th><th>Usual cause</th></tr>
+    <tr><td>Blank grey box</td><td>Map div has no height; or script ran before the div existed</td></tr>
+    <tr><td>Tiles stacked at top-left</td><td>Leaflet CSS not loaded</td></tr>
+    <tr><td>Data plots in the Indian Ocean</td><td>Coordinate order reversed — lat/lon instead of lon/lat</td></tr>
+    <tr><td><code>fetch</code> blocked, <code>file://</code> in the URL</td><td>You opened the HTML by double-clicking. Serve over HTTP.</td></tr>
+    <tr><td>CORS error, status 200</td><td>Response arrived; server did not permit your origin to read it</td></tr>
+    <tr><td>Area or distance is a small decimal</td><td>Computed in degrees. Transform or cast to geography.</td></tr>
+    <tr><td>Query fast in dev, slow in production</td><td>Missing GiST index, or a function wrapping the indexed column</td></tr>
+    <tr><td>WMS draws an opaque white box</td><td><code>transparent: true</code> omitted</td></tr>
+    <tr><td>Map shows stale data after a database update</td><td>Tile cache not invalidated</td></tr>
+    <tr><td><code>undefined</code> immediately after a fetch</td><td>The fetch has not finished. Work inside the handler.</td></tr>
+  </table>
+
+  <h3>Leaflet, minimum viable</h3>
+<span class="lang">JavaScript</span>
+<pre><code>L.map(id, opts)                    <span class="cm">// create; opts: center, zoom, preferCanvas</span>
+map.setView([lat, lng], zoom)      <span class="cm">// LATITUDE FIRST</span>
+map.fitBounds(bounds, {padding})   <span class="cm">// let the data set the view</span>
+L.tileLayer(urlTemplate, {attribution, maxZoom})
+L.tileLayer.wms(url, {layers, format, transparent: true, version})
+L.marker(latlng, {icon}) · L.circleMarker(latlng, {radius, fillColor})
+L.geoJSON(data, {style, pointToLayer, onEachFeature, filter})
+layer.bindPopup(html) · layer.bindTooltip(text)
+map.on("moveend"|"click"|"zoomend", handler)
+L.control.layers(baseLayers, overlays).addTo(map)</code></pre>
+
+  <h3>PostGIS, minimum viable</h3>
+<span class="lang">SQL</span>
+<pre><code>ST_Intersects(a,b) · ST_Within(a,b) · ST_Contains(a,b)
+ST_DWithin(a,b,d)                  <span class="cm">-- index-aware; prefer over ST_Distance &lt; d</span>
+ST_Distance(a,b) · ST_Area(g) · ST_Length(g)     <span class="cm">-- units follow the CRS!</span>
+ST_Transform(g, srid) · g::geography             <span class="cm">-- one of these, every time</span>
+ST_Buffer(g,d) · ST_Centroid(g) · ST_Simplify(g,tol)
+ST_SimplifyPreserveTopology(g,tol)               <span class="cm">-- for adjacent polygons</span>
+ST_IsValid(g) · ST_MakeValid(g)
+ST_AsGeoJSON(g, precision) · ST_AsMVT(rows, name)
+ST_SRID(g) · ST_SetSRID(g, srid) · ST_MakeEnvelope(...)
+a &amp;&amp; b                             <span class="cm">-- bbox overlap; uses the index</span>
+a &lt;-&gt; b                            <span class="cm">-- distance operator, for KNN with ORDER BY</span>
+CREATE INDEX x ON t USING GIST (geom);</code></pre>
+</div></section>
+
+<!-- ================= APPENDIX C ================= -->
+<section class="ch" id="appC"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">C</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix C</p>
+      <h2>Data and services</h2>
+    </div>
+  </div>
+
+  <div class="scroll">
+  <table class="tbl">
+    <tr><th>Dataset</th><th>Used in</th><th>Notes</th></tr>
+    <tr><td><strong>Kenya county boundaries</strong></td><td class="n">4–7</td><td>All 47 counties. Supplied simplified and full so you can measure the difference in week 9.</td></tr>
+    <tr><td><strong>Health facility register</strong></td><td class="n">3–8</td><td>Name, level, ownership, beds, coordinates. Real data, with real problems — duplicates, missing coordinates, points in the sea. Cleaning it is part of the exercise.</td></tr>
+    <tr><td><strong>County population</strong></td><td class="n">4</td><td>From the 2019 census. The denominator for every rate you compute.</td></tr>
+    <tr><td><strong>Classified roads</strong></td><td class="n">5, 9</td><td>Large enough that naive GeoJSON delivery fails, which is the point in week 9.</td></tr>
+    <tr><td><strong>OSM extract</strong>, Kenya</td><td class="n">10</td><td>From Geofabrik. Used for the quality assessment and the ODbL discussion.</td></tr>
+    <tr><td><strong>Campus survey data</strong></td><td class="n">2, 8</td><td>JKUAT buildings and paths. Small, local, and yours to extend.</td></tr>
+  </table>
+  </div>
+
+  <h3>Free services you can rely on</h3>
+  <table class="tbl">
+    <tr><td><strong>OpenStreetMap tiles</strong></td><td>Development only — read the tile usage policy before you deploy anything</td></tr>
+    <tr><td><strong>Carto / Stadia / MapTiler</strong></td><td>Free tiers adequate for coursework; check the attribution requirements</td></tr>
+    <tr><td><strong>Geofabrik</strong></td><td>OSM extracts by country and region, updated daily</td></tr>
+    <tr><td><strong>Overpass API</strong></td><td>Querying OSM directly for specific features</td></tr>
+    <tr><td><strong>Nominatim</strong></td><td>Geocoding. Rate-limited — respect it, and never use it for bulk geocoding</td></tr>
+    <tr><td><strong>Netlify / GitHub Pages / Cloudflare Pages</strong></td><td>Free static hosting with HTTPS for the front end</td></tr>
+  </table>
+
+  <p class="rdg" style="margin-top:2rem">All datasets are distributed through the unit's shared folder with a <code>README</code> giving CRS, provenance and licence for each. Check the licence before reusing anything outside this unit — the OSM extract carries ODbL obligations that follow it into whatever you build.</p>
+
+  <p class="rdg"><b>EGE 2531 Web Mapping</b> · Course reader, edition 1.0 · Jomo Kenyatta University of Agriculture and Technology · September 2026. Corrections and suggestions are welcome and will be credited in the next edition.</p>
+</div></section>

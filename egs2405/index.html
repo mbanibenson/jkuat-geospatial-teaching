@@ -1,0 +1,1812 @@
+<title>EGS 2405 Geostatistics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F1F3F0; --surface:#FAFBF9; --surface2:#E6EAE5;
+  --ink:#141A1B; --ink2:#3D4849; --ink3:#6C7877;
+  --rule:#D0D8D2; --rule-soft:#E1E6E1;
+  --geo:#4B3F8F; --geo2:#6A5CB0; --wash:#EAE7F5;
+  --warn:#B8443A; --warn-wash:#F6E7E4;
+  --ok:#2F6E4F; --ok-wash:#E2EEE7;
+  --code-bg:#EEF0EC;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1213; --surface:#151A1B; --surface2:#1D2425;
+    --ink:#E6EBE8; --ink2:#B3BEBB; --ink3:#7C8A87;
+    --rule:#293233; --rule-soft:#202829;
+    --geo:#9C91E2; --geo2:#B0A6EC; --wash:#1F1F38;
+    --warn:#E8877C; --warn-wash:#31201E;
+    --ok:#7FC49F; --ok-wash:#14261C;
+    --code-bg:#191F20;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1213; --surface:#151A1B; --surface2:#1D2425;
+  --ink:#E6EBE8; --ink2:#B3BEBB; --ink3:#7C8A87;
+  --rule:#293233; --rule-soft:#202829;
+  --geo:#9C91E2; --geo2:#B0A6EC; --wash:#1F1F38;
+  --warn:#E8877C; --warn-wash:#31201E;
+  --ok:#7FC49F; --ok-wash:#14261C;
+  --code-bg:#191F20;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);margin:0;
+  font-family:"Spectral",Georgia,serif;font-size:17.5px;line-height:1.66;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6,.ui{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;text-wrap:balance}
+code,kbd,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+a{color:var(--geo)}
+:focus-visible{outline:2px solid var(--geo);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(1.1rem,4vw,3rem)}
+.col{max-width:70ch}
+
+/* masthead */
+.mast{padding:clamp(3rem,7vw,5rem) 0 clamp(2rem,4vw,3rem);border-bottom:2px solid var(--geo)}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--geo);margin:0 0 1.3rem}
+.mast h1{font-size:clamp(2.4rem,6.5vw,4.2rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .5rem}
+.mast .sub{font-size:clamp(1.05rem,2.2vw,1.35rem);color:var(--ink2);margin:0 0 2.2rem;max-width:56ch;line-height:1.45}
+.mast-meta{display:flex;flex-wrap:wrap;gap:.45rem 2.2rem;font-family:"IBM Plex Mono",monospace;
+  font-size:.73rem;letter-spacing:.05em;color:var(--ink3)}
+.mast-meta b{color:var(--ink2);font-weight:500}
+
+/* contents */
+.toc{background:var(--surface);border-bottom:1px solid var(--rule);padding:2.2rem 0 2.4rem}
+.toc h2{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 1.1rem;font-weight:500}
+.toc ol{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:0 2.4rem}
+.toc li{border-bottom:1px solid var(--rule-soft)}
+.toc a{display:flex;gap:.85rem;align-items:baseline;padding:.5rem 0;text-decoration:none;color:var(--ink2);font-size:.94rem}
+.toc a:hover{color:var(--geo)}
+.toc a .n{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--geo);min-width:1.9em;font-weight:500}
+.toc .front a .n{color:var(--ink3)}
+
+/* generic section */
+section{padding:clamp(2.6rem,5vw,4rem) 0}
+.band{border-top:1px solid var(--rule)}
+h2.sec{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-.025em;margin:0 0 1.2rem;line-height:1.15}
+
+/* chapter opener */
+.ch{border-top:1px solid var(--rule);padding-top:clamp(2.4rem,5vw,3.6rem)}
+.ch-head{display:grid;grid-template-columns:auto 1fr;gap:0 1.6rem;align-items:start;margin-bottom:1.8rem}
+.ch-n{font-family:"IBM Plex Mono",monospace;font-size:clamp(2.4rem,6vw,3.8rem);font-weight:600;
+  color:var(--geo);line-height:.82;letter-spacing:-.04em;opacity:.9}
+.ch-t h2{font-size:clamp(1.55rem,3.4vw,2.25rem);font-weight:700;letter-spacing:-.028em;margin:0 0 .35rem;line-height:1.12}
+.ch-t .wkl{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink3);margin:0 0 .55rem}
+p{margin:0 0 1.05rem}
+h3{font-size:1.22rem;font-weight:700;letter-spacing:-.015em;margin:2.3rem 0 .7rem;line-height:1.25}
+h4{font-size:1.02rem;font-weight:600;margin:1.6rem 0 .45rem}
+ul,ol.body{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin-bottom:.45rem}
+strong{font-weight:600}
+
+/* outcomes */
+.lo{background:var(--wash);padding:1.1rem 1.3rem;margin:0 0 2rem;max-width:70ch}
+.lo h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--geo);margin:0 0 .6rem;font-weight:600}
+.lo ul{margin:0;padding-left:1.1rem;font-size:.94rem;line-height:1.5}
+.lo li{margin-bottom:.3rem;color:var(--ink2)}
+
+/* definition */
+.defn{border-left:3px solid var(--geo);padding:.15rem 0 .15rem 1.15rem;margin:1.6rem 0;max-width:70ch}
+.defn p{margin:0;font-size:.97rem}
+.defn p + p{margin-top:.6rem}
+.defn b.term{font-weight:600;color:var(--geo)}
+
+/* equation */
+.eq{margin:1.5rem 0;padding:1rem 1.2rem;background:var(--surface);border:1px solid var(--rule-soft);
+  max-width:70ch;overflow-x:auto}
+.eq .f{font-family:"Spectral",Georgia,serif;font-size:1.12rem;text-align:center;display:block;line-height:2}
+.eq .num{float:right;font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--ink3);
+  margin-left:1rem;padding-top:.55rem}
+.eq .whr{font-size:.87rem;color:var(--ink3);margin:.7rem 0 0;text-align:left;line-height:1.5}
+var,.v{font-style:italic;font-family:"Spectral",Georgia,serif}
+.eq sub,.eq sup{font-size:.68em;font-style:normal}
+sub,sup{line-height:0}
+.frac{display:inline-block;vertical-align:-.55em;text-align:center;font-size:.86em;margin:0 .18em}
+.frac .t{display:block;padding:0 .3em;border-bottom:1px solid currentColor;line-height:1.35}
+.frac .b{display:block;padding:0 .3em;line-height:1.35}
+
+/* code */
+pre{background:var(--code-bg);border:1px solid var(--rule-soft);padding:1rem 1.15rem;margin:1.4rem 0;
+  overflow-x:auto;max-width:74ch;font-size:.83rem;line-height:1.62;border-radius:2px}
+pre code{font-family:"IBM Plex Mono",monospace;color:var(--ink)}
+.cm{color:var(--ink3);font-style:italic}
+.kw{color:var(--geo)}
+.st{color:var(--ok)}
+p code,li code,td code{font-family:"IBM Plex Mono",monospace;font-size:.85em;
+  background:var(--surface2);padding:.1em .34em;border-radius:2px}
+
+/* worked example */
+.worked{background:var(--surface);border:1px solid var(--rule);padding:1.35rem 1.5rem;margin:1.8rem 0;max-width:74ch}
+.worked > h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--geo);margin:0 0 .9rem;font-weight:600}
+.worked p{font-size:.96rem}
+.worked p:last-child{margin-bottom:0}
+
+/* pitfall */
+.warn{border-left:3px solid var(--warn);background:var(--warn-wash);padding:1rem 1.25rem;margin:1.7rem 0;max-width:72ch}
+.warn h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--warn);margin:0 0 .5rem;font-weight:600}
+.warn p{margin:0;font-size:.95rem;line-height:1.55}
+.warn p + p{margin-top:.6rem}
+
+/* practical */
+.prac{border:1px solid var(--geo);margin:2.2rem 0;max-width:74ch}
+.prac .ph{background:var(--geo);color:#fff;padding:.55rem 1.2rem;
+  font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;font-weight:500}
+:root[data-theme="dark"] .prac .ph,
+:root:not([data-theme="light"]) .prac .ph{color:#0E1213}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .prac .ph{color:#fff}}
+.prac .pb{padding:1.15rem 1.3rem}
+.prac h6{font-family:"Archivo",sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.03em;
+  text-transform:uppercase;margin:1.3rem 0 .5rem;color:var(--geo)}
+.prac h6:first-child{margin-top:0}
+.prac ol,.prac ul{margin:0 0 .3rem;padding-left:1.2rem;font-size:.94rem;line-height:1.55}
+.prac li{margin-bottom:.35rem;color:var(--ink2)}
+.prac p{font-size:.94rem;margin-bottom:.7rem}
+.tier{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid currentColor;padding:.1rem .38rem;margin-left:.5rem;vertical-align:.15em}
+
+/* self test */
+.check{background:var(--surface);border-top:2px solid var(--rule);padding:1.2rem 0 0;margin:2.2rem 0 0;max-width:72ch}
+.check h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 .7rem;font-weight:500}
+.check ol{padding-left:1.3rem;margin:0 0 1rem;font-size:.94rem;line-height:1.55}
+.check li{margin-bottom:.4rem;color:var(--ink2)}
+.rdg{font-size:.9rem;color:var(--ink3);max-width:72ch;margin:1.2rem 0 0;
+  padding-top:.9rem;border-top:1px solid var(--rule-soft)}
+.rdg b{color:var(--ink2);font-weight:600}
+
+/* figures */
+figure{margin:1.9rem 0;max-width:74ch}
+figure svg{display:block;width:100%;height:auto;max-width:520px}
+figcaption{font-size:.85rem;color:var(--ink3);margin-top:.6rem;line-height:1.5;max-width:60ch}
+figcaption b{color:var(--ink2);font-weight:600}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem;max-width:74ch}
+.tbl th,.tbl td{text-align:left;padding:.5rem .8rem .5rem 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.tbl th{font-family:"Archivo",sans-serif;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink3);font-weight:600;border-bottom:1px solid var(--rule)}
+.tbl td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.scroll{overflow-x:auto}
+
+@media (max-width:720px){
+  body{font-size:16.5px}
+  .ch-head{grid-template-columns:1fr;gap:.5rem}
+  .ch-n{font-size:2rem}
+  .toc ol{grid-template-columns:1fr}
+}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="kicker">EGS 2405 · Jomo Kenyatta University of Agriculture and Technology</p>
+    <h1>Geostatistics</h1>
+    <p class="sub">A course reader for fourth-year Geomatic Engineering and Geospatial Information Systems.</p>
+    <div class="mast-meta">
+      <span><b>11</b> teaching weeks</span>
+      <span><b>2 h</b> lecture + <b>2 h</b> practical</span>
+      <span>Python · <b>geopandas · scikit-gstat · pykrige</b></span>
+      <span>Assessment <b>30 / 70</b></span>
+      <span>Edition <b>1.0</b> · Sept 2026</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <h2>Contents</h2>
+    <ol>
+      <li class="front"><a href="#using"><span class="n">§0</span><span>How to use this reader</span></a></li>
+      <li class="front"><a href="#setup"><span class="n">§0</span><span>Software and data setup</span></a></li>
+      <li class="front"><a href="#notation"><span class="n">§0</span><span>Notation</span></a></li>
+      <li><a href="#w1"><span class="n">1</span><span>Why spatial data breaks classical statistics</span></a></li>
+      <li><a href="#w2"><span class="n">2</span><span>Exploratory spatial data analysis</span></a></li>
+      <li><a href="#w3"><span class="n">3</span><span>Quantifying spatial dependence</span></a></li>
+      <li><a href="#w4"><span class="n">4</span><span>Variogram modelling</span></a></li>
+      <li><a href="#w5"><span class="n">5</span><span>Ordinary kriging</span></a></li>
+      <li><a href="#w6"><span class="n">6</span><span>When the mean is not constant</span></a></li>
+      <li><a href="#w7"><span class="n">7</span><span>Validation and honesty about error</span></a></li>
+      <li><a href="#w8"><span class="n">8</span><span>Simulation instead of interpolation</span></a></li>
+      <li><a href="#w9"><span class="n">9</span><span>Non-Gaussian and categorical variables</span></a></li>
+      <li><a href="#w10"><span class="n">10</span><span>Machine learning meets geostatistics</span></a></li>
+      <li><a href="#w11"><span class="n">11</span><span>Applications and synthesis</span></a></li>
+      <li class="front"><a href="#appA"><span class="n">A</span><span>Python refresher &amp; self-check</span></a></li>
+      <li class="front"><a href="#appB"><span class="n">B</span><span>Formula sheet</span></a></li>
+      <li class="front"><a href="#appC"><span class="n">C</span><span>Datasets</span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<section id="using" class="band">
+  <div class="wrap col">
+    <h2 class="sec">How to use this reader</h2>
+    <p>Each chapter covers one teaching week and has the same five parts: <strong>learning outcomes</strong>, the <strong>reading</strong> itself, a <strong>practical brief</strong>, <strong>self-test questions</strong>, and <strong>further reading</strong>. The reading is the lecture in written form — come to the lecture having read it, and the two hours can be spent on the parts that are actually difficult rather than on transcription.</p>
+    <p>Practicals are written in two tiers. The <strong>Core</strong> task is what everyone must complete; a scaffolded notebook is supplied so that the geostatistics is the exercise and the file handling is not. The <strong>Extension</strong> is for those who finish early or who already write Python fluently — it is never assessed separately, but it is where the interesting work is.</p>
+    <div class="warn" style="border-color:var(--geo);background:var(--wash)">
+      <h5 style="color:var(--geo)">Before week 1</h5>
+      <p>Work through <a href="#appA">Appendix A</a>. It is a self-check, not a test: twelve short Python tasks that tell you — privately — whether you need to spend a weekend on revision before the practicals start. You have all met Python in GIS programming, but the gap between "I have seen a <code>for</code> loop" and "I can write a function that returns a NumPy array" is exactly the gap that makes week 3 painful. Find out now, while it is cheap to fix.</p>
+    </div>
+    <p>One habit is worth forming immediately. Every figure you produce in this unit should be able to answer the question <em>"how confident are you, and how do you know?"</em> A geostatistician who cannot answer that has produced a picture, not an estimate. The whole unit is arranged around getting you to the point where you can answer it.</p>
+  </div>
+</section>
+
+<section id="setup" class="band">
+  <div class="wrap col">
+    <h2 class="sec">Software and data setup</h2>
+    <p>Everything runs in Python. Install with <code>conda</code> (recommended, because it handles the GDAL dependency chain) or <code>pip</code> into a fresh virtual environment:</p>
+<pre><code><span class="cm"># conda — recommended</span>
+conda create -n geostat python=3.11
+conda activate geostat
+conda install -c conda-forge geopandas rasterio matplotlib scipy scikit-learn jupyterlab
+pip install scikit-gstat pykrige
+
+<span class="cm"># check it works</span>
+python -c "import geopandas, skgstat, pykrige; print('ok')"</code></pre>
+    <p>If the lab machines will not cooperate, everything in this unit also runs in Google Colab with <code>!pip install scikit-gstat pykrige geopandas</code> in the first cell. Colab is the fallback, not the default: you should leave this unit able to set up a working environment yourself, because no employer will do it for you.</p>
+    <table class="tbl">
+      <tr><th>Package</th><th>What we use it for</th></tr>
+      <tr><td><code>geopandas</code></td><td>Reading point data, coordinate reference systems, spatial joins</td></tr>
+      <tr><td><code>skgstat</code></td><td>Empirical variograms, model fitting, directional variograms</td></tr>
+      <tr><td><code>pykrige</code></td><td>Ordinary, universal and regression kriging</td></tr>
+      <tr><td><code>numpy</code> / <code>scipy</code></td><td>Linear algebra — you will solve the kriging system directly in week 5</td></tr>
+      <tr><td><code>scikit-learn</code></td><td>Random forest and cross-validation machinery in week 10</td></tr>
+    </table>
+    <p>Datasets are listed in <a href="#appC">Appendix C</a>. Two run through the whole unit: the <strong>Meuse</strong> floodplain heavy-metal dataset, because the entire literature uses it and you should be able to read that literature; and a <strong>Kenyan soil dataset</strong> drawn from the Africa Soil Information Service, because a method you have only ever applied to Dutch cadmium is a method you do not yet own.</p>
+  </div>
+</section>
+
+<section id="notation" class="band">
+  <div class="wrap col">
+    <h2 class="sec">Notation</h2>
+    <p>Geostatistics has an unusually inconsistent notation across textbooks. This reader uses the following throughout, and where a source uses something different it is flagged.</p>
+    <div class="scroll">
+    <table class="tbl">
+      <tr><th style="width:5.5em">Symbol</th><th>Meaning</th></tr>
+      <tr><td class="n"><var>x</var></td><td>A location — a coordinate pair, not a variable value</td></tr>
+      <tr><td class="n"><var>z</var>(<var>x</var>)</td><td>The <em>observed</em> value at location <var>x</var></td></tr>
+      <tr><td class="n"><var>Z</var>(<var>x</var>)</td><td>The random function of which <var>z</var>(<var>x</var>) is one realisation</td></tr>
+      <tr><td class="n"><b>h</b>, <var>h</var></td><td>The lag vector separating two locations, and its length</td></tr>
+      <tr><td class="n">γ(<var>h</var>)</td><td>Semivariance at lag <var>h</var> — the variogram</td></tr>
+      <tr><td class="n"><var>C</var>(<var>h</var>)</td><td>Covariance at lag <var>h</var></td></tr>
+      <tr><td class="n"><var>N</var>(<var>h</var>)</td><td>Number of point pairs separated by lag <var>h</var></td></tr>
+      <tr><td class="n"><var>c</var><sub>0</sub></td><td>Nugget — variance not resolved at the shortest sampled lag</td></tr>
+      <tr><td class="n"><var>c</var><sub>1</sub></td><td>Partial sill — the structured component of variance</td></tr>
+      <tr><td class="n"><var>a</var></td><td>Range — lag beyond which there is no spatial dependence</td></tr>
+      <tr><td class="n">λ<sub><var>i</var></sub></td><td>Kriging weight assigned to sample <var>i</var></td></tr>
+      <tr><td class="n">ψ</td><td>Lagrange multiplier in the ordinary kriging system</td></tr>
+      <tr><td class="n">σ&#178;<sub>OK</sub></td><td>Ordinary kriging variance</td></tr>
+      <tr><td class="n"><var>ẑ</var>(<var>x</var><sub>0</sub>)</td><td>The estimate at an unsampled location <var>x</var><sub>0</sub></td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WEEK 1 ================= -->
+<section class="ch" id="w1"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">01</div>
+    <div class="ch-t">
+      <p class="wkl">Week one</p>
+      <h2>Why spatial data breaks classical statistics</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>State what a regionalised variable is and why it needs a theory of its own</li>
+    <li>Distinguish strict, second-order and intrinsic stationarity, and say what each assumption buys</li>
+    <li>Explain the support of a measurement and why changing it changes the statistics</li>
+    <li>Recognise the modifiable areal unit problem in a real map</li>
+    <li>Load and project a point dataset in GeoPandas and produce a first exploratory map</li>
+  </ul></div>
+
+  <h3>The problem, stated plainly</h3>
+  <p>You have 155 soil samples from a 4 km × 4 km block in Kiambu. You need a map of soil organic carbon for the whole block. Classical statistics — the statistics you learned in second year — will give you a mean and a standard deviation, and both are useless for the question, because they assume your 155 observations are independent draws from a population. They are not. Two samples 20 m apart are telling you nearly the same thing. Two samples 3 km apart are telling you different things. That structure is not a nuisance to be corrected for; it is the entire signal you need in order to predict at the 3,999,845 locations you did not sample.</p>
+  <p>This is the founding observation of geostatistics, made by Georges Matheron in the early 1960s while working on the estimation of ore grades in French mines, building on the empirical work of Danie Krige in the South African gold fields. Their problem was commercial and unforgiving: mining a block of ore that turns out to be waste costs money, and so does leaving payable ore in the ground. They needed estimates <em>with a stated error</em>, not just estimates.</p>
+
+  <div class="defn">
+    <p><b class="term">Regionalised variable.</b> A variable distributed in space whose values show some structure — neighbouring values are related — but which is too irregular to describe with a deterministic function. Soil carbon, rainfall, ore grade, groundwater fluoride, air pollution: all regionalised.</p>
+    <p>The insight is to treat such a variable as <em>both</em> deterministic and random. It has structure, so we can predict; it is irregular, so the prediction has error. Neither a purely deterministic model (a polynomial surface) nor a purely statistical one (an i.i.d. sample) captures both.</p>
+  </div>
+
+  <h3>The random function, and the one-realisation problem</h3>
+  <p>Formally we treat the value at every location <var>x</var> as a random variable <var>Z</var>(<var>x</var>). The collection of all of them across the region is a <strong>random function</strong>. Our data — the 155 measurements — are one realisation of that random function, denoted <var>z</var>(<var>x</var><sub>1</sub>), …, <var>z</var>(<var>x</var><sub>155</sub>).</p>
+  <p>There is an immediate and serious problem with this. In ordinary statistics you estimate the properties of a random variable by taking many independent draws from it. Here we have <em>one</em> draw from <var>Z</var>(<var>x</var><sub>1</sub>), one from <var>Z</var>(<var>x</var><sub>2</sub>), and so on: one realisation of the whole field. There is only one Kiambu, and we sampled it once. How can you estimate a variance from a single observation?</p>
+  <p>The answer is to trade an assumption for the data we lack. If we are willing to assume that the statistical properties are the same everywhere in the region, then observations at <em>different locations</em> can substitute for repeated observations at the <em>same location</em>. That assumption is stationarity, and it is the price of admission to the entire subject.</p>
+
+  <h3>Three grades of stationarity</h3>
+  <p>Stationarity comes in strengths. We want the weakest one that still lets us do the work, because every assumption we make is a claim about reality that could be wrong.</p>
+  <table class="tbl">
+    <tr><th style="width:11em">Assumption</th><th>What it claims</th><th style="width:9em">Verdict</th></tr>
+    <tr><td><strong>Strict</strong></td><td>The entire joint distribution is invariant under translation. Everything about the statistics is the same everywhere.</td><td>Far too strong; unverifiable</td></tr>
+    <tr><td><strong>Second-order</strong></td><td>The mean is constant, and the covariance between two points depends only on the vector separating them, not on where they are.</td><td>Usable, but requires a finite variance</td></tr>
+    <tr><td><strong>Intrinsic</strong></td><td>The mean of the <em>difference</em> between two points is zero, and the variance of that difference depends only on the separation.</td><td>Weakest; what we actually assume</td></tr>
+  </table>
+  <p>Intrinsic stationarity is weaker in a way that matters. It says nothing about the variance of <var>Z</var> itself — which may not even be finite — only about the variance of differences. Many real phenomena drift upward indefinitely across a region and have no meaningful global variance, but still have well-behaved local differences. This is precisely why the variogram, which is built from differences, became the central tool of the subject rather than the covariance function.</p>
+  <p>Stated formally, the intrinsic hypothesis is two conditions:</p>
+  <div class="eq">
+    <span class="f">E[<var>Z</var>(<var>x</var>) − <var>Z</var>(<var>x</var>+<b>h</b>)] = 0</span>
+    <span class="f">Var[<var>Z</var>(<var>x</var>) − <var>Z</var>(<var>x</var>+<b>h</b>)] = 2γ(<b>h</b>)</span>
+    <p class="whr">The second line <em>defines</em> the variogram 2γ(<b>h</b>). The factor of two is why γ is called the <em>semi</em>variogram — a distinction most practitioners now ignore, using "variogram" for γ. This reader does the same.</p>
+  </div>
+
+  <div class="warn">
+    <h5>Where students go wrong</h5>
+    <p>Stationarity is a property you <em>assume about a model</em>, not a property you <em>test in the data</em>. You cannot prove your field is stationary. What you can do is look for evidence that the assumption is untenable — an obvious trend, a variance that visibly changes across the region — and then either restrict the region, remove the trend (week 6), or admit the method does not apply. Deciding this is a judgement call, and it is one of the things you are being trained to make.</p>
+  </div>
+
+  <h3>Support, and why it changes everything</h3>
+  <p><strong>Support</strong> is the size, shape and orientation of the volume on which a measurement is made. A soil sample taken with a 5 cm auger has a different support from a bulked sample composited across a 10 m plot, which has a different support again from a 30 m Landsat pixel.</p>
+  <p>Support is not a technicality. As support increases, the variance of the measurements <em>decreases</em> — averaging over a larger volume smooths out small-scale variation. A dataset of 5 cm cores and a dataset of 10 m composites from the same field will have genuinely different histograms, different variances, and different variograms, and neither is wrong. This is why mining engineers estimate <em>block</em> grades rather than point grades: the mine extracts blocks, so the block is the relevant support, and the variance of block grades is much lower than the variance of drill-core grades. We return to this in week 6 under change of support.</p>
+
+  <div class="defn">
+    <p><b class="term">MAUP — the modifiable areal unit problem.</b> When point data are aggregated into areal units, the results depend on both the <em>size</em> of the units (the scale effect) and where the boundaries are drawn (the zonation effect). Redistricting a county into different wards can change a correlation from strong positive to weak negative without a single underlying value changing.</p>
+    <p>Every choropleth map of county-level statistics is a MAUP artefact to some degree. Geostatistics does not solve MAUP, but working with point support and explicit change-of-support operations at least makes the problem visible rather than hidden.</p>
+  </div>
+
+  <h3>What sampling design does to what follows</h3>
+  <p>You will usually inherit a dataset rather than design the survey, but you must be able to read what the design has done to your data. Four patterns recur:</p>
+  <ul>
+    <li><strong>Simple random.</strong> Unbiased, but leaves large gaps and clusters by chance, and yields few short-lag pairs — which is exactly where the variogram is most informative.</li>
+    <li><strong>Systematic (grid).</strong> Even coverage and easy to execute, but risks aliasing if the phenomenon has periodicity matching the grid spacing, and again supplies no short-lag pairs.</li>
+    <li><strong>Stratified random.</strong> One random point per grid cell. Usually the best general-purpose compromise.</li>
+    <li><strong>Nested or hierarchical.</strong> Clusters of points at deliberately varied separations — 1 m, 10 m, 100 m, 1 km. Ugly on a map, superb for variogram estimation, because it populates every lag class including the short ones.</li>
+  </ul>
+  <p>The last point is worth holding on to. A survey designed to estimate a mean and a survey designed to estimate a variogram are different surveys. If you are ever asked to design one, ask which it is.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 1 — Environment, data, and a first look</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Complete the environment setup above and confirm all three imports succeed.</li>
+        <li>Sit the twenty-minute Python diagnostic. It is not graded and does not appear in your record; it exists so that both you and I know where the class is starting from.</li>
+        <li>Load the Meuse dataset into a GeoDataFrame. Print the CRS, the number of records, and the summary statistics of the <code>zinc</code> column.</li>
+        <li>Load the Kiambu soil samples (supplied as CSV with longitude/latitude columns). Build a GeoDataFrame, set the CRS to <code>EPSG:4326</code>, then reproject to <code>EPSG:32737</code> — UTM zone 37S. Explain in one sentence why the reprojection is not optional.</li>
+        <li>Produce a bubble map: points sized and coloured by soil organic carbon, over county boundaries. Write two sentences on any spatial pattern you can see by eye.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Compute the mean nearest-neighbour distance for the Kiambu samples, and compare it to the value expected under complete spatial randomness for the same intensity. Is the survey clustered, random, or regular?</li>
+        <li>Take the Meuse points and aggregate zinc onto 100 m, 250 m and 500 m grids. Plot the three histograms together. You have just demonstrated the support effect — describe what happened to the variance and say why.</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="kw">import</span> geopandas <span class="kw">as</span> gpd
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># CSV with columns: lon, lat, soc  (soil organic carbon, g/kg)</span>
+df = pd.read_csv(<span class="st">"data/kiambu_soc.csv"</span>)
+
+gdf = gpd.GeoDataFrame(
+    df,
+    geometry=gpd.points_from_xy(df.lon, df.lat),
+    crs=<span class="st">"EPSG:4326"</span>,          <span class="cm"># degrees — NOT a distance unit</span>
+)
+gdf = gdf.to_crs(<span class="st">"EPSG:32737"</span>)   <span class="cm"># UTM 37S — metres</span>
+
+gdf[<span class="st">"X"</span>] = gdf.geometry.x
+gdf[<span class="st">"Y"</span>] = gdf.geometry.y
+
+ax = gdf.plot(column=<span class="st">"soc"</span>, markersize=gdf.soc * <span class="st">3</span>,
+              legend=<span class="kw">True</span>, cmap=<span class="st">"viridis"</span>, figsize=(<span class="st">7</span>, <span class="st">7</span>))
+ax.set_title(<span class="st">"Soil organic carbon, Kiambu (g/kg)"</span>)
+ax.set_axis_off()
+plt.show()</code></pre>
+
+  <div class="warn">
+    <h5>The single most common error in this unit</h5>
+    <p>Computing distances in degrees. Every variogram, every range, every kriging neighbourhood in this unit is a <em>distance</em>, and a degree is not a distance — one degree of longitude is about 111 km at the equator and shrinks to nothing at the poles. If you leave your data in <code>EPSG:4326</code>, everything downstream is quietly, plausibly wrong. Project to UTM first, every single time. For Kenya that is <code>EPSG:32736</code> (zone 36S, west of 36°E) or <code>EPSG:32737</code> (zone 37S, east of 36°E).</p>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why can we not simply treat 155 soil samples as an independent random sample and use classical confidence intervals?</li>
+    <li>Give a phenomenon that plausibly satisfies intrinsic but not second-order stationarity, and say why.</li>
+    <li>Two teams sample the same field: one takes 5 cm cores, the other bulks ten cores into a composite per 10 m plot. Which dataset has the higher variance, and why?</li>
+    <li>A colleague reports that soil carbon correlates with rainfall at <var>r</var> = 0.81 at ward level and <var>r</var> = 0.34 at point level. Has anyone made an error?</li>
+    <li>You may take 100 samples and you must estimate a variogram. Sketch your design and defend it in three sentences.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Webster &amp; Oliver, <em>Geostatistics for Environmental Scientists</em>, ch. 2–3. Isaaks &amp; Srivastava, ch. 1. For the historical account, Cressie (1990), "The origins of kriging", <em>Mathematical Geology</em> 22(3).</p>
+</div></section>
+
+<!-- ================= WEEK 2 ================= -->
+<section class="ch" id="w2"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">02</div>
+    <div class="ch-t">
+      <p class="wkl">Week two</p>
+      <h2>Exploratory spatial data analysis</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Diagnose skew and decide whether a transform is warranted</li>
+    <li>Distinguish an outlier from a genuine extreme value using spatial context</li>
+    <li>Detect and quantify global trend, and decide whether to remove it</li>
+    <li>Recognise preferential sampling and correct for it by declustering</li>
+    <li>Produce a defensible one-page data summary before any modelling</li>
+  </ul></div>
+
+  <h3>Do not skip this week</h3>
+  <p>There is a strong temptation, once you know how to fit a variogram, to load the data and fit one. Resist it. Almost every failed geostatistical analysis fails here, in the hour before any modelling, because someone did not look at their data. The variogram is a summary statistic and, like every summary statistic, it can be dominated by a handful of values that should never have entered the calculation.</p>
+
+  <h3>Distributions and transforms</h3>
+  <p>Kriging is a linear estimator and, strictly, it does not require normality. But two things make the distribution matter anyway. First, the variogram estimator is a squared difference, so it is highly sensitive to extreme values — a single erroneous outlier can inflate the entire variogram. Second, the simulation methods in week 8, and the confidence intervals you will want to attach to your predictions, do assume a Gaussian distribution.</p>
+  <p>So: plot the histogram, plot the Q–Q plot, compute the skewness. As a working rule, a coefficient of skewness beyond about ±1 is worth acting on. Two transforms are standard:</p>
+  <ul>
+    <li><strong>Logarithmic.</strong> Appropriate for strictly positive, right-skewed variables — most concentrations, most trace metals, rainfall. Simple, interpretable, but back-transforming a kriged estimate is <em>not</em> as simple as exponentiating: that gives you the median, not the mean, and the bias correction is a real subject (lognormal kriging).</li>
+    <li><strong>Normal score.</strong> Rank the data, map each rank onto the corresponding quantile of a standard normal. Guarantees an exactly normal marginal distribution, which is what sequential Gaussian simulation requires. Back-transformation is by the same lookup table, run in reverse.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>Transform honestly</h5>
+    <p>A transform is a modelling decision that must be reported, and the back-transformation must be stated. "We log-transformed, kriged, and exponentiated" is an incomplete method statement, because it does not say whether the result is a mean or a median, and the difference for a skewed variable can be tens of percent. If you cannot explain what your back-transformed number is an estimate <em>of</em>, do not transform.</p>
+  </div>
+
+  <h3>Outliers, and the spatial version of the question</h3>
+  <p>Classical outlier detection asks whether a value is extreme relative to the distribution. Spatial data lets you ask a better question: is a value extreme <em>relative to its neighbours</em>? A cadmium concentration of 18 mg/kg might be perfectly ordinary in the distribution and yet be a clear error if every sample within 200 m reads below 2.</p>
+  <p>The practical tool is the <strong>local deviation</strong>: for each point, compare its value to the mean of its <var>k</var> nearest neighbours, and standardise. Points with a large standardised deviation are candidates for investigation. Note the word: <em>investigation</em>, not deletion. Delete a value only when you have a reason external to the statistics — a transcription error, a known contaminated sample, a GPS fix that puts the point in a lake. An extreme value that is real is often the most important observation in the dataset, and a hotspot you deleted for tidiness is a hotspot you failed to map.</p>
+
+  <h3>Trend, and the decision it forces</h3>
+  <p>A <strong>trend</strong> (or drift) is a systematic change in the mean across the region — soil depth increasing downslope, temperature decreasing with altitude, contamination decreasing with distance from a smelter. Trend violates the constant-mean assumption, and if you ignore it the variogram will not reach a sill: it climbs indefinitely, because points far apart differ systematically rather than randomly.</p>
+  <p>Detect it by regressing the variable on the coordinates, and by looking at the shape of the empirical variogram at long lags. Then choose:</p>
+  <ol class="body">
+    <li><strong>Restrict the region.</strong> If the trend is a large-scale feature and your area of interest is small, work locally where the mean is plausibly constant. The cheapest solution when it is available.</li>
+    <li><strong>Model the trend and krige the residuals.</strong> Fit the trend (as a function of coordinates, or better of a covariate such as elevation), work with what is left over, then add the trend back. This is universal kriging and regression kriging — week 6.</li>
+    <li><strong>Ignore it.</strong> Occasionally defensible if the trend is weak relative to the local variation and your predictions are all short-range interpolations. Say so explicitly if you do.</li>
+  </ol>
+
+  <h3>Preferential sampling and declustering</h3>
+  <p>Real surveys are rarely evenly spread. Geologists drill densely where the ore is; environmental agencies sample intensively where they suspect contamination; field teams sample near roads. The result is that the naive sample mean is biased toward whatever the clustered areas contain — usually the high values, because that is why people clustered there.</p>
+  <p><strong>Cell declustering</strong> is the standard correction. Lay a grid over the region; each occupied cell receives a total weight of one, shared equally among the points inside it. A point alone in its cell gets weight 1; each of ten points crowded into one cell gets weight 0.1. The declustered mean is then the weighted mean.</p>
+  <div class="eq">
+    <span class="f"><var>m</var><sub>dc</sub> = <span class="frac"><span class="t">1</span><span class="b"><var>n</var><sub>cells</sub></span></span> ∑<sub><var>j</var></sub> <span class="frac"><span class="t">1</span><span class="b"><var>n</var><sub><var>j</var></sub></span></span> ∑<sub><var>i</var> ∈ cell <var>j</var></sub> <var>z</var>(<var>x</var><sub><var>i</var></sub>)</span>
+    <p class="whr">where <var>n</var><sub><var>j</var></sub> is the number of samples in occupied cell <var>j</var>, and <var>n</var><sub>cells</sub> the number of occupied cells. Cell size is chosen by plotting the declustered mean against cell size and taking the size at which it is a minimum (for high-value clustering) or a maximum (for low-value clustering).</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 2 — A defensible data summary</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>For Meuse zinc and for Kiambu soil carbon: histogram, Q–Q plot, skewness, and the five-number summary.</li>
+        <li>Decide, for each variable, whether to transform and which transform. Write one sentence of justification per variable. Implement the transform and re-plot.</li>
+        <li>Compute the standardised local deviation using the 8 nearest neighbours. Map the five most extreme points. For each, state whether you would investigate, retain, or remove, and why.</li>
+        <li>Regress each variable on X and Y. Report <var>R</var>&#178; and the fitted coefficients. Map the residuals. Is there a trend worth removing?</li>
+        <li>Perform cell declustering across a range of cell sizes. Plot declustered mean against cell size, choose a cell size, and report both the naive and the declustered mean.</li>
+        <li>Write a one-page data summary. This is the deliverable — the plots are supporting evidence, not the product.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Implement normal-score transformation and its inverse yourself, using <code>scipy.stats.norm.ppf</code> and interpolation. Verify that the round trip returns the original values.</li>
+        <li>Simulate a field with a known strong trend, sample it preferentially toward the high end, and show numerically how much bias declustering recovers.</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> scipy <span class="kw">import</span> stats
+<span class="kw">from</span> sklearn.neighbors <span class="kw">import</span> NearestNeighbors
+
+<span class="kw">def</span> local_deviation(coords, values, k=<span class="st">8</span>):
+    <span class="st">"""Standardised difference between each value and its k nearest neighbours."""</span>
+    nn = NearestNeighbors(n_neighbors=k + <span class="st">1</span>).fit(coords)
+    _, idx = nn.kneighbors(coords)
+    nbr_mean = values[idx[:, <span class="st">1</span>:]].mean(axis=<span class="st">1</span>)   <span class="cm"># column 0 is the point itself</span>
+    resid = values - nbr_mean
+    <span class="kw">return</span> resid / resid.std()
+
+coords = gdf[[<span class="st">"X"</span>, <span class="st">"Y"</span>]].values
+gdf[<span class="st">"ld"</span>] = local_deviation(coords, gdf.soc.values)
+
+print(<span class="st">"skewness:"</span>, stats.skew(gdf.soc))
+print(gdf.reindex(gdf.ld.abs().sort_values(ascending=<span class="kw">False</span>).index).head(<span class="st">5</span>)
+         [[<span class="st">"X"</span>, <span class="st">"Y"</span>, <span class="st">"soc"</span>, <span class="st">"ld"</span>]])
+
+<span class="cm"># --- cell declustering -------------------------------------------------</span>
+<span class="kw">def</span> declustered_mean(coords, values, cell):
+    keys = np.floor(coords / cell).astype(int)
+    _, inv = np.unique(keys, axis=<span class="st">0</span>, return_inverse=<span class="kw">True</span>)
+    counts = np.bincount(inv)
+    w = <span class="st">1.0</span> / counts[inv]           <span class="cm"># each occupied cell contributes weight 1</span>
+    <span class="kw">return</span> np.average(values, weights=w)
+
+<span class="kw">for</span> cell <span class="kw">in</span> [<span class="st">100</span>, <span class="st">200</span>, <span class="st">400</span>, <span class="st">800</span>, <span class="st">1600</span>]:
+    print(cell, round(declustered_mean(coords, gdf.soc.values, cell), <span class="st">3</span>))
+print(<span class="st">"naive  "</span>, round(gdf.soc.mean(), <span class="st">3</span>))</code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why is the variogram estimator unusually sensitive to outliers? Point to the specific term responsible.</li>
+    <li>You log-transform, krige, and exponentiate. What quantity have you estimated, and how does it differ from the one you wanted?</li>
+    <li>Your empirical variogram climbs steadily and never flattens. Give two distinct explanations and say how you would tell them apart.</li>
+    <li>A survey has 200 points, 140 of them within 500 m of a road. Is the sample mean biased? In which direction, and what would you need to know to say?</li>
+    <li>Under what circumstances is deleting an extreme value the right decision?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Isaaks &amp; Srivastava, ch. 2–4 — still the best treatment of exploratory work in the subject. Deutsch &amp; Journel, <em>GSLIB</em>, on declustering. Diggle, Menezes &amp; Su (2010), "Geostatistical inference under preferential sampling", <em>JRSS-C</em> 59(2), for the serious version of the problem.</p>
+</div></section>
+
+<!-- ================= WEEK 3 ================= -->
+<section class="ch" id="w3"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">03</div>
+    <div class="ch-t">
+      <p class="wkl">Week three</p>
+      <h2>Quantifying spatial dependence</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Compute semivariance by hand for a small dataset</li>
+    <li>Derive the empirical variogram and state the relationship between γ(<var>h</var>) and <var>C</var>(<var>h</var>)</li>
+    <li>Choose lag width, tolerance and maximum lag, and justify the choices</li>
+    <li>Read a variogram cloud and an h-scatterplot as diagnostics</li>
+    <li>Recognise when an empirical variogram is too unstable to model</li>
+  </ul></div>
+
+  <h3>From "nearby things are similar" to a number</h3>
+  <p>Last week's claim was that neighbouring values are related. This week we measure it. Take every pair of points separated by roughly the same distance <var>h</var>, square the difference in their values, and average. If nearby things really are similar, that average will be small for small <var>h</var> and grow as <var>h</var> increases.</p>
+  <p>That is the whole idea. The estimator, due to Matheron, is:</p>
+  <div class="eq"><span class="num">(3.1)</span>
+    <span class="f">γ̂(<var>h</var>) = <span class="frac"><span class="t">1</span><span class="b">2<var>N</var>(<var>h</var>)</span></span> ∑<sub><var>i</var>=1</sub><sup><var>N</var>(<var>h</var>)</sup> [ <var>z</var>(<var>x</var><sub><var>i</var></sub>) − <var>z</var>(<var>x</var><sub><var>i</var></sub>+<b>h</b>) ]&#178;</span>
+    <p class="whr"><var>N</var>(<var>h</var>) is the number of pairs separated by approximately <b>h</b>. The 2 in the denominator makes γ a <em>semi</em>variance, which is what makes γ(<var>h</var>) directly comparable to a variance rather than to twice one.</p>
+  </div>
+  <p>Under second-order stationarity the variogram and the covariance function carry the same information:</p>
+  <div class="eq"><span class="num">(3.2)</span>
+    <span class="f">γ(<var>h</var>) = <var>C</var>(0) − <var>C</var>(<var>h</var>)</span>
+    <p class="whr"><var>C</var>(0) is the variance of the process. Where covariance is high, semivariance is low, and vice versa — the variogram is the covariance function turned upside down. Note that this identity requires <var>C</var>(0) to exist; under the weaker intrinsic hypothesis it may not, and only γ is defined. That is the technical reason the variogram is the primary tool.</p>
+  </div>
+
+  <div class="worked">
+    <h5>Worked example — semivariance by hand</h5>
+    <p>Five samples along a transect at 100 m spacing, values in g/kg:</p>
+    <table class="tbl" style="margin:.7rem 0">
+      <tr><th>Position (m)</th><td class="n">0</td><td class="n">100</td><td class="n">200</td><td class="n">300</td><td class="n">400</td></tr>
+      <tr><th>Value</th><td class="n">12</td><td class="n">14</td><td class="n">11</td><td class="n">17</td><td class="n">16</td></tr>
+    </table>
+    <p><strong>Lag <var>h</var> = 100 m.</strong> Four pairs: (12,14), (14,11), (11,17), (17,16). Squared differences: 4, 9, 36, 1. Sum = 50.<br>
+    γ̂(100) = 50 / (2 × 4) = <strong>6.25</strong></p>
+    <p><strong>Lag <var>h</var> = 200 m.</strong> Three pairs: (12,11), (14,17), (11,16). Squared differences: 1, 9, 25. Sum = 35.<br>
+    γ̂(200) = 35 / (2 × 3) = <strong>5.83</strong></p>
+    <p><strong>Lag <var>h</var> = 300 m.</strong> Two pairs: (12,17), (14,16). Squared differences: 25, 4. Sum = 29.<br>
+    γ̂(300) = 29 / (2 × 2) = <strong>7.25</strong></p>
+    <p><strong>Lag <var>h</var> = 400 m.</strong> One pair: (12,16). Squared difference 16.<br>
+    γ̂(400) = 16 / (2 × 1) = <strong>8.00</strong></p>
+    <p>Two lessons are already visible. The variogram is not monotonic — γ̂(200) is below γ̂(100) — because with three or four pairs the estimate is extremely noisy. And the number of pairs collapses as the lag grows, from four to one. This is why we do not trust long lags, and why the rule of thumb exists: <strong>at least about 30 pairs per lag class, and no lag beyond half the survey extent</strong>. On a real dataset every one of these numbers would be computed from hundreds of pairs.</p>
+  </div>
+
+  <h3>Binning: the three choices you must make</h3>
+  <p>In two dimensions, no two pairs have exactly the same separation, so we bin. Three decisions follow, and all three change the answer.</p>
+  <ul>
+    <li><strong>Lag width.</strong> Narrow bins resolve fine structure but each holds few pairs and the result is noisy. Wide bins are stable but smear the short-lag behaviour, which is precisely the part that matters most for kriging. Start with the mean nearest-neighbour distance as your first lag width.</li>
+    <li><strong>Maximum lag.</strong> Half the diagonal of the sampled region, at most. Beyond that the estimate is built from a shrinking number of pairs drawn from the edges of the survey and is not to be trusted.</li>
+    <li><strong>Lag tolerance.</strong> Usually half the lag width, so bins tile without gaps. For <em>directional</em> variograms (week 4) you also need an angular tolerance — typically ±22.5°, which divides the plane into four non-overlapping sectors.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>The variogram is a modelling choice, not a measurement</h5>
+    <p>Change the bin count and you get a different variogram from the same data. This is not a flaw to be hidden; it is a property to be reported. Two analysts working honestly on the same dataset can produce different variograms and both be defensible. What is <em>not</em> defensible is trying five binnings, picking the prettiest, and reporting it as though it were the only one. Report your choices and show that your conclusions are not fragile to them.</p>
+  </div>
+
+  <h3>Two diagnostics worth the time</h3>
+  <p>The <strong>variogram cloud</strong> plots every individual pair — separation on the x-axis, half the squared difference on the y-axis — before any averaging. Points sitting far above the general mass at short lags mark pairs of nearby locations with wildly different values, and tracing them back to specific samples is often how a data error is caught.</p>
+  <p>The <strong>h-scatterplot</strong> plots <var>z</var>(<var>x</var>) against <var>z</var>(<var>x</var>+<b>h</b>) for one lag class. At short lags the cloud should hug the 1:1 line; as the lag grows it should fatten toward a circular blob. Watching that sequence is the most intuitive picture of spatial correlation decaying that the subject offers, and it makes the variogram feel less like an incantation.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 3 — Building an empirical variogram</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li><strong>On paper, before you open a laptop:</strong> reproduce the five-point worked example above and verify all four values. Then change the value at 300 m from 17 to 12 and recompute γ̂(100). You should be able to explain the change without running anything.</li>
+        <li>Build an empirical variogram for Meuse log-zinc with <code>skgstat</code>. Use 15 bins and a maximum lag of half the diagonal.</li>
+        <li>Repeat with 8, 15 and 30 bins. Plot the three on one set of axes. Which features survive all three binnings? Those are the ones you can believe.</li>
+        <li>Compare the Matheron estimator with the Cressie–Hawkins robust estimator on the same data. Where do they differ most, and why is that where you would expect?</li>
+        <li>Plot the variogram cloud. Identify the three pairs contributing most at the shortest lag and locate them on a map.</li>
+        <li>Produce h-scatterplots for three increasing lag classes. Describe the progression in one sentence.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Write your own empirical variogram function from scratch — pairwise distances, binning, averaging — and reproduce <code>skgstat</code>'s output to three decimal places. This is the best hour you can spend on understanding the tool.</li>
+        <li>Bootstrap the variogram: resample the points with replacement 200 times and plot the envelope of the resulting variograms. You now have a picture of how uncertain your variogram actually is, which almost no published study shows.</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> skgstat <span class="kw">as</span> skg
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+coords = gdf[[<span class="st">"X"</span>, <span class="st">"Y"</span>]].values
+vals   = np.log(gdf.zinc.values)          <span class="cm"># week 2 said transform; we did</span>
+
+<span class="cm"># half the diagonal of the bounding box — the sensible maximum lag</span>
+xmin, ymin, xmax, ymax = gdf.total_bounds
+maxlag = <span class="st">0.5</span> * np.hypot(xmax - xmin, ymax - ymin)
+
+V = skg.Variogram(coords, vals,
+                  n_lags=<span class="st">15</span>,
+                  maxlag=maxlag,
+                  estimator=<span class="st">"matheron"</span>,
+                  normalize=<span class="kw">False</span>)
+
+print(V)                                   <span class="cm"># bins, pair counts, fitted parameters</span>
+print(<span class="st">"pairs per bin:"</span>, V.bin_count)      <span class="cm"># check none is below ~30</span>
+
+<span class="cm"># sensitivity to binning — never report just one</span>
+fig, ax = plt.subplots(figsize=(<span class="st">7</span>, <span class="st">4.5</span>))
+<span class="kw">for</span> n <span class="kw">in</span> (<span class="st">8</span>, <span class="st">15</span>, <span class="st">30</span>):
+    Vn = skg.Variogram(coords, vals, n_lags=n, maxlag=maxlag)
+    ax.plot(Vn.bins, Vn.experimental, <span class="st">"o-"</span>, label=f<span class="st">"{n} bins"</span>, alpha=<span class="st">0.8</span>)
+ax.set_xlabel(<span class="st">"lag h (m)"</span>); ax.set_ylabel(<span class="st">"semivariance γ(h)"</span>); ax.legend()
+plt.show()</code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Compute γ̂(100) and γ̂(200) by hand for the transect 8, 11, 9, 15, 14 at 100 m spacing.</li>
+    <li>Why does the pair count fall as lag increases, and what does that imply about which end of the variogram you should trust?</li>
+    <li>State the relationship between γ(<var>h</var>) and <var>C</var>(<var>h</var>), and explain why geostatistics prefers the variogram.</li>
+    <li>Your shortest lag class contains 6 pairs. What are your options?</li>
+    <li>A variogram cloud shows a handful of very high values at the shortest lag. What are the two most likely causes, and how would you distinguish them?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Webster &amp; Oliver, ch. 4. Isaaks &amp; Srivastava, ch. 7. Cressie &amp; Hawkins (1980) on the robust estimator, <em>Mathematical Geology</em> 12(2). The <code>scikit-gstat</code> documentation is unusually good and should be read as a text, not consulted as a reference.</p>
+</div></section>
+
+<!-- ================= WEEK 4 ================= -->
+<section class="ch" id="w4"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">04</div>
+    <div class="ch-t">
+      <p class="wkl">Week four</p>
+      <h2>Variogram modelling</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Identify nugget, partial sill and range on a variogram and interpret each physically</li>
+    <li>Write down the spherical, exponential, Gaussian and Matérn models</li>
+    <li>Explain why only certain functions may be used, and what happens if you ignore this</li>
+    <li>Detect anisotropy from directional variograms and quantify it</li>
+    <li>Fit a model and defend the fit against a reasonable challenge</li>
+  </ul></div>
+
+  <h3>Why we cannot use the empirical variogram directly</h3>
+  <p>Kriging needs a semivariance value for <em>every</em> separation that arises in the calculation — including separations that fall between your bins, and separations shorter than anything you sampled. The empirical variogram gives you fifteen points. So we fit a continuous function through them, and from that point on the <em>model</em>, not the data, is what kriging uses.</p>
+  <p>There is a second and less obvious reason. The kriging system requires that the matrix of semivariances be invertible for any configuration of points. Only functions with a particular mathematical property — <strong>conditional negative-definiteness</strong> — guarantee this. Fit an arbitrary curve, and you can obtain negative kriging variances, which are meaningless. This is why we choose from a small catalogue of permissible models rather than fitting whatever passes closest through the points.</p>
+
+  <h3>The anatomy of a variogram</h3>
+
+  <figure>
+    <svg viewBox="0 0 430 265" role="img" aria-label="Annotated variogram showing nugget, sill and range">
+      <line x1="60" y1="210" x2="400" y2="210" stroke="var(--ink3)" stroke-width="1"/>
+      <line x1="60" y1="210" x2="60" y2="28" stroke="var(--ink3)" stroke-width="1"/>
+      <line x1="60" y1="60" x2="400" y2="60" stroke="var(--geo)" stroke-width="1" stroke-dasharray="4 3" opacity=".6"/>
+      <line x1="280" y1="210" x2="280" y2="60" stroke="var(--geo)" stroke-width="1" stroke-dasharray="4 3" opacity=".6"/>
+      <line x1="60" y1="172.5" x2="120" y2="172.5" stroke="var(--geo)" stroke-width="1" stroke-dasharray="3 3" opacity=".6"/>
+      <path d="M60,172.5 L87.5,151.5 L115,131.2 L142.5,112.2 L170,95.2 L197.5,80.5 L225,69.7 L252.5,62.5 L280,60 L400,60"
+            fill="none" stroke="var(--geo)" stroke-width="2.4" stroke-linejoin="round"/>
+      <circle cx="60" cy="210" r="3.2" fill="var(--paper)" stroke="var(--geo)" stroke-width="1.6"/>
+      <line x1="48" y1="210" x2="48" y2="172.5" stroke="var(--warn)" stroke-width="1.4"/>
+      <path d="M45,175 L48,171 L51,175" fill="var(--warn)"/>
+      <path d="M45,207.5 L48,211.5 L51,207.5" fill="var(--warn)"/>
+      <text x="42" y="192" fill="var(--warn)" font-family="IBM Plex Mono, monospace" font-size="10.5" text-anchor="end">c₀</text>
+      <text x="36" y="205" fill="var(--ink3)" font-family="IBM Plex Mono, monospace" font-size="8.5" text-anchor="end">nugget</text>
+      <text x="396" y="53" fill="var(--geo)" font-family="IBM Plex Mono, monospace" font-size="10.5" text-anchor="end">sill = c₀ + c₁</text>
+      <text x="280" y="226" fill="var(--geo)" font-family="IBM Plex Mono, monospace" font-size="10.5" text-anchor="middle">a</text>
+      <text x="280" y="238" fill="var(--ink3)" font-family="IBM Plex Mono, monospace" font-size="8.5" text-anchor="middle">range</text>
+      <text x="340" y="80" fill="var(--ink3)" font-family="Spectral, serif" font-size="10.5" text-anchor="middle" font-style="italic">no spatial correlation</text>
+      <text x="150" y="248" fill="var(--ink3)" font-family="IBM Plex Mono, monospace" font-size="9.5" text-anchor="middle">lag distance h  →</text>
+      <text x="22" y="120" fill="var(--ink3)" font-family="IBM Plex Mono, monospace" font-size="9.5" text-anchor="middle" transform="rotate(-90 22 120)">γ(h)  →</text>
+    </svg>
+    <figcaption><b>The three parameters.</b> The <b>nugget</b> <var>c</var><sub>0</sub> is the jump at the origin — variance present at separations shorter than you sampled, plus measurement error. The <b>sill</b> is the plateau, equal to the variance of the process. The <b>range</b> <var>a</var> is the lag at which the plateau is reached: beyond it, two observations are effectively unrelated.</figcaption>
+  </figure>
+
+  <p>Each parameter has a physical reading, and you should always give one.</p>
+  <ul>
+    <li><strong>Nugget</strong> — named for the gold nuggets whose presence or absence made two adjacent assays differ wildly. It has two sources you cannot separate from the variogram alone: genuine variation at scales below your minimum sample spacing, and measurement error. A nugget that is 60% of the sill is a warning: most of your variance is unstructured, and kriging will not do much for you. If you need to know which source dominates, take duplicate samples at the same location — the duplicate variance is the measurement error.</li>
+    <li><strong>Sill</strong> — under second-order stationarity this equals the variance of the data, which gives you a useful sanity check: fit a model whose sill is wildly different from the sample variance and something is wrong.</li>
+    <li><strong>Range</strong> — the distance over which the phenomenon "remembers" itself. A range of 800 m for soil carbon says that samples more than 800 m apart tell you nothing about each other, which immediately tells you what sampling density a future survey needs.</li>
+  </ul>
+
+  <h3>The permissible models</h3>
+
+  <figure>
+    <svg viewBox="0 0 430 265" role="img" aria-label="Spherical, exponential and Gaussian variogram models compared">
+      <line x1="60" y1="210" x2="400" y2="210" stroke="var(--ink3)" stroke-width="1"/>
+      <line x1="60" y1="210" x2="60" y2="28" stroke="var(--ink3)" stroke-width="1"/>
+      <line x1="60" y1="60" x2="400" y2="60" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3" opacity=".45"/>
+      <line x1="280" y1="210" x2="280" y2="60" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4 3" opacity=".45"/>
+      <path d="M60,172.5 L87.5,151.5 L115,131.2 L142.5,112.2 L170,95.2 L197.5,80.5 L225,69.7 L252.5,62.5 L280,60 L400,60"
+            fill="none" stroke="var(--geo)" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M60,172.5 L87.5,137.3 L115,113.1 L142.5,96.5 L170,85.1 L197.5,77.3 L225,71.8 L252.5,68.1 L280,65.6 L335,62.5 L400,61.2"
+            fill="none" stroke="var(--warn)" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M60,172.5 L87.5,167.3 L115,153.3 L142.5,133.8 L170,113.1 L197.5,94.9 L225,80.8 L252.5,71.3 L280,65.6 L335,61.0 L400,60.1"
+            fill="none" stroke="var(--ok)" stroke-width="2.2" stroke-linejoin="round"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="10">
+        <rect x="296" y="96" width="14" height="2.6" fill="var(--geo)"/>
+        <text x="316" y="101" fill="var(--ink2)">spherical</text>
+        <rect x="296" y="114" width="14" height="2.6" fill="var(--warn)"/>
+        <text x="316" y="119" fill="var(--ink2)">exponential</text>
+        <rect x="296" y="132" width="14" height="2.6" fill="var(--ok)"/>
+        <text x="316" y="137" fill="var(--ink2)">Gaussian</text>
+      </g>
+      <text x="396" y="53" fill="var(--ink3)" font-family="IBM Plex Mono, monospace" font-size="9.5" text-anchor="end">sill</text>
+      <text x="280" y="226" fill="var(--ink3)" font-family="IBM Plex Mono, monospace" font-size="9.5" text-anchor="middle">a</text>
+      <text x="150" y="248" fill="var(--ink3)" font-family="IBM Plex Mono, monospace" font-size="9.5" text-anchor="middle">lag distance h  →</text>
+      <text x="22" y="120" fill="var(--ink3)" font-family="IBM Plex Mono, monospace" font-size="9.5" text-anchor="middle" transform="rotate(-90 22 120)">γ(h)  →</text>
+    </svg>
+    <figcaption><b>Same nugget, same sill, same practical range — three very different behaviours near the origin.</b> The Gaussian model leaves the nugget with zero slope (parabolic), implying a very smooth phenomenon. The exponential rises steeply and approaches the sill only asymptotically. The spherical reaches its sill exactly at the range. Behaviour near the origin is the part that most affects kriging weights, so this is the region to get right.</figcaption>
+  </figure>
+
+  <div class="eq"><span class="num">(4.1)</span>
+    <span class="f"><strong>Spherical</strong>&nbsp;&nbsp; γ(<var>h</var>) = <var>c</var><sub>0</sub> + <var>c</var><sub>1</sub> [ 1.5(<var>h</var>/<var>a</var>) − 0.5(<var>h</var>/<var>a</var>)&#179; ]&nbsp;&nbsp; for <var>h</var> ≤ <var>a</var>,&nbsp;&nbsp; = <var>c</var><sub>0</sub> + <var>c</var><sub>1</sub> for <var>h</var> &gt; <var>a</var></span>
+  </div>
+  <div class="eq"><span class="num">(4.2)</span>
+    <span class="f"><strong>Exponential</strong>&nbsp;&nbsp; γ(<var>h</var>) = <var>c</var><sub>0</sub> + <var>c</var><sub>1</sub> [ 1 − exp(−<var>h</var>/<var>r</var>) ]</span>
+    <p class="whr">Reaches the sill only asymptotically. The <em>practical range</em> — where γ reaches 95% of the sill — is 3<var>r</var>. Software differs on whether the parameter it reports is <var>r</var> or 3<var>r</var>; check, because a factor of three in your range is not a small error.</p>
+  </div>
+  <div class="eq"><span class="num">(4.3)</span>
+    <span class="f"><strong>Gaussian</strong>&nbsp;&nbsp; γ(<var>h</var>) = <var>c</var><sub>0</sub> + <var>c</var><sub>1</sub> [ 1 − exp(−<var>h</var>&#178;/<var>r</var>&#178;) ]</span>
+    <p class="whr">Practical range <var>r</var>√3. Implies an extremely smooth, twice-differentiable phenomenon. With a zero nugget it makes the kriging matrix badly conditioned and produces unstable, oscillating estimates — so if you fit a Gaussian model, keep a small nugget.</p>
+  </div>
+  <div class="eq"><span class="num">(4.4)</span>
+    <span class="f"><strong>Matérn</strong>&nbsp;&nbsp; γ(<var>h</var>) = <var>c</var><sub>0</sub> + <var>c</var><sub>1</sub> [ 1 − <span class="frac"><span class="t">2<sup>1−ν</sup></span><span class="b">Γ(ν)</span></span> ( <span class="frac"><span class="t"><var>h</var></span><span class="b"><var>r</var></span></span> )<sup>ν</sup> <var>K</var><sub>ν</sub>( <var>h</var>/<var>r</var> ) ]</span>
+    <p class="whr">The general case. The smoothness parameter ν controls behaviour at the origin: ν = 0.5 reproduces the exponential, ν → ∞ approaches the Gaussian. Rather than choosing between models you estimate ν from the data, which is the more honest procedure — and the reason the Matérn dominates the modern statistical literature. <var>K</var><sub>ν</sub> is the modified Bessel function of the second kind.</p>
+  </div>
+
+  <h3>Nested structures</h3>
+  <p>A sum of permissible models is itself permissible, and real data often needs one. Soil properties frequently show variation at two scales — a short-range structure from local soil formation processes at 50–200 m, and a long-range structure from geology or topography at several kilometres. Fitting a single model to such a variogram fits neither structure. Fit a nested model: <var>c</var><sub>0</sub> plus a short-range spherical plus a long-range spherical. Each component then has a physical interpretation you can name, which is a useful discipline — if you cannot name the process behind a component, ask whether you are fitting noise.</p>
+
+  <h3>Anisotropy</h3>
+  <p>So far we have assumed the variogram depends only on the <em>length</em> of the lag vector, not its direction. That is often false. Soil properties along a valley behave differently from soil properties across it; a plume of contamination is elongated in the direction of groundwater flow; rainfall correlates further along a mountain range than across it.</p>
+  <p>Detect it by computing <strong>directional variograms</strong>: restrict pairs to those whose separation vector falls within an angular tolerance of a chosen direction. Compute at 0°, 45°, 90° and 135° with ±22.5° tolerance, which covers the plane without overlap. Then read the result:</p>
+  <ul>
+    <li><strong>Geometric anisotropy</strong> — same sill, different ranges by direction. Common, and easy to handle: the tool rescales the coordinate system by the anisotropy ratio and direction, turning ellipses back into circles, and everything downstream proceeds as before.</li>
+    <li><strong>Zonal anisotropy</strong> — different sills by direction. Usually a sign of a trend in one direction, and better handled by removing that trend (week 6) than by modelling the anisotropy.</li>
+  </ul>
+  <p>Report anisotropy as a ratio and an angle: "geometric anisotropy, ratio 2.4, major axis 35°" tells a reader everything they need. And beware the trap — with four directions and typical sample sizes, each directional variogram has a quarter of the pairs of the omnidirectional one, so apparent anisotropy in a small dataset is often noise. Check whether it survives a change of binning before you believe it.</p>
+
+  <h3>Fitting</h3>
+  <p>Two approaches, and you should know both:</p>
+  <ul>
+    <li><strong>Weighted least squares</strong> on the empirical variogram points, weighting each bin by its pair count (and often inversely by γ&#178;) so that well-populated short lags dominate the fit. This is what <code>skgstat</code> does by default. Fast, robust, and standard in practice.</li>
+    <li><strong>Maximum likelihood or REML</strong> on the raw data, skipping the empirical variogram entirely. Statistically more efficient and provides standard errors on the parameters; more expensive and more sensitive to the assumption of normality. Standard in the statistical literature, less so in applied geoscience.</li>
+  </ul>
+  <p>Whichever you use, do not treat fitting as automatic. Plot the fit over the empirical points and look at it. A fit that is excellent at long lags and poor at short ones is a bad fit for kriging purposes, no matter what the objective function says, because short lags are what determine the weights.</p>
+
+  <div class="warn">
+    <h5>Do not accept the software's first answer</h5>
+    <p>Every fitting routine will return parameters. It will return them for pure noise, for a variogram built from six pairs, and for data with an unremoved trend. The routine has no way to tell you that the model is meaningless. You do — by plotting the fit, checking the sill against the sample variance, checking the range against the survey extent, and asking whether the nugget is physically plausible. Get into the habit now, because in week 5 these parameters go straight into a prediction that someone may act on.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 4 — Fit a model and defend it</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Fit spherical, exponential and Gaussian models to the Meuse log-zinc variogram. Tabulate <var>c</var><sub>0</sub>, <var>c</var><sub>1</sub>, <var>a</var> and the RMSE of fit for each.</li>
+        <li>Plot all three fits over the empirical points on one figure. Which is best at short lags? Is that the same as the one with the lowest RMSE? Comment.</li>
+        <li>Compute the nugget-to-sill ratio for your preferred model and interpret it in one sentence.</li>
+        <li>Compute directional variograms at 0°, 45°, 90°, 135° with ±22.5° tolerance. Plot them together. Is there anisotropy? If so, estimate the ratio and the major-axis direction.</li>
+        <li>Repeat the directional analysis with a different bin count. Does your conclusion survive? Report honestly if it does not.</li>
+        <li>Write a short model statement: the model, its parameters, its physical interpretation, and the one thing you are least confident about.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Fit a Matérn model and examine the estimated ν. Which of the three standard models does your data most resemble?</li>
+        <li>Fit a nested model — nugget plus two spherical structures — to the Kiambu carbon data and try to attach a physical process to each range.</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="cm"># --- compare models on the same empirical variogram --------------------</span>
+V = skg.Variogram(coords, vals, n_lags=<span class="st">15</span>, maxlag=maxlag)
+
+<span class="kw">for</span> m <span class="kw">in</span> [<span class="st">"spherical"</span>, <span class="st">"exponential"</span>, <span class="st">"gaussian"</span>, <span class="st">"matern"</span>]:
+    V.model = m
+    c0 = V.parameters[<span class="st">-1</span>]                 <span class="cm"># nugget is reported last</span>
+    print(f<span class="st">"{m:12s} range={V.parameters[0]:8.1f}  "</span>
+          f<span class="st">"sill={V.parameters[1]:6.3f}  nugget={c0:6.3f}  rmse={V.rmse:6.4f}"</span>)
+
+<span class="cm"># --- directional variograms -------------------------------------------</span>
+fig, ax = plt.subplots(figsize=(<span class="st">7</span>, <span class="st">4.5</span>))
+<span class="kw">for</span> az <span class="kw">in</span> (<span class="st">0</span>, <span class="st">45</span>, <span class="st">90</span>, <span class="st">135</span>):
+    DV = skg.DirectionalVariogram(coords, vals,
+                                  azimuth=az,
+                                  tolerance=<span class="st">22.5</span>,     <span class="cm"># four non-overlapping sectors</span>
+                                  n_lags=<span class="st">12</span>,
+                                  maxlag=maxlag)
+    ax.plot(DV.bins, DV.experimental, <span class="st">"o-"</span>, label=f<span class="st">"{az}°"</span>, alpha=<span class="st">0.85</span>)
+ax.set_xlabel(<span class="st">"lag h (m)"</span>); ax.set_ylabel(<span class="st">"γ(h)"</span>)
+ax.legend(title=<span class="st">"azimuth"</span>); plt.show()</code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why may we not fit any smooth curve that passes close to the empirical points?</li>
+    <li>A variogram has nugget 0.6 and sill 0.85. What does this tell you about the prospects for kriging, and what would you do next?</li>
+    <li>Your software reports an exponential range of 240 m. What is the practical range, and why does the distinction matter?</li>
+    <li>Directional variograms at 0° and 90° have similar sills but ranges of 400 m and 950 m. Name the type of anisotropy and say how it is handled.</li>
+    <li>Why is a Gaussian model with zero nugget numerically dangerous?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Webster &amp; Oliver, ch. 5–6. Chilès &amp; Delfiner, <em>Geostatistics: Modeling Spatial Uncertainty</em>, ch. 2, for the mathematics of permissible models. Stein, <em>Interpolation of Spatial Data</em> (1999), ch. 2, on why the Matérn deserves its status.</p>
+</div></section>
+
+<!-- ================= WEEK 5 ================= -->
+<section class="ch" id="w5"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">05</div>
+    <div class="ch-t">
+      <p class="wkl">Week five · CAT 1 this week</p>
+      <h2>Ordinary kriging</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Derive the ordinary kriging system from the unbiasedness and minimum-variance conditions</li>
+    <li>Solve a three-point kriging system by hand and interpret the weights</li>
+    <li>Explain why kriging weights are not a function of distance alone</li>
+    <li>State exactly what the kriging variance does and does not measure</li>
+    <li>Produce paired prediction and standard-error surfaces in Python</li>
+  </ul></div>
+
+  <h3>What we are asking for</h3>
+  <p>We want an estimate at an unsampled location <var>x</var><sub>0</sub>, formed as a weighted average of the samples:</p>
+  <div class="eq"><span class="num">(5.1)</span>
+    <span class="f"><var>ẑ</var>(<var>x</var><sub>0</sub>) = ∑<sub><var>i</var>=1</sub><sup><var>n</var></sup> λ<sub><var>i</var></sub> <var>z</var>(<var>x</var><sub><var>i</var></sub>)</span>
+  </div>
+  <p>Every interpolation method you have met is of this form. Nearest neighbour sets one weight to 1 and the rest to 0. Inverse distance weighting sets λ<sub><var>i</var></sub> ∝ 1/<var>d</var><sub><var>i</var></sub><sup><var>p</var></sup>. What distinguishes kriging is that it does not <em>assert</em> the weights; it <em>derives</em> them, from two requirements.</p>
+  <p><strong>Unbiasedness.</strong> On average the estimate should equal the truth, E[<var>ẑ</var>(<var>x</var><sub>0</sub>) − <var>Z</var>(<var>x</var><sub>0</sub>)] = 0. With an unknown but constant mean, this forces the weights to sum to one.</p>
+  <p><strong>Minimum variance.</strong> Among all weight sets satisfying that constraint, choose the one minimising the estimation variance Var[<var>ẑ</var>(<var>x</var><sub>0</sub>) − <var>Z</var>(<var>x</var><sub>0</sub>)].</p>
+  <p>This is a constrained optimisation, handled with a Lagrange multiplier ψ. Differentiating and setting to zero gives a linear system of <var>n</var>+1 equations:</p>
+  <div class="eq"><span class="num">(5.2)</span>
+    <span class="f">∑<sub><var>j</var>=1</sub><sup><var>n</var></sup> λ<sub><var>j</var></sub> γ(<var>x</var><sub><var>i</var></sub>, <var>x</var><sub><var>j</var></sub>) + ψ = γ(<var>x</var><sub><var>i</var></sub>, <var>x</var><sub>0</sub>)&nbsp;&nbsp;&nbsp; for <var>i</var> = 1 … <var>n</var></span>
+    <span class="f">∑<sub><var>j</var>=1</sub><sup><var>n</var></sup> λ<sub><var>j</var></sub> = 1</span>
+    <p class="whr">In matrix form, <b>Γ</b>λ = <b>γ</b><sub>0</sub>, where <b>Γ</b> is the (<var>n</var>+1)×(<var>n</var>+1) matrix of semivariances between samples bordered by ones, and <b>γ</b><sub>0</sub> holds the semivariances between each sample and the target, with a 1 appended.</p>
+  </div>
+  <p>Having solved for the weights, the minimised variance itself is available:</p>
+  <div class="eq"><span class="num">(5.3)</span>
+    <span class="f">σ&#178;<sub>OK</sub>(<var>x</var><sub>0</sub>) = ∑<sub><var>i</var>=1</sub><sup><var>n</var></sup> λ<sub><var>i</var></sub> γ(<var>x</var><sub><var>i</var></sub>, <var>x</var><sub>0</sub>) + ψ</span>
+  </div>
+  <p>Look carefully at the left-hand matrix in (5.2). It contains γ between <em>samples</em> — how redundant the samples are with each other — and the right-hand side contains γ between samples and the <em>target</em> — how relevant each sample is. Kriging balances relevance against redundancy. That is the entire idea, and the worked example below makes it concrete.</p>
+
+  <div class="worked">
+    <h5>Worked example — solving a three-point system by hand</h5>
+    <figure style="margin:.4rem 0 1.2rem">
+      <svg viewBox="0 0 400 310" role="img" aria-label="Three sample points around a target location">
+        <line x1="190" y1="155" x2="190" y2="55" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="190" y1="155" x2="220" y2="60" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="190" y1="155" x2="190" y2="255" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="3 3"/>
+        <circle cx="190" cy="55"  r="6" fill="var(--geo)"/>
+        <circle cx="220" cy="60"  r="6" fill="var(--geo)"/>
+        <circle cx="190" cy="255" r="6" fill="var(--geo)"/>
+        <rect x="184" y="149" width="12" height="12" fill="none" stroke="var(--warn)" stroke-width="2"/>
+        <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ink2)">
+          <text x="176" y="46" text-anchor="end">P₁ (0, 100)  z = 10</text>
+          <text x="232" y="52">P₂ (30, 95)  z = 11</text>
+          <text x="176" y="272" text-anchor="end">P₃ (0, −100)  z = 6</text>
+          <text x="208" y="172" fill="var(--warn)">x₀ — estimate here</text>
+        </g>
+        <g font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink3)">
+          <text x="184" y="108" text-anchor="end">100 m</text>
+          <text x="214" y="112">99.6 m</text>
+          <text x="184" y="208" text-anchor="end">100 m</text>
+          <text x="212" y="36" fill="var(--warn)">30.4 m apart</text>
+        </g>
+        <line x1="196" y1="55" x2="214" y2="59" stroke="var(--warn)" stroke-width="1.6"/>
+        <text x="200" y="296" text-anchor="middle" font-family="Spectral, serif" font-style="italic" font-size="10.5" fill="var(--ink3)">All three samples are ~100 m from the target</text>
+      </svg>
+    </figure>
+    <p>Model: spherical, nugget <var>c</var><sub>0</sub> = 2, partial sill <var>c</var><sub>1</sub> = 8 (total sill 10), range <var>a</var> = 250 m. Evaluating equation (4.1) at each separation:</p>
+    <table class="tbl" style="margin:.7rem 0">
+      <tr><th>Separation</th><th>Distance (m)</th><th>γ</th></tr>
+      <tr><td>P₁–P₂</td><td class="n">30.4</td><td class="n">3.452</td></tr>
+      <tr><td>P₁–P₃</td><td class="n">200.0</td><td class="n">9.552</td></tr>
+      <tr><td>P₂–P₃</td><td class="n">197.3</td><td class="n">9.504</td></tr>
+      <tr><td>P₁–x₀</td><td class="n">100.0</td><td class="n">6.544</td></tr>
+      <tr><td>P₂–x₀</td><td class="n">99.6</td><td class="n">6.528</td></tr>
+      <tr><td>P₃–x₀</td><td class="n">100.0</td><td class="n">6.544</td></tr>
+    </table>
+    <p>The system, from (5.2), is:</p>
+    <div class="eq" style="background:var(--paper);margin:.9rem 0">
+      <span class="f">0·λ₁ + 3.452·λ₂ + 9.552·λ₃ + ψ = 6.544</span>
+      <span class="f">3.452·λ₁ + 0·λ₂ + 9.504·λ₃ + ψ = 6.528</span>
+      <span class="f">9.552·λ₁ + 9.504·λ₂ + 0·λ₃ + ψ = 6.544</span>
+      <span class="f">λ₁ + λ₂ + λ₃ = 1</span>
+    </div>
+    <p>P₁ and P₂ are nearly interchangeable — the same distance from the target and the same distance from P₃ — so set λ₁ = λ₂ = λ and λ₃ = 1 − 2λ. Substituting into the first and third equations gives −15.652λ + ψ = −3.008 and 19.056λ + ψ = 6.544. Subtracting: 34.708λ = 9.552, so λ = 0.2752 and ψ = 1.299.</p>
+    <p style="font-size:1.02rem"><strong>λ₁ = 0.275&nbsp;&nbsp; λ₂ = 0.275&nbsp;&nbsp; λ₃ = 0.450</strong></p>
+    <p>The estimate is <var>ẑ</var> = 0.275(10) + 0.275(11) + 0.450(6) = <strong>8.48 g/kg</strong>, and from (5.3) the kriging variance is 0.275(6.544) + 0.275(6.528) + 0.450(6.544) + 1.299 = <strong>7.84</strong>, giving a standard error of <strong>2.80 g/kg</strong>.</p>
+    <p><strong>Now look at what happened.</strong> All three samples sit the same distance from the target. Inverse distance weighting would therefore give each exactly one third, producing an estimate of 9.00. Kriging gives P₃ — the lone sample on the far side — a weight of 0.45, almost as much as P₁ and P₂ combined. It has recognised that P₁ and P₂, only 30 m apart, are largely telling it the same thing, and has declustered them automatically. No interpolator that looks only at distance to the target can do this. That is what you are paying for.</p>
+  </div>
+
+  <h3>What drives the weights</h3>
+  <ul>
+    <li><strong>Distance to the target.</strong> The obvious one: nearer samples get more weight, through the right-hand side of the system.</li>
+    <li><strong>Clustering among the samples.</strong> As above. Redundant samples share the weight that one of them would have received alone.</li>
+    <li><strong>Screening.</strong> A sample directly behind another, along the same line from the target, receives very little weight — the nearer one shields it. In extreme configurations screened samples receive small <em>negative</em> weights. These are legitimate and are what allows kriging to extrapolate slightly beyond the data range, but they can also produce impossible values such as a negative concentration. If that matters for your variable, either constrain the solution or note the occurrences.</li>
+    <li><strong>The nugget.</strong> As the nugget grows relative to the sill, the weights flatten toward equal. In the limit of a pure nugget model, kriging returns the mean of the neighbourhood at every location — there is no structure left to exploit, and it tells you so.</li>
+  </ul>
+
+  <h3>The kriging variance, and the trap in it</h3>
+  <p>Equation (5.3) yields a variance at every location, and mapping it alongside the prediction is one of the most useful things geostatistics gives you. But read (5.3) again and notice what is <em>not</em> in it: <strong>the data values.</strong> The kriging variance is built entirely from the variogram model and the geometry of the sampling configuration. Move all your sample values around at random, keeping the locations fixed, and the kriging variance map does not change by a single unit.</p>
+
+  <div class="warn">
+    <h5>What the kriging variance actually is</h5>
+    <p>It is a measure of <em>configuration quality</em> — how well-surrounded a location is by samples, given an assumed variogram. It is not a measure of how wrong your estimate is at that location. It cannot detect that your variogram model is poor, that your data contain an error, or that the phenomenon is more variable in one part of the region than another.</p>
+    <p>Presenting a kriging variance map captioned "uncertainty" or "error" is one of the most common misrepresentations in applied geostatistics, and one you will be marked down for here. Say "kriging variance" and explain what it measures. If you need a genuine picture of uncertainty in the values, you need simulation — week 8.</p>
+  </div>
+
+  <h3>Search neighbourhoods</h3>
+  <p>Using all <var>n</var> samples for every prediction means inverting an <var>n</var>×<var>n</var> matrix at every grid node, which is impractical beyond a few thousand points and unnecessary anyway: samples beyond the range contribute essentially nothing. So we use a moving neighbourhood — typically the nearest 16 to 32 samples, sometimes with quadrant or octant constraints forcing the search to draw from all directions rather than taking 20 points from one dense cluster.</p>
+  <p>The choice is a real one. Too few samples gives noisy, discontinuous maps with visible artefacts at the boundaries where the neighbourhood changes composition. Too many is slow for no benefit. Sixteen to twenty-four with quadrant balancing is a reasonable default; report what you used.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 5 — Kriging, by hand and by machine</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li><strong>On paper first.</strong> Reproduce the worked example above. Then move P₂ to (80, 60) — still roughly 100 m from the target but no longer clustered with P₁ — recompute the three semivariances that change, and re-solve. Predict, before you calculate, what will happen to λ₃.</li>
+        <li>Assemble and solve the same system in NumPy with <code>np.linalg.solve</code>. Confirm you get the same weights. You have now written kriging yourself.</li>
+        <li>Krige the Meuse log-zinc data onto a 40 m grid using your week 4 model. Produce two maps side by side: prediction and kriging standard error.</li>
+        <li>Overlay the sample locations on the standard-error map. Describe the relationship in one sentence.</li>
+        <li>Re-run with the nugget set to zero and then to 80% of the sill. Show all three prediction maps. What happens at the sample locations in each case, and why?</li>
+        <li>Re-run with neighbourhood sizes of 6, 16 and 48. Comment on artefacts and on run time.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Construct a configuration where one sample receives a negative weight, and demonstrate it numerically.</li>
+        <li>Verify the exactness property: krige at a location where a sample already exists, with a zero-nugget model, and confirm the estimate returns the observed value and the variance returns zero. Then add a nugget and show that both properties break. Explain why.</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> spherical(h, c0=<span class="st">2.0</span>, c1=<span class="st">8.0</span>, a=<span class="st">250.0</span>):
+    h = np.asarray(h, dtype=float)
+    g = np.where(h &lt;= a,
+                 c0 + c1 * (<span class="st">1.5</span> * h / a - <span class="st">0.5</span> * (h / a) ** <span class="st">3</span>),
+                 c0 + c1)
+    <span class="kw">return</span> np.where(h == <span class="st">0</span>, <span class="st">0.0</span>, g)      <span class="cm"># γ(0) = 0 exactly</span>
+
+pts  = np.array([[<span class="st">0.</span>, <span class="st">100.</span>], [<span class="st">30.</span>, <span class="st">95.</span>], [<span class="st">0.</span>, <span class="st">-100.</span>]])
+z    = np.array([<span class="st">10.</span>, <span class="st">11.</span>, <span class="st">6.</span>])
+x0   = np.array([<span class="st">0.</span>, <span class="st">0.</span>])
+n    = len(pts)
+
+<span class="cm"># Γ: semivariances between samples, bordered with ones for the constraint</span>
+D = np.linalg.norm(pts[:, <span class="kw">None</span>, :] - pts[<span class="kw">None</span>, :, :], axis=<span class="st">-1</span>)
+G = np.ones((n + <span class="st">1</span>, n + <span class="st">1</span>))
+G[:n, :n] = spherical(D)
+G[n, n]   = <span class="st">0.0</span>
+
+<span class="cm"># γ₀: semivariances between each sample and the target</span>
+g0 = np.ones(n + <span class="st">1</span>)
+g0[:n] = spherical(np.linalg.norm(pts - x0, axis=<span class="st">1</span>))
+
+sol    = np.linalg.solve(G, g0)
+w, psi = sol[:n], sol[n]
+
+print(<span class="st">"weights   "</span>, np.round(w, <span class="st">4</span>))          <span class="cm"># [0.2755 0.2749 0.4496]</span>
+print(<span class="st">"estimate  "</span>, round(float(w @ z), <span class="st">3</span>))    <span class="cm"># 8.475</span>
+print(<span class="st">"variance  "</span>, round(float(w @ g0[:n] + psi), <span class="st">3</span>))
+print(<span class="st">"naive mean"</span>, round(z.mean(), <span class="st">3</span>))       <span class="cm"># 9.0 — what IDW would give</span></code></pre>
+
+<pre><code><span class="kw">from</span> pykrige.ok <span class="kw">import</span> OrdinaryKriging
+
+gridx = np.arange(xmin, xmax, <span class="st">40.0</span>)
+gridy = np.arange(ymin, ymax, <span class="st">40.0</span>)
+
+OK = OrdinaryKriging(
+    coords[:, <span class="st">0</span>], coords[:, <span class="st">1</span>], vals,
+    variogram_model=<span class="st">"spherical"</span>,
+    variogram_parameters={<span class="st">"sill"</span>: <span class="st">0.62</span>, <span class="st">"range"</span>: <span class="st">900.0</span>, <span class="st">"nugget"</span>: <span class="st">0.05</span>},
+    nlags=<span class="st">15</span>, enable_plotting=<span class="kw">False</span>,
+)
+
+zhat, var = OK.execute(<span class="st">"grid"</span>, gridx, gridy)
+se = np.sqrt(var)
+
+fig, (a1, a2) = plt.subplots(<span class="st">1</span>, <span class="st">2</span>, figsize=(<span class="st">12</span>, <span class="st">5</span>))
+a1.imshow(zhat, origin=<span class="st">"lower"</span>, cmap=<span class="st">"viridis"</span>); a1.set_title(<span class="st">"OK prediction, log-zinc"</span>)
+a2.imshow(se,   origin=<span class="st">"lower"</span>, cmap=<span class="st">"magma"</span>);   a2.set_title(<span class="st">"kriging standard error"</span>)
+a2.scatter(*((coords.T - [[xmin], [ymin]]) / <span class="st">40.0</span>), s=<span class="st">5</span>, c=<span class="st">"white"</span>)
+plt.show()</code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why do the ordinary kriging weights sum to one? Which requirement forces it?</li>
+    <li>Three samples lie at equal distances from a target; two are 10 m apart and one is isolated. Rank the weights and justify the ranking without calculating.</li>
+    <li>What does a negative kriging weight mean, and when is it a problem?</li>
+    <li>Two locations have identical kriging variances. Does that mean the estimates are equally reliable? Answer in full.</li>
+    <li>Your kriged map is almost flat and close to the global mean everywhere. Give the most likely cause and the diagnostic that would confirm it.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Isaaks &amp; Srivastava, ch. 12 — the clearest derivation in print, worked with actual numbers. Webster &amp; Oliver, ch. 8. Goovaerts, ch. 5.</p>
+</div></section>
+
+<!-- ================= WEEK 6 ================= -->
+<section class="ch" id="w6"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">06</div>
+    <div class="ch-t">
+      <p class="wkl">Week six</p>
+      <h2>When the mean is not constant</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Choose between simple, ordinary, universal and external-drift kriging for a given problem</li>
+    <li>Use a covariate to improve prediction, and know when it will not help</li>
+    <li>Implement regression kriging and explain its relationship to KED</li>
+    <li>Explain change of support and why block estimates have lower variance</li>
+    <li>State when co-kriging is worth its cost</li>
+  </ul></div>
+
+  <h3>The assumption we have been making</h3>
+  <p>Ordinary kriging assumes the mean is constant but unknown, at least within the search neighbourhood. Often it is not. Rainfall increases with altitude. Soil depth increases downslope. Contamination decreases away from a source. When the mean varies systematically, ordinary kriging is inefficient at best and biased at worst, and the variogram will not reach a sill.</p>
+  <p>The family of methods below all decompose the variable into a deterministic part and a stochastic part:</p>
+  <div class="eq"><span class="num">(6.1)</span>
+    <span class="f"><var>Z</var>(<var>x</var>) = <var>m</var>(<var>x</var>) + ε(<var>x</var>)</span>
+    <p class="whr"><var>m</var>(<var>x</var>) is the trend or drift — the structured, explainable part — and ε(<var>x</var>) is the spatially correlated residual. The methods differ only in what they assume about <var>m</var>(<var>x</var>).</p>
+  </div>
+  <table class="tbl">
+    <tr><th style="width:11em">Method</th><th>Assumption about <var>m</var>(<var>x</var>)</th><th>Use when</th></tr>
+    <tr><td><strong>Simple kriging</strong></td><td>Constant and <em>known</em></td><td>Rarely — but it is the building block for simulation in week 8</td></tr>
+    <tr><td><strong>Ordinary kriging</strong></td><td>Constant, unknown</td><td>The default; no covariate available</td></tr>
+    <tr><td><strong>Universal kriging</strong></td><td>A polynomial function of the coordinates</td><td>A smooth regional gradient with no physical covariate</td></tr>
+    <tr><td><strong>KED / external drift</strong></td><td>A linear function of a covariate known everywhere</td><td>The best case: a covariate that is physically related and mapped densely</td></tr>
+    <tr><td><strong>Regression kriging</strong></td><td>Any regression model, fitted separately</td><td>Several covariates, or a non-linear relationship</td></tr>
+  </table>
+
+  <h3>Kriging with an external drift</h3>
+  <p>This is the method to reach for, because it exploits the situation you are usually in: a sparse set of expensive point measurements, and a cheap covariate available everywhere. The pairings are familiar — rainfall with elevation, temperature with elevation, soil organic carbon with NDVI or with terrain wetness index, groundwater level with topography.</p>
+  <p>KED does everything at once: it estimates the trend coefficients and the spatial prediction within a single system, using the residual variogram. Two conditions must hold, and both are frequently violated in student work.</p>
+  <ul>
+    <li><strong>The covariate must be known at every prediction location</strong>, not just at the sample points. A DEM qualifies. A second sparse point dataset does not — that is a co-kriging problem.</li>
+    <li><strong>The relationship should be linear and reasonably strong.</strong> If the scatterplot of <var>z</var> against the covariate is a shapeless cloud, KED will add complexity and nothing else.</li>
+  </ul>
+  <p>The critical technical point: the variogram used in KED is the variogram of the <strong>residuals</strong>, not of the raw variable. Fit the trend, take the residuals, compute and model <em>their</em> variogram, and use that. The residual variogram will typically have a shorter range and a lower sill than the raw one — that difference is precisely the structure the covariate has explained.</p>
+
+  <h3>Regression kriging</h3>
+  <p>Regression kriging is the same idea run as three explicit steps, which makes it easier to understand, easier to debug, and more flexible:</p>
+  <ol class="body">
+    <li>Fit a regression of <var>z</var> on the covariates at the sample locations, by any method — OLS, GLM, or in week 10, random forest.</li>
+    <li>Compute the residuals, model their variogram, and krige the residuals across the region.</li>
+    <li>Add the kriged residual surface to the regression prediction surface.</li>
+  </ol>
+  <p>With OLS in step 1 and consistent variogram estimation, regression kriging and KED are theoretically equivalent. In practice RK is preferred whenever you want several covariates, a non-linear model, or simply to see the two components separately — and being able to map the trend surface and the residual surface individually is genuinely informative about where your covariate is working.</p>
+
+  <div class="warn">
+    <h5>The circularity trap</h5>
+    <p>Fitting the trend by OLS and then computing a variogram from those residuals is slightly circular: OLS assumed independent errors, which is exactly what you are about to demonstrate is false. The residual variogram is therefore mildly biased, typically underestimating the range. For teaching purposes and most applied work this is acceptable and universally done — but you should know it, and say so. The principled fix is generalised least squares iterated with the variogram estimation, or REML, which estimates both jointly.</p>
+  </div>
+
+  <h3>Change of support: block kriging</h3>
+  <p>Everything so far has predicted a value at a <em>point</em>. Often the decision is about an <em>area</em>: the mean grade of a 10 m mining block, the mean soil carbon of a one-hectare field, the mean rainfall over a catchment. Block kriging estimates the average over a block <var>V</var> directly, by replacing the point-to-point semivariances on the right-hand side of the kriging system with point-to-block average semivariances.</p>
+  <p>The consequence to remember: <strong>block estimates have substantially lower kriging variance than point estimates</strong>, because averaging over an area removes short-scale variability. This is not a trick — the block mean genuinely is more predictable than any individual point within it. It also means that comparing a point-kriging standard error with a block-kriging standard error is meaningless unless you say which is which.</p>
+
+  <h3>Co-kriging, briefly</h3>
+  <p>When the secondary variable is <em>also</em> sparsely sampled — not available everywhere — KED is unavailable and co-kriging is the formally correct method. It requires modelling the variogram of each variable plus the cross-variogram between them, all under the linear model of coregionalisation, which constrains the models to share ranges and produces a positive-definite system.</p>
+  <p>It is a lot of machinery. Be honest about when it pays: co-kriging helps materially only when the secondary variable is markedly more densely sampled than the primary <em>and</em> strongly correlated with it. If both are sampled at the same locations, the gain is usually negligible and not worth the modelling burden. Know that it exists, know the condition under which it is worth doing, and reach for KED or RK first.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 6 — Bringing in a covariate</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Load the rainfall station dataset and the SRTM DEM. Extract elevation at each station.</li>
+        <li>Scatterplot rainfall against elevation. Fit an OLS regression and report <var>R</var>&#178; and the slope in mm per 100 m.</li>
+        <li>Compute and model the variogram of the raw rainfall and of the OLS residuals on the same axes. Report both sets of parameters and explain the difference in sill.</li>
+        <li>Implement regression kriging: krige the residuals, add to the regression surface, map the result.</li>
+        <li>Run KED with <code>pykrige.UniversalKriging</code> using elevation as the drift term. Map the difference between the RK and KED surfaces and comment on its magnitude.</li>
+        <li>Krige the same data with ordinary kriging. Produce all three maps together with a common colour scale, and identify where the covariate made the biggest difference. Explain why it was there.</li>
+        <li>Block-krige to a 1 km block support. Compare the standard-error map with the point-kriging one and state the ratio.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Add slope, aspect and distance-to-coast as further covariates in the regression step. Does prediction improve under cross-validation, or have you overfitted? Week 7 gives you the tools to answer this properly — come back to it.</li>
+        <li>Demonstrate the circularity problem: simulate data with a known trend and known residual variogram, fit by OLS, and measure how much the estimated residual range is biased.</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LinearRegression
+<span class="kw">from</span> pykrige.uk <span class="kw">import</span> UniversalKriging
+
+<span class="cm"># ---- regression kriging, done as three explicit steps -----------------</span>
+X = stations[[<span class="st">"elev"</span>]].values
+y = stations[<span class="st">"rain"</span>].values
+
+lm = LinearRegression().fit(X, y)
+print(f<span class="st">"R² = {lm.score(X, y):.3f}   slope = {lm.coef_[0]*100:.1f} mm per 100 m"</span>)
+
+resid = y - lm.predict(X)
+
+<span class="cm"># the variogram that matters is the RESIDUAL variogram, not the raw one</span>
+Vr = skg.Variogram(stations[[<span class="st">"X"</span>, <span class="st">"Y"</span>]].values, resid,
+                   n_lags=<span class="st">12</span>, model=<span class="st">"exponential"</span>)
+print(<span class="st">"residual variogram:"</span>, Vr.parameters)
+
+OKr = OrdinaryKriging(stations.X, stations.Y, resid,
+                      variogram_model=<span class="st">"exponential"</span>,
+                      variogram_parameters={<span class="st">"sill"</span>: Vr.parameters[<span class="st">1</span>],
+                                            <span class="st">"range"</span>: Vr.parameters[<span class="st">0</span>],
+                                            <span class="st">"nugget"</span>: Vr.parameters[<span class="st">2</span>]})
+resid_grid, _ = OKr.execute(<span class="st">"grid"</span>, gridx, gridy)
+
+trend_grid = lm.predict(dem_grid.reshape(<span class="st">-1</span>, <span class="st">1</span>)).reshape(dem_grid.shape)
+rk_grid    = trend_grid + resid_grid      <span class="cm"># the two components, added back</span>
+
+<span class="cm"># ---- the same thing in one step, as KED -------------------------------</span>
+UK = UniversalKriging(stations.X, stations.Y, y,
+                      variogram_model=<span class="st">"exponential"</span>,
+                      drift_terms=[<span class="st">"specified"</span>],
+                      specified_drift=[stations.elev.values])
+ked_grid, ked_var = UK.execute(<span class="st">"grid"</span>, gridx, gridy,
+                               specified_drift_arrays=[dem_grid])</code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Your variogram climbs without reaching a sill. Name three responses and the circumstances favouring each.</li>
+    <li>Why must the covariate in KED be available at every prediction location? What method applies if it is not?</li>
+    <li>Whose variogram do you model in KED, and why is it not the variogram of the raw variable?</li>
+    <li>Block kriging returns a smaller standard error than point kriging on the same data. Is this a genuine improvement in knowledge? Explain.</li>
+    <li>Under what specific condition is co-kriging worth the extra modelling effort?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Hengl, Heuvelink &amp; Stein (2004), "A generic framework for spatial prediction of soil variables based on regression-kriging", <em>Geoderma</em> 120 — the standard reference for RK. Goovaerts, ch. 6. Webster &amp; Oliver, ch. 9.</p>
+</div></section>
+
+<!-- ================= WEEK 7 ================= -->
+<section class="ch" id="w7"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">07</div>
+    <div class="ch-t">
+      <p class="wkl">Week seven</p>
+      <h2>Validation, and honesty about error</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Run leave-one-out and k-fold cross-validation and interpret the full diagnostic set</li>
+    <li>Use the MSDR to test whether your variogram model is producing honest variances</li>
+    <li>Explain why random cross-validation is optimistic on spatial data, and apply spatial blocking</li>
+    <li>Describe the smoothing effect and identify it in a map</li>
+    <li>Benchmark kriging against simpler methods and accept the result</li>
+  </ul></div>
+
+  <h3>The question this week answers</h3>
+  <p>You have a map. Someone is going to spend money on the basis of it. How good is it, and how do you know?</p>
+  <p>The kriging variance will not answer this — week 5 established that it never saw your data values. The only honest route is to withhold observations, predict them, and compare. That is cross-validation, and it is the closest thing this subject has to a truth serum.</p>
+
+  <h3>The diagnostics, and what each one catches</h3>
+  <p>Leave-one-out cross-validation removes each observation in turn, predicts it from the remainder, and collects the errors <var>e</var><sub><var>i</var></sub> = <var>z</var>(<var>x</var><sub><var>i</var></sub>) − <var>ẑ</var>(<var>x</var><sub><var>i</var></sub>). Four statistics follow, and you should report all four, because each catches a different failure.</p>
+  <div class="eq"><span class="num">(7.1)</span>
+    <span class="f">ME = <span class="frac"><span class="t">1</span><span class="b"><var>n</var></span></span> ∑ <var>e</var><sub><var>i</var></sub>&nbsp;&nbsp;&nbsp;&nbsp; RMSE = √( <span class="frac"><span class="t">1</span><span class="b"><var>n</var></span></span> ∑ <var>e</var><sub><var>i</var></sub>&#178; )</span>
+    <p class="whr"><strong>ME</strong> should be near zero — it tests unbiasedness. A large ME means systematic over- or under-prediction and usually points to an unhandled trend. <strong>RMSE</strong> measures accuracy and is the number to compare between methods; it has the units of your variable, which makes it interpretable.</p>
+  </div>
+  <div class="eq"><span class="num">(7.2)</span>
+    <span class="f">MSDR = <span class="frac"><span class="t">1</span><span class="b"><var>n</var></span></span> ∑ <span class="frac"><span class="t">[ <var>z</var>(<var>x</var><sub><var>i</var></sub>) − <var>ẑ</var>(<var>x</var><sub><var>i</var></sub>) ]&#178;</span><span class="b">σ̂&#178;(<var>x</var><sub><var>i</var></sub>)</span></span></span>
+    <p class="whr">The <strong>mean squared deviation ratio</strong> is the diagnostic most students skip and the one that matters most. It divides each squared error by the kriging variance predicted at that location. If the variogram model is honest, MSDR should be close to <strong>1</strong>. Substantially above 1 means your model is <em>overconfident</em> — errors are larger than it claims. Substantially below 1 means it is over-cautious.</p>
+  </div>
+  <p>MSDR is the only one of the four that tests the <em>variance</em> model rather than the prediction. A model can have an excellent RMSE and an MSDR of 3, which means the map is reasonably accurate but the error bars you would quote from it are wrong by a factor of nearly two. If you are going to attach uncertainty to a map — and this unit insists you do — this is the number that says whether that uncertainty is honest.</p>
+
+  <div class="warn">
+    <h5>Random cross-validation lies to you on spatial data</h5>
+    <p>Standard k-fold cross-validation assigns observations to folds at random. On spatially autocorrelated data this means almost every held-out point has a near neighbour in the training set — often a few metres away. The model is not being asked to predict; it is being asked to interpolate between points it has already seen. The resulting RMSE can be optimistic by 30% or more, and the effect grows with how clustered your sampling is.</p>
+    <p>The fix is <strong>spatial block cross-validation</strong>: partition the region into blocks larger than the variogram range and hold out whole blocks. Now the model must genuinely predict into unsampled ground, which is what it will be asked to do in production. Expect your error to increase. That increase is not a regression in your model; it is the removal of a lie. This becomes even more important in week 10, when machine learning gives you many more ways to leak information between folds.</p>
+  </div>
+
+  <h3>The smoothing effect</h3>
+  <p>Kriging minimises estimation variance, and one consequence is that the resulting map is smoother than reality: high values are under-estimated, low values over-estimated, and the variance of the kriged surface is lower than the variance of the data. Plotting predicted against observed makes it obvious — the regression line has a slope below one, fanning away from the 1:1 line at both ends.</p>
+  <p>This is not a bug. It is the correct behaviour for minimising squared error, and it is unavoidable in any optimal linear estimator. But it matters enormously for a particular class of question. If you are asked "what fraction of this district exceeds the WHO fluoride guideline?", counting cells above the threshold on a kriged map will give you a systematically wrong answer, because the map has flattened exactly the extremes you are counting. Kriging is the right tool for "what is the value here"; it is the wrong tool for "how much of the area exceeds a threshold". That is a simulation question, and it is next week.</p>
+
+  <h3>Benchmark honestly</h3>
+  <p>Kriging is not automatically the best method. Compare it, on identical folds, against inverse distance weighting, nearest neighbour and a thin-plate spline. There are real situations where the simpler methods win: a very high nugget-to-sill ratio leaves little structure for kriging to exploit; very dense, evenly spaced sampling makes almost any interpolator adequate; small datasets make the variogram too unstable to be worth the trouble.</p>
+  <p>Report the comparison whichever way it comes out. A study that concludes "IDW performed as well as kriging here, and is simpler, so we used it" is a good study. A study that reports only the kriging results because they were expected is not.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 7 — Build a validation harness</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Write a leave-one-out cross-validation function returning ME, RMSE, MAE and MSDR. You will reuse it for the rest of the unit, so write it properly.</li>
+        <li>Run it on your week 5 ordinary kriging model. Report all four. Interpret the MSDR in one sentence.</li>
+        <li>Re-run with a deliberately wrong nugget — double it, then halve it. Show how RMSE and MSDR each respond. Which is more sensitive, and why does that make MSDR the better diagnostic for the variance model?</li>
+        <li>Implement spatial block cross-validation with blocks about twice the variogram range. Compare its RMSE with the random k-fold RMSE on the same data and quantify the optimism.</li>
+        <li>Benchmark OK, KED and IDW (with <var>p</var> = 1, 2, 3) on identical spatial folds. Produce one clean comparison table.</li>
+        <li>Plot predicted against observed for your best model with a 1:1 line and a fitted line. Estimate the smoothing by reporting the ratio of the variance of predictions to the variance of observations.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Plot RMSE from spatial block CV as a function of block size, from small to very large. Explain the shape of the curve you get.</li>
+        <li>Investigate whether the errors are themselves spatially correlated by computing a variogram of the cross-validation residuals. What would a structured residual variogram tell you?</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> KFold
+
+<span class="kw">def</span> loo_cv(coords, values, model, params):
+    <span class="st">"""Leave-one-out CV returning the four diagnostics that matter."""</span>
+    n = len(values)
+    pred = np.empty(n); var = np.empty(n)
+    <span class="kw">for</span> i <span class="kw">in</span> range(n):
+        keep = np.arange(n) != i
+        ok = OrdinaryKriging(coords[keep, <span class="st">0</span>], coords[keep, <span class="st">1</span>], values[keep],
+                             variogram_model=model, variogram_parameters=params)
+        z, s = ok.execute(<span class="st">"points"</span>, coords[i:i+<span class="st">1</span>, <span class="st">0</span>], coords[i:i+<span class="st">1</span>, <span class="st">1</span>])
+        pred[i], var[i] = z[<span class="st">0</span>], s[<span class="st">0</span>]
+
+    e = values - pred
+    <span class="kw">return</span> {
+        <span class="st">"ME"</span>:   e.mean(),                    <span class="cm"># → 0 if unbiased</span>
+        <span class="st">"RMSE"</span>: np.sqrt((e ** <span class="st">2</span>).mean()),     <span class="cm"># accuracy, in data units</span>
+        <span class="st">"MAE"</span>:  np.abs(e).mean(),             <span class="cm"># less outlier-sensitive</span>
+        <span class="st">"MSDR"</span>: ((e ** <span class="st">2</span>) / var).mean(),      <span class="cm"># → 1 if the variance model is honest</span>
+    }
+
+<span class="kw">def</span> spatial_blocks(coords, block_size):
+    <span class="st">"""Fold labels from a spatial grid — hold out whole blocks, not points."""</span>
+    keys = np.floor(coords / block_size).astype(int)
+    _, fold = np.unique(keys, axis=<span class="st">0</span>, return_inverse=<span class="kw">True</span>)
+    <span class="kw">return</span> fold
+
+<span class="cm"># the comparison that matters: same data, two ways of splitting it</span>
+fold_random  = KFold(<span class="st">10</span>, shuffle=<span class="kw">True</span>, random_state=<span class="st">0</span>)
+fold_spatial = spatial_blocks(coords, block_size=<span class="st">2</span> * fitted_range)
+<span class="cm"># ... score both; the gap between them is your optimism</span></code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Your model has RMSE 4.2 and MSDR 2.8. What is wrong, and what would you change?</li>
+    <li>Why does random k-fold cross-validation overestimate performance on spatial data? Be specific about the mechanism.</li>
+    <li>How would you choose the block size for spatial block cross-validation?</li>
+    <li>Explain why a kriged map is a poor basis for estimating the area exceeding a threshold.</li>
+    <li>IDW beats kriging on your data under spatial CV. Give two plausible reasons and say what you would report.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Webster &amp; Oliver, ch. 8 §8.4. Roberts <em>et al.</em> (2017), "Cross-validation strategies for data with temporal, spatial, hierarchical or phylogenetic structure", <em>Ecography</em> 40(8) — the definitive treatment. Meyer &amp; Pebesma (2022) on area of applicability, <em>Methods in Ecology and Evolution</em> 12(9).</p>
+</div></section>
+
+<!-- ================= WEEK 8 ================= -->
+<section class="ch" id="w8"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">08</div>
+    <div class="ch-t">
+      <p class="wkl">Week eight</p>
+      <h2>Simulation instead of interpolation</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Explain why the best single map is the wrong tool for a risk question</li>
+    <li>State the sequential Gaussian simulation algorithm step by step</li>
+    <li>Distinguish a realisation from the E-type estimate and know when each is appropriate</li>
+    <li>Post-process a set of realisations into a probability map</li>
+    <li>Propagate uncertainty through a downstream calculation</li>
+  </ul></div>
+
+  <h3>Two different questions</h3>
+  <p>Compare these:</p>
+  <ul>
+    <li><em>"What is the fluoride concentration at this proposed borehole site?"</em> — an estimation question. Kriging answers it, and answers it optimally.</li>
+    <li><em>"What fraction of this sub-county has groundwater fluoride above the 1.5 mg/L guideline, and where should we prioritise testing?"</em> — a risk question. Kriging answers it <strong>badly</strong>.</li>
+  </ul>
+  <p>The reason is last week's smoothing effect. A kriged map has less variance than reality: it has flattened the peaks and filled in the troughs. Counting cells above a threshold on such a map systematically undercounts the area at risk, and the undercount is worst exactly where the threshold is far from the mean — which is usually where the policy question sits.</p>
+  <p>Simulation gives up optimality at each individual location in exchange for getting the <em>statistical properties of the whole field</em> right. A simulated realisation is not the best estimate anywhere; it is a plausible version of reality that reproduces the correct histogram, the correct variogram, and honours the data at the sample points. Generate many of them and you have a picture of what the field might be, not just a single flattened best guess.</p>
+
+  <div class="defn">
+    <p><b class="term">Conditional simulation.</b> The generation of multiple equally probable realisations of a random field, each of which (i) reproduces the observed values exactly at sampled locations, (ii) reproduces the sample histogram, and (iii) reproduces the modelled variogram.</p>
+    <p>Each realisation is <em>less accurate</em> than the kriged map at any single location. The <em>set</em> of realisations is far more informative than the kriged map, because the spread between them at each location is a genuine, data-aware measure of uncertainty — unlike the kriging variance.</p>
+  </div>
+
+  <h3>Sequential Gaussian simulation</h3>
+  <p>SGS is the standard algorithm and it is simpler than it sounds. The key insight is that under a multivariate Gaussian model, the conditional distribution at any location — given the data and the previously simulated values — is normal, with mean equal to the simple kriging estimate and variance equal to the simple kriging variance. So you can build a realisation one node at a time:</p>
+  <ol class="body">
+    <li>Normal-score transform the data, so the marginal distribution is exactly standard normal. (This is why week 2 mattered.)</li>
+    <li>Model the variogram of the transformed data.</li>
+    <li>Define a random path visiting every grid node exactly once.</li>
+    <li>At each node in turn: simple-krige from the original data <em>and all previously simulated nodes</em> to obtain a mean and a variance; draw one random value from the resulting normal distribution; add that drawn value to the conditioning dataset.</li>
+    <li>When the path is complete, back-transform the whole realisation through the inverse normal-score table.</li>
+    <li>Repeat from step 3 with a different random path and different random draws, for as many realisations as you need — 100 for exploratory work, 500 or more for stable tail probabilities.</li>
+  </ol>
+  <p>Two details are worth pausing on. Step 4's phrase "and all previously simulated nodes" is what makes the realisation reproduce the variogram — each drawn value becomes data for its neighbours, propagating spatial structure across the field. And the random path in step 3 matters: a systematic path would introduce directional artefacts, which is why it must be random and different for each realisation.</p>
+
+  <h3>Reading a set of realisations</h3>
+  <p>You now have, say, 200 values at every grid node — one from each realisation. That is an empirical distribution, and everything useful follows from it:</p>
+  <ul>
+    <li><strong>The E-type estimate</strong> — the mean across realisations at each node. It converges toward the kriged map as the number of realisations grows, which is a useful check that your simulation is behaving.</li>
+    <li><strong>The conditional variance</strong> — the spread across realisations at each node. Unlike the kriging variance, this <em>does</em> depend on the data values: it is wider where the local values are variable and narrower where they agree.</li>
+    <li><strong>Probability maps</strong> — the proportion of realisations exceeding a threshold at each node. This is the deliverable for a risk question, and it is what you cannot obtain from kriging at all.</li>
+    <li><strong>Uncertainty in an aggregate</strong> — compute any downstream quantity separately on each realisation, and you get a distribution for that quantity. The total tonnage above cut-off; the total area at risk; the number of households affected. This is uncertainty propagation, and it is the most valuable thing in the chapter.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>Never map a single realisation as though it were an estimate</h5>
+    <p>A single realisation looks more realistic than a kriged map — it has the right texture and roughness, and it is seductive for exactly that reason. It is also wrong nearly everywhere, and it is no more likely to be right than any of the other 199. Present realisations only in sets, to show variability. If you need one map, present the E-type or the kriged map, and say which it is.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 8 — From a map to a probability</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Normal-score transform the groundwater fluoride dataset and model the variogram of the scores.</li>
+        <li>Generate 100 conditional realisations on the prediction grid.</li>
+        <li>Display four realisations side by side with a common colour scale. Describe how they differ and how they agree, and relate both to the sample locations.</li>
+        <li>Compute the E-type estimate and place it beside the ordinary kriging map with a common scale. Compare their variances numerically and explain the direction of the difference.</li>
+        <li>Produce a map of P(fluoride &gt; 1.5 mg/L). Compare the area it identifies as at risk with the area obtained by thresholding the kriged map. State the discrepancy as a percentage and explain its cause.</li>
+        <li>For each realisation, compute the total area exceeding the guideline. Plot the histogram of those 100 numbers, and report the median with a 90% interval. <em>This is the answer a public health officer actually needs.</em></li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Repeat with 500 realisations. How many are needed before the tail probabilities stabilise? Demonstrate rather than assert.</li>
+        <li>Verify the algorithm: check that the realisations reproduce the sample histogram and the modelled variogram, and confirm that each honours the observed value at every sample location.</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> gstools <span class="kw">as</span> gs        <span class="cm"># pip install gstools — the practical SGS route in Python</span>
+
+model = gs.Exponential(dim=<span class="st">2</span>, var=<span class="st">0.85</span>, len_scale=<span class="st">420.0</span>, nugget=<span class="st">0.15</span>)
+
+krige = gs.krige.Ordinary(model, cond_pos=(x_obs, y_obs), cond_val=ns_values)
+cond  = gs.CondSRF(krige)
+
+N = <span class="st">100</span>
+sims = np.empty((N, gridy.size, gridx.size))
+<span class="kw">for</span> i <span class="kw">in</span> range(N):
+    cond.set_pos((gridx, gridy), <span class="st">"structured"</span>)
+    sims[i] = cond(seed=i)                       <span class="cm"># one realisation</span>
+
+sims = back_transform(sims)                      <span class="cm"># inverse normal score</span>
+
+etype  = sims.mean(axis=<span class="st">0</span>)                      <span class="cm"># → converges toward the kriged map</span>
+cstd   = sims.std(axis=<span class="st">0</span>)                       <span class="cm"># depends on DATA, unlike kriging variance</span>
+p_exc  = (sims &gt; <span class="st">1.5</span>).mean(axis=<span class="st">0</span>)             <span class="cm"># P(exceeding the guideline)</span>
+
+<span class="cm"># uncertainty in an aggregate — the number a decision-maker can use</span>
+cell_km2  = <span class="st">0.04</span>
+area_risk = (sims &gt; <span class="st">1.5</span>).sum(axis=(<span class="st">1</span>, <span class="st">2</span>)) * cell_km2
+print(f<span class="st">"area above guideline: {np.median(area_risk):.1f} km² "</span>
+      f<span class="st">"(90% interval {np.percentile(area_risk, 5):.1f}–"</span>
+      f<span class="st">"{np.percentile(area_risk, 95):.1f})"</span>)</code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why does a kriged map underestimate the area exceeding a high threshold?</li>
+    <li>What three properties must a conditional realisation reproduce?</li>
+    <li>Why must the simulation path be random and differ between realisations?</li>
+    <li>In what sense is a single realisation worse than the kriged map, and in what sense is a set of them better?</li>
+    <li>Contrast the conditional variance from simulation with the kriging variance. Which responds to the data values, and why does that matter?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Goovaerts, ch. 8 — the standard treatment. Deutsch &amp; Journel, <em>GSLIB</em>, on <code>sgsim</code>. Chilès &amp; Delfiner, ch. 7. The <code>gstools</code> documentation for the Python implementation.</p>
+</div></section>
+
+<!-- ================= WEEK 9 ================= -->
+<section class="ch" id="w9"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">09</div>
+    <div class="ch-t">
+      <p class="wkl">Week nine</p>
+      <h2>Non-Gaussian and categorical variables</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Apply the indicator transform and explain what it buys</li>
+    <li>Perform indicator kriging and interpret the output as a probability</li>
+    <li>Recognise and repair order-relation violations</li>
+    <li>Krige categorical variables such as soil class or land cover</li>
+    <li>Convert a probability map into a decision map with a stated risk tolerance</li>
+  </ul></div>
+
+  <h3>When the Gaussian assumption will not hold</h3>
+  <p>Simulation last week required a normal-score transform, which requires a continuous variable with a well-defined distribution. Plenty of real problems do not fit: heavily skewed data with a long tail no transform tames; data with a spike of values at a detection limit; and variables that are not numeric at all — soil class, land cover, rock type, presence or absence.</p>
+  <p>The indicator approach handles all of these by giving up on estimating the value and estimating a <em>probability</em> instead.</p>
+
+  <h3>The indicator transform</h3>
+  <p>Pick a threshold <var>z</var><sub><var>k</var></sub> and replace every observation with a 0 or a 1:</p>
+  <div class="eq"><span class="num">(9.1)</span>
+    <span class="f"><var>i</var>(<var>x</var>; <var>z</var><sub><var>k</var></sub>) = 1 if <var>z</var>(<var>x</var>) ≤ <var>z</var><sub><var>k</var></sub>,&nbsp;&nbsp; 0 otherwise</span>
+  </div>
+  <p>This is a remarkable trick, because the <em>expected value</em> of the indicator is the probability of being below the threshold. So if you krige the indicator variable, the estimate you get back — a number between 0 and 1 — is a direct estimate of P(<var>Z</var>(<var>x</var><sub>0</sub>) ≤ <var>z</var><sub><var>k</var></sub>), with no distributional assumption at all.</p>
+  <p>Two further benefits come free. Extreme values lose their leverage: a wildly high outlier becomes a 0, exactly like a moderately high value, so the indicator variogram is far more robust than the raw one. And you can use a <em>different</em> variogram at each threshold, which lets the spatial structure of the high values differ from that of the low ones — often physically true, and something ordinary kriging cannot express.</p>
+
+  <h3>Building a full local distribution</h3>
+  <p>Repeat the procedure at a series of thresholds — typically the nine deciles of the sample distribution — and krige each indicator separately. At every prediction location you now have nine estimated probabilities, which together trace out the local cumulative distribution function. From that you can read the median, any quantile, an interquartile range as an uncertainty measure, and the probability of exceeding any threshold you care about.</p>
+
+  <div class="warn">
+    <h5>Order-relation violations</h5>
+    <p>Because each threshold is kriged independently, nothing forces the results to be a valid CDF. You will regularly find estimated probabilities that decrease as the threshold increases, or that fall outside [0, 1]. These are <strong>order-relation violations</strong> and they are a normal, expected feature of indicator kriging, not evidence you have made a mistake.</p>
+    <p>The standard repair is to average the results of an upward and a downward pass through the thresholds, then truncate to [0, 1] and enforce monotonicity. Report how many violations occurred: a large number signals too few data per threshold, or thresholds set too far into the tails where almost every indicator is the same value.</p>
+  </div>
+
+  <h3>Categorical variables</h3>
+  <p>For a categorical variable with <var>K</var> classes, define one indicator per class and krige each. At every location you obtain <var>K</var> probabilities, which after correction sum to one. Two products follow: assign each location its most probable class for a map, and map the probability itself for a picture of where the classification is confident and where it is not. That second map is usually the more useful of the two, and it is the sort of thing that would improve a great many published soil and land-cover maps.</p>
+  <p>Sequential <strong>indicator</strong> simulation follows the same logic as SGS but draws from the indicator-derived local CDF instead of a Gaussian one — which is how you produce realisations of a categorical field, such as alternative plausible soil maps, each internally consistent.</p>
+
+  <h3>From probability to decision</h3>
+  <p>A probability map is not yet a decision. Turning it into one requires a threshold on the probability, and choosing that threshold is a value judgement about the relative cost of the two errors, not a statistical one.</p>
+  <p>Consider a fluoride exceedance map used to prioritise borehole testing. Flagging every location with P &gt; 0.1 casts a wide net: few contaminated boreholes missed, many clean ones tested unnecessarily. Flagging at P &gt; 0.7 tests far fewer, but misses more contaminated sites. The right answer depends on the cost of a test against the cost of a child drinking fluoride-contaminated water for a year, and that is a decision for the public health authority, not the analyst.</p>
+  <p>Your job is to make the trade-off visible: present the probability map, state the consequences of several candidate thresholds, and let the decision-maker choose with their eyes open. This is what it means to communicate uncertainty rather than merely compute it, and it is a skill this unit is assessing.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 9 — A decision map with a stated tolerance</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Indicator-transform the fluoride data at the 1.5 mg/L guideline. Report the proportion of ones.</li>
+        <li>Compute and model the indicator variogram. Compare it with the raw variogram from week 4 and comment on the difference in robustness.</li>
+        <li>Krige the indicator and map P(fluoride &gt; 1.5 mg/L). Compare this map with the simulation-derived probability map from week 8. Where do the two methods disagree, and which do you trust?</li>
+        <li>Repeat at the nine deciles. Build the full local CDF at three chosen locations and plot them. Count and report the order-relation violations, then correct them.</li>
+        <li>From the corrected CDFs, map the median and the interquartile range.</li>
+        <li>Produce three decision maps at P &gt; 0.1, 0.3 and 0.7. For each, report the number of locations flagged. Write a short paragraph addressed to a county water officer explaining the trade-off in plain language — no jargon, no equations.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Krige a categorical soil-class variable by the indicator method and produce both a most-probable-class map and a confidence map.</li>
+        <li>Implement sequential indicator simulation and generate ten alternative plausible soil-class maps.</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="cm"># --- indicator kriging at a regulatory threshold -----------------------</span>
+threshold = <span class="st">1.5</span>                                 <span class="cm"># mg/L, WHO guideline</span>
+ind = (gdf.fluoride.values &gt; threshold).astype(float)
+print(f<span class="st">"proportion above guideline: {ind.mean():.3f}"</span>)
+
+Vi = skg.Variogram(coords, ind, n_lags=<span class="st">12</span>, model=<span class="st">"spherical"</span>)
+
+OKi = OrdinaryKriging(coords[:, <span class="st">0</span>], coords[:, <span class="st">1</span>], ind,
+                      variogram_model=<span class="st">"spherical"</span>,
+                      variogram_parameters={<span class="st">"sill"</span>: Vi.parameters[<span class="st">1</span>],
+                                            <span class="st">"range"</span>: Vi.parameters[<span class="st">0</span>],
+                                            <span class="st">"nugget"</span>: Vi.parameters[<span class="st">2</span>]})
+prob, _ = OKi.execute(<span class="st">"grid"</span>, gridx, gridy)
+prob = np.clip(prob, <span class="st">0</span>, <span class="st">1</span>)                       <span class="cm"># kriging does not respect [0,1]</span>
+
+<span class="cm"># --- make the decision trade-off explicit ------------------------------</span>
+<span class="kw">for</span> p <span class="kw">in</span> (<span class="st">0.1</span>, <span class="st">0.3</span>, <span class="st">0.7</span>):
+    flagged = (prob &gt; p).sum()
+    print(f<span class="st">"P > {p:.1f}: flag {flagged:5d} cells "</span>
+          f<span class="st">"({100*flagged/prob.size:.1f}% of the area)"</span>)</code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why is the expected value of an indicator variable a probability?</li>
+    <li>Give two reasons the indicator variogram is more robust than the raw variogram.</li>
+    <li>What is an order-relation violation, why does it occur, and how is it repaired?</li>
+    <li>Indicator kriging returns 1.08 at a location. What has happened and what do you do?</li>
+    <li>Who should choose the probability threshold for a decision map, and what information do they need from you in order to choose it well?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Goovaerts, ch. 7. Journel (1983), "Nonparametric estimation of spatial distributions", <em>Mathematical Geology</em> 15(3). Deutsch &amp; Journel, <em>GSLIB</em>, on <code>ik3d</code> and <code>sisim</code>.</p>
+</div></section>
+
+<!-- ================= WEEK 10 ================= -->
+<section class="ch" id="w10"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">10</div>
+    <div class="ch-t">
+      <p class="wkl">Week ten · CAT 2 this week</p>
+      <h2>Machine learning meets geostatistics</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Position regression kriging as the bridge between the two traditions</li>
+    <li>Explain why a plain random forest on coordinates is a poor spatial predictor, and what fixes it</li>
+    <li>Identify feature leakage in a spatial modelling workflow</li>
+    <li>Compare a machine-learning and a geostatistical model under a fair protocol</li>
+    <li>State what machine learning gains and what it gives up</li>
+  </ul></div>
+
+  <h3>The honest framing</h3>
+  <p>Most operational mapping in soils, ecology and Earth observation is now done with machine learning rather than kriging. SoilGrids, which produces global soil property maps at 250 m, is built on gradient-boosted trees and random forests, not on variograms. It would be dishonest to teach this unit as though that had not happened.</p>
+  <p>It would be equally dishonest to present it as a replacement. The two traditions answer overlapping but different questions, and the sharpest way to see the difference is this: <strong>a random forest gives you a prediction; kriging gives you a prediction and a model of the error.</strong> Where a stated uncertainty is required — a resource statement, a regulatory exceedance assessment, anything that will be challenged — that difference decides the matter.</p>
+
+  <h3>Why a random forest on coordinates fails</h3>
+  <p>Give a random forest X and Y as features and it will fit the training data well and generalise badly. Trees partition space with axis-parallel splits, producing blocky, rectangular artefacts; the model has no notion of distance and cannot interpolate smoothly; and outside the convex hull of the training data it predicts a constant, because trees cannot extrapolate at all.</p>
+  <p>Two established fixes:</p>
+  <ul>
+    <li><strong>Regression kriging with an ML trend</strong> (week 6, generalised). Fit the random forest on genuine covariates — elevation, slope, NDVI, rainfall, distance to river — then model and krige the residuals and add them back. The forest captures non-linear covariate relationships; kriging captures the spatial structure the covariates missed. This is usually the best-performing and most defensible option.</li>
+    <li><strong>RFsp — distance features.</strong> Instead of coordinates, give the forest the distance from each prediction location to every training point as features. This gives the trees the spatial information they lack in a form they can split on. It works, though it produces a very wide feature matrix and scales poorly.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>Feature leakage: the failure that inflates published accuracies</h5>
+    <p>Machine learning gives you far more ways to leak information between training and test sets than kriging does, and spatial data makes all of them worse. Three to watch for.</p>
+    <p><strong>Random splits.</strong> Week 7's lesson, now more damaging: with many features a flexible model can effectively memorise locations, and a randomly held-out point sitting 20 m from a training point is nearly free to predict. Always use spatial blocking.</p>
+    <p><strong>Preprocessing before splitting.</strong> Scaling, imputing, or selecting features on the full dataset before splitting leaks test information into training. Fit every transformation inside the fold.</p>
+    <p><strong>Tuning on the test set.</strong> If you choose hyperparameters by looking at test performance, the test set is now part of training and your reported accuracy is optimistic. Use a separate inner loop for tuning — nested cross-validation.</p>
+  </div>
+
+  <h3>What each side gives up</h3>
+  <table class="tbl">
+    <tr><th style="width:9em"></th><th>Kriging</th><th>Random forest</th></tr>
+    <tr><td><strong>Uncertainty</strong></td><td>Explicit variance from the model; simulation gives full distributions</td><td>None natively; quantile forests and conformal methods approximate it</td></tr>
+    <tr><td><strong>Covariates</strong></td><td>Few, and linear unless you work at it</td><td>Many, non-linear, with interactions, essentially free</td></tr>
+    <tr><td><strong>Extrapolation</strong></td><td>Degrades gracefully toward the mean with growing variance</td><td>Fails silently — predicts a constant with no warning</td></tr>
+    <tr><td><strong>Interpretability</strong></td><td>Three parameters, each physically meaningful</td><td>Variable importance and partial dependence, both easy to over-read</td></tr>
+    <tr><td><strong>Small samples</strong></td><td>Workable from about 50–100 points</td><td>Needs several hundred at minimum</td></tr>
+  </table>
+  <p>The practical conclusion is unglamorous and correct: use both, compare them under a fair protocol, and report what you find. A candidate who can say <em>"random forest with kriged residuals beat plain kriging by 8% RMSE under spatial block cross-validation, but I used kriging for the exceedance assessment because the client needed confidence intervals"</em> is demonstrating exactly the judgement this unit exists to build.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 10 — A fair comparison</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Assemble a covariate stack for the Kiambu soil data: elevation, slope, aspect, topographic wetness index, mean NDVI, mean annual rainfall. Extract values at the sample points.</li>
+        <li>Fit a random forest on the covariates alone. Report out-of-bag <var>R</var>&#178; and variable importance.</li>
+        <li>Fit a second forest with X and Y added. Map both predictions. Identify the blocky artefacts in the second and explain their cause.</li>
+        <li>Implement random forest regression kriging: forest on covariates, variogram and kriging of the residuals, sum the two surfaces. Check whether the residuals have spatial structure left — if they do not, say so, because that is an informative result.</li>
+        <li>Score four models — OK, KED, RF, RF+RK — under <em>identical spatial block</em> folds. Produce one comparison table with RMSE, ME and, where available, MSDR.</li>
+        <li>Score the same four under random k-fold. Report both tables side by side and quantify the optimism induced by random splitting.</li>
+        <li>Write 200 words recommending one model for a specified purpose, including why you rejected the others.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Implement RFsp with distance features and add it to the comparison.</li>
+        <li>Use quantile regression forests to obtain prediction intervals, and compare their coverage with kriging's — do 90% intervals actually contain the truth 90% of the time?</li>
+      </ol>
+    </div>
+  </div>
+
+<pre><code><span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestRegressor
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> GroupKFold
+
+<span class="cm"># Spatial blocks become GROUPS — GroupKFold then never splits a block.</span>
+groups = spatial_blocks(coords, block_size=<span class="st">2</span> * fitted_range)
+gkf    = GroupKFold(n_splits=<span class="st">5</span>)
+
+results = []
+<span class="kw">for</span> train, test <span class="kw">in</span> gkf.split(covars, y, groups=groups):
+    rf = RandomForestRegressor(n_estimators=<span class="st">500</span>, min_samples_leaf=<span class="st">3</span>,
+                               random_state=<span class="st">0</span>, n_jobs=<span class="st">-1</span>)
+    rf.fit(covars[train], y[train])                <span class="cm"># fit INSIDE the fold</span>
+
+    <span class="cm"># --- RF + regression kriging of the residuals ----------------------</span>
+    res = y[train] - rf.predict(covars[train])
+    ok  = OrdinaryKriging(coords[train, <span class="st">0</span>], coords[train, <span class="st">1</span>], res,
+                          variogram_model=<span class="st">"exponential"</span>)
+    res_hat, _ = ok.execute(<span class="st">"points"</span>, coords[test, <span class="st">0</span>], coords[test, <span class="st">1</span>])
+
+    pred_rf   = rf.predict(covars[test])
+    pred_rfrk = pred_rf + res_hat
+
+    results.append({
+        <span class="st">"rf"</span>:   np.sqrt(((y[test] - pred_rf)   ** <span class="st">2</span>).mean()),
+        <span class="st">"rfrk"</span>: np.sqrt(((y[test] - pred_rfrk) ** <span class="st">2</span>).mean()),
+    })
+
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+print(pd.DataFrame(results).mean().round(<span class="st">3</span>))</code></pre>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why does a random forest given only coordinates produce blocky maps?</li>
+    <li>Name three distinct forms of feature leakage in a spatial ML workflow and the fix for each.</li>
+    <li>A colleague reports <var>R</var>&#178; = 0.92 from random k-fold CV on 300 clustered soil samples. What is your first question?</li>
+    <li>When would you choose kriging over a better-scoring random forest, and on what grounds?</li>
+    <li>Your residuals after the RF step show no spatial structure. What does this tell you, and what would you do?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Hengl <em>et al.</em> (2018), "Random forest as a generic framework for predictive modeling of spatial and spatio-temporal variables", <em>PeerJ</em> 6:e5518. Meyer &amp; Pebesma (2021) on the area of applicability. Ploton <em>et al.</em> (2020), <em>Nature Communications</em> 11, on spatial validation and overoptimism in the ecological literature.</p>
+</div></section>
+
+<!-- ================= WEEK 11 ================= -->
+<section class="ch" id="w11"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">11</div>
+    <div class="ch-t">
+      <p class="wkl">Week eleven</p>
+      <h2>Applications and synthesis</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Select an appropriate method for an unfamiliar applied problem and justify the choice</li>
+    <li>Write a geostatistical report that a non-specialist can act on</li>
+    <li>Present and defend an analysis under questioning</li>
+  </ul></div>
+
+  <h3>Four fields, four different pressures</h3>
+  <p><strong>Digital soil mapping.</strong> The largest current application. Sparse expensive samples, abundant cheap covariates from remote sensing and terrain analysis — the ideal setting for regression kriging and its machine-learning descendants. AfSIS and SoilGrids are the reference programmes; both publish their methods, and reading one properly is worth a week of lectures.</p>
+  <p><strong>Mineral resource estimation.</strong> Where the subject began, and the one field where the reporting is legally constrained. Codes such as JORC and SAMREC govern how a resource may be stated publicly, and a Competent Person signs off personally. Block kriging on the mining block support, careful treatment of the high-grade tail, and conditional simulation for grade-tonnage uncertainty are all standard. This is geostatistics at its most rigorous, because being wrong is actionable.</p>
+  <p><strong>Environmental and public health.</strong> Contamination, air quality, disease incidence. Almost always a threshold question rather than a value question, which means indicator methods and simulation rather than plain kriging. The audience is a regulator or a health officer, so communication of uncertainty is half the work.</p>
+  <p><strong>Climate and agriculture.</strong> Rainfall and temperature surfaces from station networks, almost always with elevation as a covariate, feeding drought indices and yield models. Kenya's station network is sparse and unevenly distributed, which makes declustering and honest error reporting matter more here than in the textbooks.</p>
+
+  <h3>What a defensible report contains</h3>
+  <p>Before it is a map, an analysis is a set of decisions someone else must be able to check. Every one of these belongs in the report:</p>
+  <ol class="body">
+    <li>The question, and the support and units of the answer.</li>
+    <li>The data: source, count, sampling design, date, and known quality problems.</li>
+    <li>Exploratory findings: distribution, transform applied and its justification, outliers investigated and the decision on each, trend, declustering.</li>
+    <li>The variogram: estimator, binning choices, model, parameters, a plot of the fit, and directional analysis with the anisotropy conclusion.</li>
+    <li>The prediction method, with the reason it was chosen over the alternatives.</li>
+    <li>Validation: the full diagnostic set, under spatial blocking, with a comparison against at least one simpler method.</li>
+    <li>Uncertainty: how it was quantified and what it does and does not cover.</li>
+    <li>The limitations, stated plainly — including where the map should not be used.</li>
+  </ol>
+  <p>Point 8 separates a professional from a technician. Every map has regions where the data do not support the prediction: outside the sampling envelope, in areas of a covariate range never observed, in unsampled corners. Say where they are. A report that identifies its own limits is far more likely to be trusted than one that does not.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 11 — Project presentation and defence</div>
+    <div class="pb">
+      <h6>Format</h6>
+      <p>Ten minutes of presentation, five minutes of questions, in pairs. Questions come from the class and from me, and answering them is a substantial part of the assessment — the reasoning behind your choices is what is being examined, not the appearance of your maps.</p>
+      <h6>You must be able to answer</h6>
+      <ul>
+        <li>Why this variogram model, and what would change if I halved the nugget?</li>
+        <li>What is your MSDR, and what does its value tell you about your error bars?</li>
+        <li>Show me where on this map your prediction should not be trusted, and say why.</li>
+        <li>You used spatial block cross-validation — what block size, and how did you choose it?</li>
+        <li>What would a competent colleague criticise first in this analysis?</li>
+      </ul>
+      <h6>Deliverable</h6>
+      <p>A report of no more than eight pages covering the eight points above, submitted with your notebook. The notebook must run start to finish on a clean machine. Include the AI-use declaration described in the unit outline: which tools, which prompts, what they produced, and what you changed and why.</p>
+    </div>
+  </div>
+
+  <h3>The one thing to carry out of this unit</h3>
+  <p>You will forget the spherical model's formula; it is in every textbook and in Appendix B. What should stay with you is the habit the whole unit has been arranged around: <strong>every prediction carries an uncertainty, that uncertainty can be quantified, and quoting a number without one is not a professional act.</strong></p>
+  <p>Software will keep making the computation easier. It has never made the judgement easier — deciding whether the data support the question, whether the model is defensible, whether the map should be trusted where someone is about to act on it. That judgement is what you were doing all semester, and it is what you are being hired for.</p>
+
+  <p class="rdg"><b>Reading.</b> Hengl &amp; MacMillan, <em>Predictive Soil Mapping with R</em> (open access). Rossiter (2018), "Past, present and future of information technology in pedometrics", <em>Geoderma</em> 324. The JORC Code (2012) for the mineral reporting context.</p>
+</div></section>
+
+<!-- ================= APPENDIX A ================= -->
+<section class="ch" id="appA"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">A</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix A</p>
+      <h2>Python refresher and self-check</h2>
+    </div>
+  </div>
+
+  <p>You met Python in GIS programming. This appendix tells you — privately, before anyone is watching — whether that is enough for what follows. Work through the twelve tasks below without help of any kind: no notes, no search, no AI assistant. The point is to find out what you actually have, and using help defeats the entire purpose.</p>
+
+  <div class="lo" style="background:var(--surface);border:1px solid var(--rule)">
+    <h5 style="color:var(--ink3)">Scoring yourself honestly</h5>
+    <ul>
+      <li><strong>10–12 comfortably</strong> — you are fine. Go straight to the Extension tasks in the practicals; the Core will not stretch you.</li>
+      <li><strong>6–9</strong> — the usual position, and perfectly workable. Spend a weekend on the resources at the end of this appendix, particularly NumPy array indexing, which is where week 3 will hurt.</li>
+      <li><strong>Below 6</strong> — this is fixable, but not by hoping. Come and see me in week 1. There is a supported route through this unit that does not require you to become a fluent programmer, and taking it early is far better than discovering the problem in week 5.</li>
+    </ul>
+  </div>
+
+  <h3>The twelve tasks</h3>
+  <ol class="body">
+    <li>Read <code>samples.csv</code> into a pandas DataFrame and print the number of rows and the column names.</li>
+    <li>Select all rows where <code>soc</code> is greater than 20 <em>and</em> <code>depth</code> is less than 30.</li>
+    <li>Add a column <code>soc_pct</code> equal to <code>soc</code> divided by 10.</li>
+    <li>Write a function <code>euclid(x1, y1, x2, y2)</code> that returns the distance between two points. Test it on a case whose answer you know.</li>
+    <li>Given lists <code>xs</code> and <code>ys</code>, use a loop to build a list of distances from every point to the point (0, 0).</li>
+    <li>Do the same with NumPy and no loop at all.</li>
+    <li>Create a 5×5 NumPy array of random numbers. Extract the third column. Extract the bottom-right 2×2 corner.</li>
+    <li>Given a 2D array <code>D</code> of pairwise distances, return the mean of all values strictly greater than 0 and less than 100.</li>
+    <li>Plot a scatter of <code>x</code> against <code>y</code>, coloured by <code>soc</code>, with a colourbar and axis labels.</li>
+    <li>This code raises <code>IndexError: index 10 is out of bounds for axis 0 with size 10</code>. Explain why, and fix it:<br>
+      <code style="display:block;margin:.4rem 0 0">for i in range(len(v) + 1): print(v[i])</code></li>
+    <li>Write a function that takes a NumPy array and returns a <em>new</em> array with values above the 95th percentile replaced by the 95th percentile. Do not modify the input.</li>
+    <li>Explain in one sentence what the following does, and why it is preferable to a loop:<br>
+      <code style="display:block;margin:.4rem 0 0">np.linalg.norm(pts[:, None, :] - pts[None, :, :], axis=-1)</code></li>
+  </ol>
+  <p>Tasks 1–5 are the floor. Tasks 6–9 are the working level for this unit. Tasks 10–12 are what the Extension work assumes — task 12 in particular is the broadcasting idiom that appears in week 5's kriging code, and understanding it is worth more than memorising any formula in this reader.</p>
+
+  <h3>Five things that will actually bite you</h3>
+  <ul>
+    <li><strong>Views versus copies.</strong> <code>b = a[2:5]</code> gives you a view — writing to <code>b</code> changes <code>a</code>. Use <code>.copy()</code> when you mean a copy. This causes silent, baffling bugs.</li>
+    <li><strong>Broadcasting.</strong> The rules by which NumPy combines arrays of different shapes. Learning them turns most loops into one line, and pairwise-distance computation is unusable without them.</li>
+    <li><strong>Chained assignment in pandas.</strong> <code>df[df.a &gt; 5]["b"] = 0</code> silently fails. Use <code>df.loc[df.a &gt; 5, "b"] = 0</code>.</li>
+    <li><strong>Index alignment.</strong> Pandas aligns on the index when you combine Series. After filtering, indices have gaps, and combining a filtered Series with a fresh array produces NaNs. Use <code>.values</code> or <code>.reset_index(drop=True)</code> deliberately.</li>
+    <li><strong>Floating-point equality.</strong> Never test <code>a == b</code> on floats. Use <code>np.isclose</code>. This matters in week 5, where γ(0) must be exactly zero.</li>
+  </ul>
+
+  <h3>Where to go if you scored low</h3>
+  <ul>
+    <li><strong>NumPy — the absolute basics</strong>, in the official NumPy documentation. Two hours, and it covers tasks 6–8.</li>
+    <li><strong>Pandas — 10 minutes to pandas</strong>, official documentation. Longer than ten minutes, worth it.</li>
+    <li><strong>Python Data Science Handbook</strong> by Jake VanderPlas, chapters 2 and 3, free online. The best single explanation of broadcasting in print.</li>
+    <li><strong>Automate the Boring Stuff with Python</strong>, chapters 1–6, free online, if the gap is in core Python rather than the libraries.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>On using AI assistants in this unit</h5>
+    <p>They are permitted, and declared. Use them for what they are good at — explaining an error message, drafting a plotting routine, reminding you of an argument name. Do not use them for the four tasks marked <em>on paper first</em> in the practicals, and do not use them for the self-check above.</p>
+    <p>The reason is not integrity policing; it is that these tools produce geostatistical code that runs and is wrong, in ways that are hard to see. A model will happily hand you random k-fold cross-validation on autocorrelated data, or a variogram fitted in degrees, or a kriging variance map captioned "uncertainty". Each of those has appeared in this unit as an error you are being trained to catch. If you cannot catch them, the tool is a liability rather than an asset — and the paper exercises are what build the ability to catch them.</p>
+  </div>
+</div></section>
+
+<!-- ================= APPENDIX B ================= -->
+<section class="ch" id="appB"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">B</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix B</p>
+      <h2>Formula sheet</h2>
+    </div>
+  </div>
+  <p>This sheet is supplied in the CATs and in the final examination. You are not expected to memorise these; you are expected to know which one to reach for, and what each symbol means.</p>
+
+  <h3>Structure</h3>
+  <div class="eq">
+    <span class="f">γ̂(<var>h</var>) = <span class="frac"><span class="t">1</span><span class="b">2<var>N</var>(<var>h</var>)</span></span> ∑<sub><var>i</var>=1</sub><sup><var>N</var>(<var>h</var>)</sup> [ <var>z</var>(<var>x</var><sub><var>i</var></sub>) − <var>z</var>(<var>x</var><sub><var>i</var></sub>+<b>h</b>) ]&#178;</span>
+    <span class="f">γ(<var>h</var>) = <var>C</var>(0) − <var>C</var>(<var>h</var>)</span>
+  </div>
+
+  <h3>Permissible models</h3>
+  <div class="eq">
+    <span class="f">Spherical&nbsp; γ(<var>h</var>) = <var>c</var><sub>0</sub> + <var>c</var><sub>1</sub>[1.5(<var>h</var>/<var>a</var>) − 0.5(<var>h</var>/<var>a</var>)&#179;], <var>h</var> ≤ <var>a</var>&nbsp;&nbsp;|&nbsp;&nbsp; <var>c</var><sub>0</sub>+<var>c</var><sub>1</sub>, <var>h</var> &gt; <var>a</var></span>
+    <span class="f">Exponential&nbsp; γ(<var>h</var>) = <var>c</var><sub>0</sub> + <var>c</var><sub>1</sub>[1 − exp(−<var>h</var>/<var>r</var>)],&nbsp;&nbsp; practical range 3<var>r</var></span>
+    <span class="f">Gaussian&nbsp; γ(<var>h</var>) = <var>c</var><sub>0</sub> + <var>c</var><sub>1</sub>[1 − exp(−<var>h</var>&#178;/<var>r</var>&#178;)],&nbsp;&nbsp; practical range <var>r</var>√3</span>
+    <span class="f">Power&nbsp; γ(<var>h</var>) = <var>c</var><sub>0</sub> + <var>b</var>·<var>h</var><sup>α</sup>,&nbsp;&nbsp; 0 &lt; α &lt; 2&nbsp;&nbsp; (unbounded — no sill)</span>
+  </div>
+
+  <h3>Ordinary kriging</h3>
+  <div class="eq">
+    <span class="f"><var>ẑ</var>(<var>x</var><sub>0</sub>) = ∑<sub><var>i</var></sub> λ<sub><var>i</var></sub> <var>z</var>(<var>x</var><sub><var>i</var></sub>),&nbsp;&nbsp;&nbsp; ∑<sub><var>i</var></sub> λ<sub><var>i</var></sub> = 1</span>
+    <span class="f">∑<sub><var>j</var></sub> λ<sub><var>j</var></sub> γ(<var>x</var><sub><var>i</var></sub>, <var>x</var><sub><var>j</var></sub>) + ψ = γ(<var>x</var><sub><var>i</var></sub>, <var>x</var><sub>0</sub>)&nbsp;&nbsp; ∀<var>i</var></span>
+    <span class="f">σ&#178;<sub>OK</sub>(<var>x</var><sub>0</sub>) = ∑<sub><var>i</var></sub> λ<sub><var>i</var></sub> γ(<var>x</var><sub><var>i</var></sub>, <var>x</var><sub>0</sub>) + ψ</span>
+  </div>
+
+  <h3>Validation</h3>
+  <div class="eq">
+    <span class="f">ME = <span class="frac"><span class="t">1</span><span class="b"><var>n</var></span></span> ∑ <var>e</var><sub><var>i</var></sub>&nbsp;&nbsp;&nbsp; RMSE = √( <span class="frac"><span class="t">1</span><span class="b"><var>n</var></span></span> ∑ <var>e</var><sub><var>i</var></sub>&#178; )&nbsp;&nbsp;&nbsp; MAE = <span class="frac"><span class="t">1</span><span class="b"><var>n</var></span></span> ∑ |<var>e</var><sub><var>i</var></sub>|</span>
+    <span class="f">MSDR = <span class="frac"><span class="t">1</span><span class="b"><var>n</var></span></span> ∑ <var>e</var><sub><var>i</var></sub>&#178; / σ̂&#178;(<var>x</var><sub><var>i</var></sub>)&nbsp;&nbsp; → 1 if the variance model is honest</span>
+  </div>
+
+  <h3>Indicators and declustering</h3>
+  <div class="eq">
+    <span class="f"><var>i</var>(<var>x</var>; <var>z</var><sub><var>k</var></sub>) = 1 if <var>z</var>(<var>x</var>) ≤ <var>z</var><sub><var>k</var></sub>, else 0&nbsp;&nbsp;&nbsp; E[<var>I</var>] = P(<var>Z</var> ≤ <var>z</var><sub><var>k</var></sub>)</span>
+    <span class="f"><var>m</var><sub>dc</sub> = <span class="frac"><span class="t">1</span><span class="b"><var>n</var><sub>cells</sub></span></span> ∑<sub><var>j</var></sub> <span class="frac"><span class="t">1</span><span class="b"><var>n</var><sub><var>j</var></sub></span></span> ∑<sub><var>i</var> ∈ <var>j</var></sub> <var>z</var>(<var>x</var><sub><var>i</var></sub>)</span>
+  </div>
+
+  <h3>Rules of thumb</h3>
+  <table class="tbl">
+    <tr><td>Maximum lag</td><td class="n">≤ ½ the survey diagonal</td></tr>
+    <tr><td>Pairs per lag class</td><td class="n">≥ 30</td></tr>
+    <tr><td>First lag width</td><td class="n">≈ mean nearest-neighbour distance</td></tr>
+    <tr><td>Angular tolerance, directional</td><td class="n">±22.5°</td></tr>
+    <tr><td>Kriging neighbourhood</td><td class="n">16–24 points, quadrant-balanced</td></tr>
+    <tr><td>Nugget / sill &gt; 0.5</td><td class="n">weak structure — reconsider</td></tr>
+    <tr><td>CV block size</td><td class="n">≥ 2 × variogram range</td></tr>
+    <tr><td>Realisations for tail probabilities</td><td class="n">≥ 500</td></tr>
+    <tr><td>Kenya UTM zones</td><td class="n">EPSG:32736 (W of 36°E) · EPSG:32737 (E of 36°E)</td></tr>
+  </table>
+</div></section>
+
+<!-- ================= APPENDIX C ================= -->
+<section class="ch" id="appC"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">C</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix C</p>
+      <h2>Datasets</h2>
+    </div>
+  </div>
+  <div class="scroll">
+  <table class="tbl">
+    <tr><th>Dataset</th><th>Used in</th><th>Notes</th></tr>
+    <tr><td><strong>Meuse</strong> — 155 topsoil samples, heavy metals, Dutch floodplain</td><td class="n">1–5, 7</td><td>The canonical teaching set. Ships with <code>geopandas</code> examples and appears throughout the literature, so you can compare your results with published ones.</td></tr>
+    <tr><td><strong>Kiambu soil</strong> — soil organic carbon, pH, texture</td><td class="n">1–2, 10</td><td>Compiled from AfSIS. Real Kenyan sampling, with real gaps and clustering.</td></tr>
+    <tr><td><strong>Kenya rainfall stations</strong> — long-term annual means with elevation</td><td class="n">6</td><td>Sparse, unevenly distributed, strongly related to elevation. The natural KED dataset.</td></tr>
+    <tr><td><strong>SRTM 30 m DEM</strong>, clipped to the study areas</td><td class="n">6, 10</td><td>The covariate for KED and the source of slope, aspect and wetness index.</td></tr>
+    <tr><td><strong>Groundwater fluoride</strong> — Rift Valley boreholes</td><td class="n">8–9</td><td>Skewed, threshold-driven, genuinely consequential. The WHO guideline is 1.5 mg/L.</td></tr>
+    <tr><td><strong>Covariate stack</strong> — terrain derivatives, mean NDVI, CHIRPS rainfall</td><td class="n">10</td><td>Pre-extracted at the sample points and supplied as a raster stack.</td></tr>
+    <tr><td><strong>Synthetic fields</strong> — simulated from known variograms</td><td class="n">3–4, 7</td><td>Generated for this unit. Because the true variogram is known, you can measure how close your fitted model came — which no real dataset allows.</td></tr>
+  </table>
+  </div>
+  <p class="rdg" style="margin-top:2rem">All datasets are distributed through the unit's shared folder as CSV and GeoTIFF, with a <code>README</code> giving the CRS, units and provenance of each. If you use them outside this unit, check the licence file — AfSIS and CHIRPS are openly licensed with attribution requirements, and the Kenyan borehole data is redistributed for teaching only.</p>
+
+  <p class="rdg"><b>EGS 2405 Geostatistics</b> · Course reader, edition 1.0 · Jomo Kenyatta University of Agriculture and Technology · September 2026. Corrections and suggestions are welcome and will be credited in the next edition.</p>
+</div></section>

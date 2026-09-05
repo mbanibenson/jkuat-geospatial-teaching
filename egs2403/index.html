@@ -1,0 +1,1851 @@
+<title>EGS 2403 Remote Sensing</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#EFF1F2; --surface:#F8FAFA; --surface2:#E2E6E8;
+  --ink:#131719; --ink2:#394245; --ink3:#687376;
+  --rule:#CFD5D7; --rule-soft:#E0E5E6;
+  --acc:#B8443A; --acc2:#CC5245; --wash:#F7E6E4;
+  --warn:#8A5A12; --warn-wash:#F6EDDC;
+  --ok:#2F6E4F; --ok-wash:#E2EEE7;
+  --code-bg:#E9ECED;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D1112; --surface:#141819; --surface2:#1C2224;
+    --ink:#E5E9EA; --ink2:#B0BABC; --ink3:#78868A;
+    --rule:#282F31; --rule-soft:#1F2527;
+    --acc:#E8877C; --acc2:#F09A90; --wash:#301F1D;
+    --warn:#D8A85C; --warn-wash:#2B2416;
+    --ok:#7FC49F; --ok-wash:#14261C;
+    --code-bg:#171C1D;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D1112; --surface:#141819; --surface2:#1C2224;
+  --ink:#E5E9EA; --ink2:#B0BABC; --ink3:#78868A;
+  --rule:#282F31; --rule-soft:#1F2527;
+  --acc:#E8877C; --acc2:#F09A90; --wash:#301F1D;
+  --warn:#D8A85C; --warn-wash:#2B2416;
+  --ok:#7FC49F; --ok-wash:#14261C;
+  --code-bg:#171C1D;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);margin:0;
+  font-family:"Spectral",Georgia,serif;font-size:17.5px;line-height:1.66;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6,.ui{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;text-wrap:balance}
+code,kbd,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+a{color:var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(1.1rem,4vw,3rem)}
+.col{max-width:70ch}
+
+.mast{padding:clamp(3rem,7vw,5rem) 0 clamp(2rem,4vw,3rem);border-bottom:2px solid var(--acc)}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--acc);margin:0 0 1.3rem}
+.mast h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .5rem}
+.mast .sub{font-size:clamp(1.05rem,2.2vw,1.35rem);color:var(--ink2);margin:0 0 2.2rem;max-width:56ch;line-height:1.45}
+.mast-meta{display:flex;flex-wrap:wrap;gap:.45rem 2.2rem;font-family:"IBM Plex Mono",monospace;
+  font-size:.73rem;letter-spacing:.05em;color:var(--ink3)}
+.mast-meta b{color:var(--ink2);font-weight:500}
+
+.toc{background:var(--surface);border-bottom:1px solid var(--rule);padding:2.2rem 0 2.4rem}
+.toc h2{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 1.1rem;font-weight:500}
+.toc ol{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:0 2.4rem}
+.toc li{border-bottom:1px solid var(--rule-soft)}
+.toc a{display:flex;gap:.85rem;align-items:baseline;padding:.5rem 0;text-decoration:none;color:var(--ink2);font-size:.94rem}
+.toc a:hover{color:var(--acc)}
+.toc a .n{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--acc);min-width:1.9em;font-weight:500}
+.toc .front a .n{color:var(--ink3)}
+
+section{padding:clamp(2.6rem,5vw,4rem) 0}
+.band{border-top:1px solid var(--rule)}
+h2.sec{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-.025em;margin:0 0 1.2rem;line-height:1.15}
+
+.ch{border-top:1px solid var(--rule);padding-top:clamp(2.4rem,5vw,3.6rem)}
+.ch-head{display:grid;grid-template-columns:auto 1fr;gap:0 1.6rem;align-items:start;margin-bottom:1.8rem}
+.ch-n{font-family:"IBM Plex Mono",monospace;font-size:clamp(2.4rem,6vw,3.8rem);font-weight:600;
+  color:var(--acc);line-height:.82;letter-spacing:-.04em;opacity:.9}
+.ch-t h2{font-size:clamp(1.55rem,3.4vw,2.25rem);font-weight:700;letter-spacing:-.028em;margin:0 0 .35rem;line-height:1.12}
+.ch-t .wkl{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink3);margin:0 0 .55rem}
+p{margin:0 0 1.05rem}
+h3{font-size:1.22rem;font-weight:700;letter-spacing:-.015em;margin:2.3rem 0 .7rem;line-height:1.25}
+h4{font-size:1.02rem;font-weight:600;margin:1.6rem 0 .45rem}
+ul,ol.body{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin-bottom:.45rem}
+strong{font-weight:600}
+
+.lo{background:var(--wash);padding:1.1rem 1.3rem;margin:0 0 2rem;max-width:70ch}
+.lo h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acc);margin:0 0 .6rem;font-weight:600}
+.lo ul{margin:0;padding-left:1.1rem;font-size:.94rem;line-height:1.5}
+.lo li{margin-bottom:.3rem;color:var(--ink2)}
+
+.defn{border-left:3px solid var(--acc);padding:.15rem 0 .15rem 1.15rem;margin:1.6rem 0;max-width:70ch}
+.defn p{margin:0;font-size:.97rem}
+.defn p + p{margin-top:.6rem}
+.defn b.term{font-weight:600;color:var(--acc)}
+
+.eq{margin:1.5rem 0;padding:1rem 1.2rem;background:var(--surface);border:1px solid var(--rule-soft);
+  max-width:70ch;overflow-x:auto}
+.eq .f{font-family:"Spectral",Georgia,serif;font-size:1.08rem;text-align:center;display:block;line-height:2}
+.eq .whr{font-size:.87rem;color:var(--ink3);margin:.7rem 0 0;text-align:left;line-height:1.5}
+var,.v{font-style:italic;font-family:"Spectral",Georgia,serif}
+sub,sup{line-height:0}
+.frac{display:inline-block;vertical-align:-.55em;text-align:center;font-size:.86em;margin:0 .18em}
+.frac .t{display:block;padding:0 .3em;border-bottom:1px solid currentColor;line-height:1.35}
+.frac .b{display:block;padding:0 .3em;line-height:1.35}
+
+pre{background:var(--code-bg);border:1px solid var(--rule-soft);padding:1rem 1.15rem;margin:1.4rem 0;
+  overflow-x:auto;max-width:76ch;font-size:.82rem;line-height:1.62;border-radius:2px}
+pre code{font-family:"IBM Plex Mono",monospace;color:var(--ink)}
+.cm{color:var(--ink3);font-style:italic}
+.kw{color:var(--acc)}
+.st{color:var(--ok)}
+.fn{color:var(--warn)}
+p code,li code,td code{font-family:"IBM Plex Mono",monospace;font-size:.85em;
+  background:var(--surface2);padding:.1em .34em;border-radius:2px}
+.lang{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink3);margin:1.4rem 0 -1.1rem;display:block}
+
+.worked{background:var(--surface);border:1px solid var(--rule);padding:1.35rem 1.5rem;margin:1.8rem 0;max-width:76ch}
+.worked > h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acc);margin:0 0 .9rem;font-weight:600}
+.worked p{font-size:.96rem}
+.worked p:last-child{margin-bottom:0}
+
+.warn{border-left:3px solid var(--acc);background:var(--wash);padding:1rem 1.25rem;margin:1.7rem 0;max-width:72ch}
+.warn h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acc);margin:0 0 .5rem;font-weight:600}
+.warn p{margin:0;font-size:.95rem;line-height:1.55}
+.warn p + p{margin-top:.6rem}
+
+.prac{border:1px solid var(--acc);margin:2.2rem 0;max-width:76ch}
+.prac .ph{background:var(--acc);color:#F7F3F2;padding:.55rem 1.2rem;
+  font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;font-weight:500}
+:root[data-theme="dark"] .prac .ph{color:#0D1112}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .prac .ph{color:#0D1112}}
+.prac .pb{padding:1.15rem 1.3rem}
+.prac h6{font-family:"Archivo",sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.03em;
+  text-transform:uppercase;margin:1.3rem 0 .5rem;color:var(--acc)}
+.prac h6:first-child{margin-top:0}
+.prac ol,.prac ul{margin:0 0 .3rem;padding-left:1.2rem;font-size:.94rem;line-height:1.55}
+.prac li{margin-bottom:.35rem;color:var(--ink2)}
+.prac p{font-size:.94rem;margin-bottom:.7rem}
+.tier{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid currentColor;padding:.1rem .38rem;margin-left:.5rem;vertical-align:.15em}
+
+.check{background:var(--surface);border-top:2px solid var(--rule);padding:1.2rem 0 0;margin:2.2rem 0 0;max-width:72ch}
+.check h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 .7rem;font-weight:500}
+.check ol{padding-left:1.3rem;margin:0 0 1rem;font-size:.94rem;line-height:1.55}
+.check li{margin-bottom:.4rem;color:var(--ink2)}
+.rdg{font-size:.9rem;color:var(--ink3);max-width:72ch;margin:1.2rem 0 0;
+  padding-top:.9rem;border-top:1px solid var(--rule-soft)}
+.rdg b{color:var(--ink2);font-weight:600}
+
+figure{margin:1.9rem 0;max-width:76ch}
+figure svg{display:block;width:100%;height:auto;max-width:580px}
+figcaption{font-size:.85rem;color:var(--ink3);margin-top:.6rem;line-height:1.5;max-width:62ch}
+figcaption b{color:var(--ink2);font-weight:600}
+
+.tbl{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem;max-width:76ch}
+.tbl th,.tbl td{text-align:left;padding:.5rem .8rem .5rem 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.tbl th{font-family:"Archivo",sans-serif;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink3);font-weight:600;border-bottom:1px solid var(--rule)}
+.tbl td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl.matrix td,.tbl.matrix th{padding:.42rem .7rem;text-align:right;border:1px solid var(--rule-soft)}
+.tbl.matrix th:first-child,.tbl.matrix td:first-child{text-align:left;font-weight:600}
+.tbl.matrix .diag{background:var(--wash);font-weight:600}
+.tbl.matrix .tot{border-top:1px solid var(--rule);font-weight:600}
+.scroll{overflow-x:auto}
+
+@media (max-width:720px){
+  body{font-size:16.5px}
+  .ch-head{grid-template-columns:1fr;gap:.5rem}
+  .ch-n{font-size:2rem}
+  .toc ol{grid-template-columns:1fr}
+}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="kicker">EGS 2403 · Jomo Kenyatta University of Agriculture and Technology</p>
+    <h1>Remote Sensing<br>Applications</h1>
+    <p class="sub">A course reader for fourth-year Geomatic Engineering and Geospatial Information Systems.</p>
+    <div class="mast-meta">
+      <span><b>11</b> teaching weeks</span>
+      <span><b>2 h</b> lecture + <b>2 h</b> laboratory</span>
+      <span><b>Google Earth Engine · QGIS · SNAP</b></span>
+      <span>Assessment <b>30 / 70</b></span>
+      <span>Edition <b>1.0</b> · Sept 2026</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <h2>Contents</h2>
+    <ol>
+      <li class="front"><a href="#using"><span class="n">§0</span><span>How to use this reader</span></a></li>
+      <li class="front"><a href="#setup"><span class="n">§0</span><span>Accounts and setup</span></a></li>
+      <li><a href="#w1"><span class="n">1</span><span>From principles to applications</span></a></li>
+      <li><a href="#w2"><span class="n">2</span><span>Earth Engine fundamentals</span></a></li>
+      <li><a href="#w3"><span class="n">3</span><span>Getting the data right</span></a></li>
+      <li><a href="#w4"><span class="n">4</span><span>Vegetation, phenology and drought</span></a></li>
+      <li><a href="#w5"><span class="n">5</span><span>Supervised classification</span></a></li>
+      <li><a href="#w6"><span class="n">6</span><span>Accuracy assessment done properly</span></a></li>
+      <li><a href="#w7"><span class="n">7</span><span>Change detection</span></a></li>
+      <li><a href="#w8"><span class="n">8</span><span>Radar — seeing through cloud</span></a></li>
+      <li><a href="#w9"><span class="n">9</span><span>Thermal, water and atmosphere</span></a></li>
+      <li><a href="#w10"><span class="n">10</span><span>Ground truth, uncertainty and ethics</span></a></li>
+      <li><a href="#w11"><span class="n">11</span><span>Applied projects and synthesis</span></a></li>
+      <li class="front"><a href="#appA"><span class="n">A</span><span>Earth Engine self-check</span></a></li>
+      <li class="front"><a href="#appB"><span class="n">B</span><span>Bands, scale factors, formulas</span></a></li>
+      <li class="front"><a href="#appC"><span class="n">C</span><span>Datasets</span></a></li>
+      <li class="front"><a href="#appD"><span class="n">D</span><span>The same analysis, without Google</span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<section id="using" class="band">
+  <div class="wrap col">
+    <h2 class="sec">How to use this reader</h2>
+    <p>You have already done a principles unit: electromagnetic radiation, sensors, orbits, resolution. This unit is about getting a <em>defensible answer</em> out of an archive — choosing the sensor, masking the cloud, classifying honestly, validating with a probability sample, and knowing what the resulting map can and cannot support.</p>
+    <p>Each chapter covers one week with the same parts: <strong>learning outcomes</strong>, the <strong>reading</strong>, a two-tier <strong>practical</strong>, <strong>self-test questions</strong>, and <strong>further reading</strong>. The <strong>Core</strong> task is what everyone completes; the <strong>Extension</strong> is for those who finish early.</p>
+    <div class="warn">
+      <h5>The Earth Engine Code Editor is JavaScript</h5>
+      <p>If you have taken Web Mapping, you have a head start — it is the same language. If you have not, the subset Earth Engine needs is small: variables, functions, objects, and one unfamiliar idea called <em>method chaining</em>. <a href="#appA">Appendix A</a> is a self-check that will tell you privately where you stand.</p>
+      <p>What trips up everyone, regardless of background, is not the syntax. It is that <strong>your code does not run on your computer</strong> — it builds a description of a computation which Google's servers execute. Week 2 is entirely about that distinction, and until it clicks, nothing else will.</p>
+    </div>
+    <p>One habit to form now. Every map you produce in this unit must be able to answer: <em>how accurate is it, and how do you know?</em> A classified image without a validation sample is a coloured picture, not a map. Week 6 is the centre of this unit, and everything before it is preparation.</p>
+  </div>
+</section>
+
+<section id="setup" class="band">
+  <div class="wrap col">
+    <h2 class="sec">Accounts and setup</h2>
+    <ol class="body">
+      <li><strong>Register for Earth Engine</strong> at <code>earthengine.google.com</code> with a Google account, selecting non-commercial or academic use. Registration approval can take a few days — <strong>do this in week 1, not the night before practical 2.</strong></li>
+      <li><strong>Open the Code Editor</strong> at <code>code.earthengine.google.com</code>. Nothing to install. It runs in the browser and does the computation on Google's infrastructure, which is why this unit works on a modest laptop.</li>
+      <li><strong>Install QGIS</strong> (long-term release) for local work, cartographic output, and the weeks where you need to look at pixels properly.</li>
+      <li><strong>Install ESA SNAP</strong> before week 8, for the SAR material that Earth Engine does not cover.</li>
+    </ol>
+    <div class="defn">
+      <p><b class="term">Why Earth Engine, given the bandwidth here.</b> A single Sentinel-2 tile is roughly 600 MB. A ten-year time series for one county, downloaded and processed locally, is hundreds of gigabytes of transfer and days of processing on a lab machine.</p>
+      <p>Earth Engine inverts this: the archive stays where it is, your code goes to it, and what comes back is a small answer — a chart, a statistic, a modest export. The transfer cost is measured in kilobytes. This is not a convenience; it is what makes continental-scale analysis possible from a university lab in Juja.</p>
+    </div>
+    <p>One caveat belongs here rather than at the end. Earth Engine is a product of a single company, offered under terms that company can change — and has changed before. <a href="#appD">Appendix D</a> states that risk plainly, shows the same analysis written in the open Python stack, and sets the exercise that makes you independent of the platform you are about to learn. Read it in week 2, not week 11.</p>
+    <p>Have a fallback ready. Earth Engine needs a working connection, and the lab's is not guaranteed on any given afternoon. Keep pre-exported GeoTIFFs of the key datasets on local disk so that a practical can proceed in QGIS when the network does not cooperate. The unit's shared folder holds these.</p>
+  </div>
+</section>
+
+<!-- ================= WEEK 1 ================= -->
+<section class="ch" id="w1"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">01</div>
+    <div class="ch-t">
+      <p class="wkl">Week one</p>
+      <h2>From principles to applications</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Choose a sensor from the requirements of an application, and defend the trade-off</li>
+    <li>Read a spectral signature and say which bands separate which surfaces</li>
+    <li>State the current constellation and what each platform is for</li>
+    <li>Distinguish processing levels and say what analysis-ready data already guarantees</li>
+    <li>Explain what changes when the computation moves to the archive</li>
+  </ul></div>
+
+  <h3>The four resolutions, as a set of trade-offs</h3>
+  <p>You know the definitions. What matters now is that you cannot have all four at once, because they trade against each other through the physics of the instrument. A detector element collects a fixed amount of energy; make the ground footprint smaller and less energy arrives, so to keep the signal-to-noise ratio usable you must widen the spectral bands or lengthen the dwell time. Every satellite is one settled compromise, and choosing among them is the first professional decision in any project.</p>
+  <table class="tbl">
+    <tr><th>If the application needs…</th><th>You are buying it with…</th></tr>
+    <tr><td>Fine spatial detail — individual buildings, field boundaries</td><td>Narrower swath, so less frequent revisit; and usually cost</td></tr>
+    <tr><td>Frequent revisit — crop phenology, flood response</td><td>Coarse pixels, because a wide swath means a large footprint</td></tr>
+    <tr><td>Many narrow spectral bands — mineralogy, water quality</td><td>Coarser pixels and a lower signal-to-noise ratio</td></tr>
+    <tr><td>Fine radiometric sensitivity — subtle water or thermal differences</td><td>Wider bands or larger pixels</td></tr>
+  </table>
+  <p>State the requirement before you choose the sensor. "Map crop types across Trans Nzoia" needs enough revisit to catch the phenological sequence and enough spatial detail to resolve fields — Sentinel-2 at 10 m every five days. "Map informal settlement structures" needs metres, not tens of metres, and revisit hardly matters — commercial very-high-resolution imagery. "Track a flood over three days under cloud" needs radar, and nothing else will do.</p>
+
+  <h3>Spectral signatures — the foundation of everything that follows</h3>
+
+  <figure>
+    <svg viewBox="0 0 500 290" role="img" aria-label="Spectral reflectance curves for vegetation, soil and water from 400 to 2400 nanometres">
+      <line x1="60" y1="230" x2="475" y2="230" stroke="var(--ink3)" stroke-width="1"/>
+      <line x1="60" y1="230" x2="60" y2="34" stroke="var(--ink3)" stroke-width="1"/>
+      <g stroke="var(--rule)" stroke-width=".7" opacity=".8">
+        <line x1="60" y1="166.7" x2="475" y2="166.7"/>
+        <line x1="60" y1="103.3" x2="475" y2="103.3"/>
+        <line x1="60" y1="40" x2="475" y2="40"/>
+      </g>
+      <rect x="60" y="34" width="54.3" height="196" fill="var(--ink3)" opacity=".07"/>
+      <text x="87" y="46" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--ink3)" text-anchor="middle">visible</text>
+      <path d="M60,220.5 L70.25,217.3 L90.75,195.2 L115.4,217.3 L121.5,204.7 L127.7,150.8 L133.9,97 L142.1,78 L162.5,71.7 L183,74.8 L203.5,81.2 L234.25,103.3 L275.25,173 L306,125.5 L326.5,128.7 L377.75,204.7 L429,166.7 L459.75,182.5"
+            fill="none" stroke="var(--ok)" stroke-width="2.3" stroke-linejoin="round"/>
+      <path d="M60,204.7 L101,182.5 L142.1,163.5 L183,150.8 L244.5,135 L275.25,144.5 L306,125.5 L347,122.3 L377.75,141.3 L429,125.5 L459.75,131.8"
+            fill="none" stroke="var(--acc)" stroke-width="2.1" stroke-linejoin="round"/>
+      <path d="M60,211 L80.5,207.8 L101,217.3 L121.5,223.7 L142.1,226.8 L183,228.4 L265,229.4 L470,229.7"
+            fill="none" stroke="var(--ink2)" stroke-width="2.1" stroke-linejoin="round"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="9.5">
+        <text x="196" y="66" fill="var(--ok)">vegetation</text>
+        <text x="352" y="112" fill="var(--acc)">bare soil</text>
+        <text x="196" y="222" fill="var(--ink2)">water</text>
+      </g>
+      <g stroke="var(--ink3)" stroke-width="1">
+        <line x1="78.45" y1="230" x2="78.45" y2="237"/><line x1="92.8" y1="230" x2="92.8" y2="243"/>
+        <line x1="114.3" y1="230" x2="114.3" y2="237"/><line x1="150.6" y1="230" x2="150.6" y2="237"/>
+        <line x1="308" y1="230" x2="308" y2="237"/><line x1="427" y1="230" x2="427" y2="237"/>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--acc)" text-anchor="middle">
+        <text x="78.45" y="247">B2</text><text x="92.8" y="253">B3</text><text x="114.3" y="247">B4</text>
+        <text x="150.6" y="247">B8</text><text x="308" y="247">B11</text><text x="427" y="247">B12</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="8.5" fill="var(--ink3)" text-anchor="middle">
+        <text x="80.5" y="268">500</text><text x="183" y="268">1000</text>
+        <text x="285.5" y="268">1500</text><text x="388" y="268">2000</text>
+        <text x="265" y="284">wavelength (nm)</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="8.5" fill="var(--ink3)" text-anchor="end">
+        <text x="54" y="233">0</text><text x="54" y="170">20</text>
+        <text x="54" y="106">40</text><text x="54" y="43">60</text>
+      </g>
+      <text x="20" y="135" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="var(--ink3)" text-anchor="middle" transform="rotate(-90 20 135)">reflectance (%)</text>
+    </svg>
+    <figcaption><b>Three surfaces, and where Sentinel-2 samples them.</b> Vegetation absorbs red (B4) for photosynthesis and scatters near-infrared (B8) strongly from leaf mesophyll — that jump is the <b>red edge</b>, and every vegetation index exploits it. Water absorbs almost everything beyond 700 nm, which is why it appears black in NIR and why NIR is the cheapest water detector there is. Soil rises gently and steadily with no red edge, which is what separates bare ground from senesced crop.</figcaption>
+  </figure>
+
+  <p>Read that figure as a set of practical rules. Vegetation is separated from soil in B8 far more strongly than in any visible band. Water is separated from everything in B8 and B11. Two vegetation types that look identical in the visible may differ in the SWIR because of moisture content. When a classification confuses two classes, the first question is <em>which band would separate them?</em> — and the answer usually comes from this figure.</p>
+  <p>It also explains the standard false-colour composite. Put B8 in the red channel, B4 in green, B3 in blue, and healthy vegetation — with its high NIR — renders bright red. This is the display convention you will use all semester, and once you have read the figure it is not arbitrary at all.</p>
+
+  <h3>The constellation you will actually use</h3>
+  <div class="scroll">
+  <table class="tbl">
+    <tr><th>Platform</th><th>Spatial</th><th>Revisit</th><th>What it is for</th></tr>
+    <tr><td><strong>Landsat 8/9</strong> OLI/TIRS</td><td class="n">30 m · 15 m pan<br>100 m thermal</td><td class="n">8 days<br>(two satellites)</td><td>The long record — continuous since 1972. Any question about change over decades starts here. Also the accessible thermal band.</td></tr>
+    <tr><td><strong>Sentinel-2</strong> A/B/C MSI</td><td class="n">10 m · 20 m · 60 m</td><td class="n">5 days</td><td>The workhorse. Best free combination of resolution and revisit. Red-edge bands are genuinely useful for crops.</td></tr>
+    <tr><td><strong>Sentinel-1</strong> SAR</td><td class="n">10 m (IW GRD)</td><td class="n">6–12 days</td><td>Cloud-penetrating radar. Floods, crop structure, deformation. Week 8.</td></tr>
+    <tr><td><strong>MODIS / VIIRS</strong></td><td class="n">250–1000 m</td><td class="n">daily</td><td>Regional and continental monitoring where daily coverage beats detail. Drought, fire, phenology.</td></tr>
+    <tr><td><strong>Sentinel-3</strong> OLCI/SLSTR</td><td class="n">300 m · 500–1000 m</td><td class="n">1–2 days</td><td>Ocean and land colour, sea and land surface temperature.</td></tr>
+    <tr><td><strong>Sentinel-5P</strong> TROPOMI</td><td class="n">~5.5 × 3.5 km</td><td class="n">daily</td><td>Atmospheric composition — NO₂, CO, SO₂, aerosol. Week 9.</td></tr>
+    <tr><td><strong>PlanetScope</strong></td><td class="n">~3 m</td><td class="n">daily</td><td>Commercial. Free education tier available and worth applying for.</td></tr>
+  </table>
+  </div>
+
+  <h3>Processing levels</h3>
+  <p>Imagery is distributed at defined levels, and knowing which you have determines what you must do before analysis.</p>
+  <ul>
+    <li><strong>Level-1 / TOA reflectance.</strong> Geometrically corrected, radiometrically calibrated, but measuring radiation at the <em>top of the atmosphere</em>. It includes whatever the atmosphere contributed. Fine for a single-date visual product; unsafe for comparing dates, because the atmosphere differed.</li>
+    <li><strong>Level-2 / surface reflectance.</strong> Atmospherically corrected — Sen2Cor for Sentinel-2, LaSRC for Landsat. This is what you want for nearly everything, and it is what "analysis-ready data" mostly means. It also carries a quality band telling you which pixels are cloud, shadow, water or snow.</li>
+    <li><strong>Level-3 / composites and derived products.</strong> Aggregated over time or space: annual composites, land-cover maps, the JRC surface water dataset. Convenient, but someone else made the decisions, and you inherit their errors along with their labour.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>Free is not the same as free of judgement</h5>
+    <p>Level-2 products have already had substantial processing applied by someone who was not thinking about your question. The cloud mask was tuned to a global average and is systematically weaker over bright soils — which is most of northern Kenya. The atmospheric correction assumes an aerosol model that may not hold over the Rift during a dust event.</p>
+    <p>Use the products; they are excellent and you could not do better yourself. But know what has been done, and check the result over your own area rather than trusting it. Week 3 is about exactly this.</p>
+  </div>
+
+  <h3>What changes when compute moves to the data</h3>
+  <p>Until recently, remote sensing meant downloading scenes and processing them locally. That model imposes hard limits: a single Sentinel-2 tile is around 600 MB, so a decade of imagery for one county is hundreds of gigabytes before you have computed anything. On a university connection this is not a delay; it is a wall.</p>
+  <p>Earth Engine, and platforms like it, invert the arrangement. The archive stays in place, your algorithm is sent to it, and only the result returns. The consequences are worth stating plainly because they reshape what questions are askable:</p>
+  <ul>
+    <li>Analysis over long time series stops being a data-management project and becomes a one-line filter.</li>
+    <li>Scale becomes nearly free — a script written for a ward runs over Kenya with a changed geometry.</li>
+    <li>The binding constraint shifts from storage and bandwidth to <strong>knowing what to ask</strong>, which is the skill this unit is actually building.</li>
+  </ul>
+
+  <div class="prac">
+    <div class="ph">Practical 1 — Register, and look at your own county</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li><strong>Register for Earth Engine today.</strong> Approval takes time and week 2 assumes you have access.</li>
+        <li>Open the Code Editor. Take the interface tour: script panel, console, inspector, map, asset manager, task manager.</li>
+        <li>Load one Sentinel-2 scene over your home county. Display it in true colour (B4-B3-B2) and false colour (B8-B4-B3), side by side.</li>
+        <li>Use the Inspector to click on: healthy vegetation, bare soil, water, and a built-up area. Record the reflectance in B2, B3, B4, B8, B11 for each, and plot the four signatures. Compare with the figure above — where does your data match, and where not?</li>
+        <li>Print the image metadata. Find and record: acquisition date, cloud cover percentage, tile ID, and the processing level.</li>
+        <li>For a stated application — pick one of crop mapping, flood response, or informal settlement mapping — write half a page choosing a sensor and defending the trade-off you accepted.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Plot spectral signatures for five crop types from a supplied field-boundary dataset. Which band pairs separate them best, and which pairs are hopeless?</li>
+        <li>Compare the same location in Landsat 9 and Sentinel-2 acquired within two days. Where do the reflectance values differ, and how much is sensor and how much is atmosphere?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why can a sensor not have fine spatial, spectral and temporal resolution simultaneously?</li>
+    <li>Why does vegetation appear red in a standard false-colour composite?</li>
+    <li>Which single band most cheaply separates water from land, and why?</li>
+    <li>When would you use Level-1 TOA rather than Level-2 surface reflectance?</li>
+    <li>Two crops are indistinguishable in the visible bands. Where would you look next, and why?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Jensen, <em>Remote Sensing of the Environment</em>, ch. 1–2 for the applications framing. Lillesand, Kiefer &amp; Chipman, ch. 1 and 5. Gorelick <em>et al.</em> (2017), "Google Earth Engine: Planetary-scale geospatial analysis for everyone", <em>RSE</em> 202 — the platform's own statement of what it is for.</p>
+</div></section>
+
+<!-- ================= WEEK 2 ================= -->
+<section class="ch" id="w2"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">02</div>
+    <div class="ch-t">
+      <p class="wkl">Week two</p>
+      <h2>Earth Engine fundamentals</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Explain the client/server distinction and predict which operations are which</li>
+    <li>Filter an ImageCollection by date, bounds and metadata</li>
+    <li>Apply a cloud mask and build a composite</li>
+    <li>Use <code>map()</code> and the reducers instead of loops</li>
+    <li>Export a result and know which export to choose</li>
+  </ul></div>
+
+  <h3>The one concept that matters</h3>
+  <p>Your script does not process imagery. It builds a <em>description</em> of a computation, sends that description to Google's servers, and receives a result. The objects in your code — <code>ee.Image</code>, <code>ee.Number</code>, <code>ee.List</code> — are handles to things that live on the server. They are not JavaScript values, and treating them as though they were is the source of nearly every problem students have in this unit.</p>
+
+<span class="lang">JavaScript · Earth Engine</span>
+<pre><code><span class="cm">// WRONG — collection.size() is an ee.Number, not a JavaScript number.</span>
+<span class="cm">// The comparison is meaningless and this loop never runs correctly.</span>
+<span class="kw">var</span> total = 0;
+<span class="kw">for</span> (<span class="kw">var</span> i = 0; i &lt; collection.size(); i++) {
+  total += collection.get(i);
+}
+
+<span class="cm">// RIGHT — describe the whole operation and let the server do it.</span>
+<span class="kw">var</span> total = collection.size();
+print(total);          <span class="cm">// print() is one of the few calls that fetches to the client</span>
+
+<span class="cm">// WRONG — a JavaScript conditional on a server-side value</span>
+<span class="kw">if</span> (image.get(<span class="st">'CLOUD_COVER'</span>) &lt; 10) { ... }
+
+<span class="cm">// RIGHT — express the condition server-side, as a filter</span>
+<span class="kw">var</span> clear = collection.filter(ee.Filter.lt(<span class="st">'CLOUDY_PIXEL_PERCENTAGE'</span>, 10));</code></pre>
+
+  <div class="defn">
+    <p><b class="term">The rule.</b> If a value came from an <code>ee.</code> object, it is on the server. You cannot compare it with <code>&lt;</code>, you cannot loop over it with <code>for</code>, and you cannot print it with anything but <code>print()</code>.</p>
+    <p>Anything you want done to many images is done with <code>.map()</code>; anything you want reduced across images or pixels is done with a <strong>reducer</strong>. Once you stop trying to write loops, Earth Engine becomes straightforward — and the code becomes shorter than the local-processing equivalent by an order of magnitude.</p>
+  </div>
+
+  <h3>Filter, mask, composite</h3>
+  <p>Almost every Earth Engine script has the same three-stage skeleton, and once you can write it from memory you can write most of this unit.</p>
+
+<span class="lang">JavaScript · Earth Engine</span>
+<pre><code><span class="kw">var</span> aoi = ee.FeatureCollection(<span class="st">'FAO/GAUL/2015/level1'</span>)
+            .filter(ee.Filter.eq(<span class="st">'ADM1_NAME'</span>, <span class="st">'Kiambu'</span>));
+
+<span class="cm">// ---- 1. FILTER: narrow the archive to what you need -------------------</span>
+<span class="kw">var</span> s2 = ee.ImageCollection(<span class="st">'COPERNICUS/S2_SR_HARMONIZED'</span>)
+           .filterBounds(aoi)
+           .filterDate(<span class="st">'2025-01-01'</span>, <span class="st">'2025-12-31'</span>)
+           .filter(ee.Filter.lt(<span class="st">'CLOUDY_PIXEL_PERCENTAGE'</span>, 40));
+
+print(<span class="st">'scenes found:'</span>, s2.size());
+
+<span class="cm">// ---- 2. MASK: remove cloud, shadow and cirrus, pixel by pixel ---------</span>
+<span class="kw">function</span> maskS2(image) {
+  <span class="kw">var</span> scl = image.select(<span class="st">'SCL'</span>);        <span class="cm">// scene classification layer</span>
+  <span class="kw">var</span> clear = scl.neq(3)                  <span class="cm">// 3  cloud shadow</span>
+                 .and(scl.neq(8))         <span class="cm">// 8  cloud, medium probability</span>
+                 .and(scl.neq(9))         <span class="cm">// 9  cloud, high probability</span>
+                 .and(scl.neq(10))        <span class="cm">// 10 thin cirrus</span>
+                 .and(scl.neq(11));       <span class="cm">// 11 snow / ice</span>
+  <span class="kw">return</span> image.updateMask(clear)
+              .divide(10000)              <span class="cm">// SCALE FACTOR — see the warning below</span>
+              .copyProperties(image, [<span class="st">'system:time_start'</span>]);
+}
+
+<span class="kw">var</span> masked = s2.map(maskS2);              <span class="cm">// map(), never a for loop</span>
+
+<span class="cm">// ---- 3. COMPOSITE: reduce many images to one --------------------------</span>
+<span class="kw">var</span> composite = masked.median().clip(aoi);
+
+Map.centerObject(aoi, 10);
+Map.addLayer(composite, {bands: [<span class="st">'B8'</span>, <span class="st">'B4'</span>, <span class="st">'B3'</span>], min: 0, max: 0.4},
+             <span class="st">'false colour — vegetation is red'</span>);</code></pre>
+
+  <p>Three notes on that script. <code>median()</code> is the standard compositing reducer because it is robust to the cloud that survived masking — a residual bright cloud is an outlier and the median ignores it, where <code>mean()</code> would not. <code>copyProperties</code> preserves the timestamp, without which any later time-series operation silently fails. And <code>clip()</code> is for display: it does not make the computation faster, and clipping early in a long chain can actually slow things down.</p>
+
+  <div class="warn">
+    <h5>Scale factors — the silent error</h5>
+    <p>Satellite products store reflectance as integers to save space, with a documented scale and offset. Forget them and everything downstream is wrong by a constant factor, with no error message.</p>
+    <p><strong>Sentinel-2 L2A:</strong> reflectance = DN / 10000.<br>
+    <strong>Landsat Collection 2 Level-2 surface reflectance:</strong> reflectance = DN × 0.0000275 − 0.2. Note the <em>offset</em> — this one is not a simple division, and applying only the multiplier gives values that look plausible and are wrong.<br>
+    <strong>Landsat Collection 2 surface temperature:</strong> kelvin = DN × 0.00341802 + 149.0.</p>
+    <p>The diagnostic is simple: <strong>surface reflectance must lie between 0 and 1.</strong> If your NDVI comes out as 3000, or your reflectance histogram peaks at 2400, you have skipped a scale factor. Check this on every new dataset, every time.</p>
+  </div>
+
+  <h3>Reducers</h3>
+  <p>A reducer collapses many values into fewer. The same objects work in three contexts, which is what makes them worth learning properly:</p>
+  <ul>
+    <li><strong>Across a collection</strong> — <code>collection.reduce(ee.Reducer.median())</code>, or the shorthand <code>collection.median()</code>. Many images become one.</li>
+    <li><strong>Across space</strong> — <code>image.reduceRegion({reducer: ee.Reducer.mean(), geometry: aoi, scale: 10})</code>. Many pixels become one statistic. <strong>Always pass <code>scale</code> explicitly</strong>, or Earth Engine picks one for you and it is rarely what you intended.</li>
+    <li><strong>By zone</strong> — <code>image.reduceRegions()</code> with a FeatureCollection. One statistic per polygon: mean NDVI per ward, in one call.</li>
+  </ul>
+
+  <h3>Exporting</h3>
+  <p>Nothing leaves Earth Engine until you export, and exports run as background tasks you must start from the Tasks tab.</p>
+  <ul>
+    <li><code>Export.image.toDrive</code> — a GeoTIFF to Google Drive. Specify <code>scale</code>, <code>region</code>, <code>crs</code> and <code>maxPixels</code>. This is the route for QGIS work.</li>
+    <li><code>Export.image.toAsset</code> — keeps the result inside Earth Engine. Use this for an intermediate you will reuse; it is far faster than recomputing a long chain each session.</li>
+    <li><code>Export.table.toDrive</code> — a CSV of statistics or sample points. This is what you will export most often, and it is tiny.</li>
+  </ul>
+  <p>Export the smallest thing that answers your question. A CSV of per-ward means is a few kilobytes; the raster it came from is gigabytes. Students routinely export a full-resolution image when they needed a table of ten numbers — and then wait an hour on a lab connection for it.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 2 — Build a clean annual composite</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Define your county as the area of interest from the GAUL boundaries.</li>
+        <li>Filter Sentinel-2 L2A to 2025 over that area. Print how many scenes you found, and print the same figure with the cloud filter removed. Report both.</li>
+        <li>Display a single scene with heavy cloud. Then apply the SCL mask and display it again. Screenshot both.</li>
+        <li>Build a median composite for the year. Display in true and false colour.</li>
+        <li>Build a second composite from the dry season only. Compare them and explain, in terms of phenology, why they differ.</li>
+        <li>Verify your scale factor: use <code>reduceRegion</code> to print the mean of B8 over the composite. If it is not between 0 and 1, find your error before going further.</li>
+        <li>Export the false-colour composite to Drive at 10 m, and open it in QGIS.</li>
+        <li>Compute mean NDVI per sub-county with <code>reduceRegions</code> and export as CSV.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Replace the SCL mask with the s2cloudless probability layer joined to the collection. Compare the two masks over a bright bare-soil area — which one over-masks?</li>
+        <li>Build a "greenest pixel" composite using <code>qualityMosaic('NDVI')</code> and compare it with the median composite. When would each be the right choice?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why does <code>for (var i = 0; i &lt; collection.size(); i++)</code> not work?</li>
+    <li>Your NDVI values range from −2000 to 8000. What went wrong?</li>
+    <li>Why is <code>median()</code> preferred over <code>mean()</code> for compositing?</li>
+    <li>What happens if you omit <code>scale</code> in a <code>reduceRegion</code> call?</li>
+    <li>When would you export to Asset rather than to Drive?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Cardille <em>et al.</em>, <em>Cloud-Based Remote Sensing with Google Earth Engine</em> (2023, open access), parts F1–F3. The Earth Engine "Client vs Server" guide — short, and it is the concept the whole platform rests on.</p>
+</div></section>
+
+<!-- ================= WEEK 3 ================= -->
+<section class="ch" id="w3"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">03</div>
+    <div class="ch-t">
+      <p class="wkl">Week three</p>
+      <h2>Getting the data right</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Say what a Level-2 product has corrected and what it has not</li>
+    <li>Recognise topographic effects and apply a correction</li>
+    <li>Harmonise Landsat and Sentinel-2 into one usable series</li>
+    <li>Smooth a noisy time series without inventing signal</li>
+    <li>Diagnose residual artefacts before they reach your analysis</li>
+  </ul></div>
+
+  <h3>What is already done, and what is not</h3>
+  <p>Level-2 surface reflectance has had the dominant atmospheric effects removed: Rayleigh scattering, aerosol scattering and absorption, and water vapour absorption, using an atmospheric model driven by ancillary data. This is a substantial and well-validated piece of work, and you should use it.</p>
+  <p>Three things it does <em>not</em> handle, all of which matter in Kenya:</p>
+  <ul>
+    <li><strong>Residual aerosol error.</strong> The correction estimates aerosol optical depth, and that estimate degrades over bright surfaces — exactly the arid and semi-arid land that covers most of northern Kenya. During a dust event the assumed aerosol model may simply be wrong.</li>
+    <li><strong>BRDF effects.</strong> Surfaces reflect differently depending on viewing and illumination geometry. Across a wide swath the view angle changes, so the same surface at the edge of a scene reads differently from the centre. Visible as a brightness gradient across a mosaic, and as a seam where two scenes meet.</li>
+    <li><strong>Topographic effects.</strong> Slopes facing the sun receive more irradiance than slopes facing away. Uncorrected, a single land-cover type on a hillside splits into two spectral populations, and your classifier dutifully maps them as two classes.</li>
+  </ul>
+
+  <h3>Topographic correction</h3>
+  <p>This matters as soon as your study area has relief — the Aberdares, Mount Kenya, the Rift escarpment, the Taita Hills. The illumination condition for a sloped pixel is</p>
+  <div class="eq">
+    <span class="f">cos <var>i</var> = cos θ<sub><var>s</var></sub> cos θ<sub><var>n</var></sub> + sin θ<sub><var>s</var></sub> sin θ<sub><var>n</var></sub> cos(φ<sub><var>s</var></sub> − φ<sub><var>n</var></sub>)</span>
+    <p class="whr">θ<sub><var>s</var></sub> is solar zenith, φ<sub><var>s</var></sub> solar azimuth, θ<sub><var>n</var></sub> terrain slope and φ<sub><var>n</var></sub> terrain aspect, all obtainable from the image metadata and a DEM. The result, <em>cos i</em>, is the illumination — 1 for a surface facing the sun directly, falling toward 0 as the surface turns away.</p>
+  </div>
+  <p>The simplest correction divides by <em>cos i</em>, which over-corrects steep shaded slopes badly. The <strong>C-correction</strong> adds an empirical term fitted per band from the regression of reflectance on <em>cos i</em>, and is the standard practical choice. SCS+C is better again for forestry, because it preserves the geotropic orientation of tree canopies rather than assuming a Lambertian surface.</p>
+  <p>Diagnose the need by displaying a false-colour composite over a mountain: if the sunlit and shaded flanks of the same forest look like different cover types, you need correction. Diagnose success by plotting reflectance against <em>cos i</em> before and after — a good correction flattens the slope of that relationship toward zero.</p>
+
+  <h3>Harmonising sensors</h3>
+  <p>Landsat 8/9 and Sentinel-2 have similar but not identical bands: different centre wavelengths, different bandwidths, different spatial resolutions. Combining them roughly triples your usable observations, which for a cloudy tropical site is often the difference between a workable time series and no time series at all. But you cannot simply concatenate them.</p>
+  <ol class="body">
+    <li><strong>Resample</strong> to a common grid — usually Sentinel-2's 10 m or a shared 30 m.</li>
+    <li><strong>Rename bands</strong> to a common scheme so that "NIR" means the same thing regardless of source.</li>
+    <li><strong>Apply cross-calibration coefficients.</strong> Published band-by-band linear transformations (Roy <em>et al.</em>, 2016) bring one sensor onto the other's scale. The adjustments are small — a few per cent — but they are systematic, and a systematic step in a time series looks exactly like real change.</li>
+    <li><strong>Verify</strong> on near-coincident acquisitions: find dates where both sensors imaged the same clear scene within a day or two, and check that the harmonised values agree.</li>
+  </ol>
+
+  <h3>Smoothing a time series</h3>
+  <p>A per-pixel NDVI series from real imagery is ragged: gaps where cloud was masked, dips where thin cloud or shadow survived the mask, and noise. Three responses, in increasing sophistication:</p>
+  <ul>
+    <li><strong>Linear interpolation across gaps.</strong> Crude, adequate for short gaps.</li>
+    <li><strong>Savitzky–Golay filtering.</strong> A moving polynomial fit that smooths while preserving peaks — which matters, because the peaks are the phenology you are trying to measure. A plain moving average flattens the growing-season maximum you came to find.</li>
+    <li><strong>Harmonic regression.</strong> Fit a constant plus sine and cosine terms at annual and semi-annual frequency. This suits Kenya particularly well: the bimodal long-rains and short-rains cycle is captured by the two harmonics, the fitted curve gives you a value on any date, and the residuals from the fit are themselves a useful anomaly signal.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>Smoothing can invent signal</h5>
+    <p>Every smoother imposes an assumption about how the underlying series behaves. If the truth contains an abrupt event — a fire, a clearance, a flood — the smoother will round it off, and you will report a gradual decline where a sudden loss occurred. Worse, an aggressive smoother across a long cloud gap will draw a confident curve through a period when you had no observations at all.</p>
+    <p>Always keep and plot the raw observations alongside the smoothed curve, and mark which points are real. If a feature exists only in the smoothed line, it does not exist.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 3 — Build a clean, harmonised series</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Build a combined Landsat 8/9 and Sentinel-2 collection over your area for 2020–2025. Rename bands to a common scheme and apply the correct scale factors to each — they differ, and one has an offset.</li>
+        <li>Verify the harmonisation: find a near-coincident clear pair and compare band values at 50 random points. Plot one against the other with a 1:1 line and report the bias.</li>
+        <li>Extract an NDVI time series for a single agricultural pixel. Plot the raw points. Count how many observations survived masking, and what fraction of the period that represents.</li>
+        <li>Apply a Savitzky–Golay smoother. Plot raw and smoothed on the same axes with the real observations marked.</li>
+        <li>Fit a harmonic model with annual and semi-annual terms. Overlay it. Does it capture the bimodal rainfall pattern?</li>
+        <li>Over a hilly area, display a false-colour composite and identify illumination effects. Compute <em>cos i</em> from a DEM and plot NIR reflectance against it. Report the correlation.</li>
+        <li>Apply a C-correction and re-plot. Report the correlation before and after.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Quantify BRDF: for one date, plot reflectance against view zenith angle across a wide scene. How large is the across-swath gradient relative to the between-class differences you care about?</li>
+        <li>Take a pixel with a known abrupt change, smooth it three ways, and measure how much each smoother delays and softens the detected break.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Name three things Level-2 surface reflectance does not correct.</li>
+    <li>How would you recognise, from a false-colour image alone, that topographic correction is needed?</li>
+    <li>Why is a simple <em>cos i</em> division a poor correction, and what does C-correction add?</li>
+    <li>Why prefer Savitzky–Golay over a moving average for phenology?</li>
+    <li>Why does harmonic regression suit Kenyan rainfall particularly well?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Roy <em>et al.</em> (2016), "Characterization of Landsat-7 to Landsat-8 reflective wavelength and normalized difference vegetation index continuity", <em>RSE</em> 185, and the companion Sentinel-2 harmonisation paper. Cardille <em>et al.</em>, part F4. Riaño <em>et al.</em> (2003) on topographic correction methods, <em>IEEE TGRS</em> 41(5).</p>
+</div></section>
+
+<!-- ================= WEEK 4 ================= -->
+<section class="ch" id="w4"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">04</div>
+    <div class="ch-t">
+      <p class="wkl">Week four</p>
+      <h2>Vegetation, phenology and drought</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Choose an index from the question rather than from habit</li>
+    <li>State where NDVI fails and what replaces it</li>
+    <li>Extract phenological metrics from a time series</li>
+    <li>Compute a Vegetation Condition Index against a proper baseline</li>
+    <li>Interpret a drought product the way an operational agency does</li>
+  </ul></div>
+
+  <h3>Indices, and what each one is for</h3>
+  <p>An index is a band ratio designed to amplify one signal and suppress others. There are hundreds; six will cover almost everything you do.</p>
+  <div class="scroll">
+  <table class="tbl">
+    <tr><th style="width:5.5em">Index</th><th>Sentinel-2 form</th><th>For, and where it fails</th></tr>
+    <tr><td><strong>NDVI</strong></td><td class="n">(B8−B4)/(B8+B4)</td><td>General greenness. <em>Saturates</em> in dense canopy — above about LAI 3 it stops responding. Also sensitive to soil background when cover is sparse.</td></tr>
+    <tr><td><strong>EVI</strong></td><td class="n">2.5(B8−B4)/<br>(B8+6B4−7.5B2+1)</td><td>Dense vegetation, where NDVI has saturated. The blue term corrects for residual aerosol.</td></tr>
+    <tr><td><strong>SAVI</strong></td><td class="n">1.5(B8−B4)/<br>(B8+B4+0.5)</td><td>Sparse cover over bright soil — rangelands, ASALs. The soil adjustment factor is what NDVI lacks.</td></tr>
+    <tr><td><strong>NDMI</strong></td><td class="n">(B8−B11)/(B8+B11)</td><td>Canopy water content. Detects water stress <em>before</em> it shows as browning, which makes it valuable for early warning.</td></tr>
+    <tr><td><strong>MNDWI</strong></td><td class="n">(B3−B11)/(B3+B11)</td><td>Open water. Outperforms NDWI in built-up areas, where concrete otherwise reads as water.</td></tr>
+    <tr><td><strong>NBR</strong></td><td class="n">(B8−B12)/(B8+B12)</td><td>Burn severity, via the difference between pre- and post-fire values.</td></tr>
+  </table>
+  </div>
+
+  <div class="warn">
+    <h5>There are two indices called NDWI, and they do different things</h5>
+    <p><strong>McFeeters (1996)</strong> NDWI = (Green − NIR)/(Green + NIR) maps <em>open water bodies</em>.<br>
+    <strong>Gao (1996)</strong> NDWI = (NIR − SWIR)/(NIR + SWIR) maps <em>vegetation water content</em>, and is usually called NDMI to avoid exactly this collision.</p>
+    <p>They share a name, use different bands, and answer different questions. Papers are frequently ambiguous about which they used. Always write the band formula in your methods rather than the name alone — and when reading someone else's work, check which one they meant before believing their result.</p>
+  </div>
+
+  <h3>Phenology</h3>
+  <p>A single date tells you little. The <em>shape of the curve through a season</em> tells you a great deal: when growth started, how fast, how high it peaked, when it senesced, and how much total greenness accumulated. From a smoothed series you can extract:</p>
+  <ul>
+    <li><strong>Start and end of season</strong> — commonly the date at which NDVI crosses a threshold, often 20% of the seasonal amplitude, on the rising and falling limbs.</li>
+    <li><strong>Peak value and date.</strong></li>
+    <li><strong>Integrated NDVI</strong> — the area under the curve across the season, which correlates with biomass production and hence with yield and with forage availability.</li>
+    <li><strong>Length of season</strong>, and in Kenya, whether there were <em>two</em> seasons or one — the failure of the short rains shows up as a missing second peak, and that is directly a food-security signal.</li>
+  </ul>
+  <p>Crop types differ in phenology even when their spectra on any single date are identical. This is why a time-series feature stack classifies crops far better than a single image, and it is the basis of practically all operational crop mapping. Week 5 uses it.</p>
+
+  <h3>From index to decision: the Vegetation Condition Index</h3>
+  <p>NDVI is not comparable between places — a value of 0.4 is poor for Kericho and remarkable for Marsabit. To ask "is this area unusually stressed?", you must compare a location against <em>its own</em> history in the <em>same season</em>. That is what VCI does.</p>
+  <div class="eq">
+    <span class="f">VCI = 100 × <span class="frac"><span class="t">NDVI<sub>current</sub> − NDVI<sub>min</sub></span><span class="b">NDVI<sub>max</sub> − NDVI<sub>min</sub></span></span></span>
+    <p class="whr">where min and max are taken over the historical record <em>for the same calendar window at the same location</em>. VCI is a percentile-like position within local history: 0 means the worst on record, 100 the best.</p>
+  </div>
+
+  <div class="worked">
+    <h5>Worked example — a March assessment in Marsabit</h5>
+    <p>For one ward, the record of mean March NDVI over the past twenty years runs from a minimum of <strong>0.18</strong> to a maximum of <strong>0.52</strong>. March 2026 comes in at <strong>0.24</strong>.</p>
+    <p>VCI = 100 × (0.24 − 0.18) / (0.52 − 0.18) = 100 × 0.06 / 0.34 = <strong>17.6</strong></p>
+    <p>Against the categories used in Kenya's drought early-warning bulletins:</p>
+    <table class="tbl" style="margin:.7rem 0">
+      <tr><th>VCI</th><th>Vegetation condition</th></tr>
+      <tr><td class="n">≥ 50</td><td>Normal or above</td></tr>
+      <tr><td class="n">35 – 50</td><td>Moderate vegetation deficit</td></tr>
+      <tr><td class="n">21 – 34</td><td>Severe vegetation deficit</td></tr>
+      <tr><td class="n">≤ 20</td><td>Extreme vegetation deficit</td></tr>
+    </table>
+    <p>17.6 falls in the extreme band. Note what has happened: an NDVI of 0.24 is unremarkable in absolute terms and would mean nothing on its own. Placed against twenty years of the same ward in the same month, it is a warning that feeds into resource allocation decisions.</p>
+    <p><strong>Two ways to get this wrong.</strong> If you build the baseline from <em>annual</em> maxima rather than the same month, you are comparing March against the historical peak of the growing season, and every March looks like a drought. If you build it from a short record — five years, say — a single unusual year sets the min or the max and distorts every subsequent value. The baseline is the whole method; treat its construction with more care than the arithmetic.</p>
+  </div>
+
+<span class="lang">JavaScript · Earth Engine</span>
+<pre><code><span class="cm">// NDVI over a long baseline, restricted to the same calendar window</span>
+<span class="kw">var</span> withNDVI = <span class="kw">function</span>(img) {
+  <span class="kw">return</span> img.addBands(img.normalizedDifference([<span class="st">'B8'</span>, <span class="st">'B4'</span>]).rename(<span class="st">'NDVI'</span>));
+};
+
+<span class="kw">var</span> march = ee.ImageCollection(<span class="st">'COPERNICUS/S2_SR_HARMONIZED'</span>)
+  .filterBounds(ward)
+  .filter(ee.Filter.calendarRange(3, 3, <span class="st">'month'</span>))   <span class="cm">// same window, every year</span>
+  .map(maskS2).map(withNDVI).select(<span class="st">'NDVI'</span>);
+
+<span class="kw">var</span> ndviMin = march.min();
+<span class="kw">var</span> ndviMax = march.max();
+<span class="kw">var</span> current = march.filterDate(<span class="st">'2026-03-01'</span>, <span class="st">'2026-04-01'</span>).median();
+
+<span class="kw">var</span> vci = current.subtract(ndviMin)
+                 .divide(ndviMax.subtract(ndviMin))
+                 .multiply(100)
+                 .rename(<span class="st">'VCI'</span>);
+
+Map.addLayer(vci, {min: 0, max: 100, palette: [<span class="st">'8B0000'</span>, <span class="st">'FF8C00'</span>, <span class="st">'FFFF00'</span>, <span class="st">'ADFF2F'</span>, <span class="st">'006400'</span>]},
+             <span class="st">'VCI, March 2026'</span>);</code></pre>
+
+  <div class="prac">
+    <div class="ph">Practical 4 — A drought assessment</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>For an agricultural pixel, compute NDVI, EVI and SAVI across one year and plot all three. Where do they diverge, and which would you trust in the dense-canopy peak?</li>
+        <li>Repeat for a rangeland pixel in an ASAL county. Which index behaves best over sparse cover on bright soil, and does the ranking match what you predicted?</li>
+        <li>Build a twenty-year NDVI record for one ASAL ward using harmonised Landsat and Sentinel-2, restricted to a single calendar month.</li>
+        <li>Compute the historical minimum and maximum, then the VCI for the most recent year. Map it with the category palette above.</li>
+        <li>Compute VCI for every year in the record and plot the time series. Identify the drought years, and check them against the published record of Kenyan droughts. Do they match? Explain any that do not.</li>
+        <li><strong>Test the baseline.</strong> Recompute VCI using a five-year baseline instead of twenty. Report how much the values move and what that implies about published VCI products.</li>
+        <li>Extract start of season, peak date and integrated NDVI for one cropland pixel across three years. Relate the variation to rainfall records.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Compute NDMI alongside NDVI through a drought onset. Does moisture stress appear before greenness declines, and by how many weeks?</li>
+        <li>Build a combined index using both vegetation and rainfall anomaly, and compare its drought classification with VCI alone.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Where does NDVI saturate, and which index would you use instead?</li>
+    <li>Distinguish the two indices called NDWI. Which maps open water?</li>
+    <li>Why is an absolute NDVI value not comparable between Kericho and Marsabit?</li>
+    <li>A colleague computes VCI against a five-year baseline. What is your concern?</li>
+    <li>Why does a time-series feature stack classify crops better than a single date?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Huete <em>et al.</em> (2002) on MODIS vegetation indices, <em>RSE</em> 83. Kogan (1995) on VCI, <em>Advances in Space Research</em> 15(11). Kenya's NDMA drought bulletins — read three consecutive months and see how the remote sensing feeds an operational decision.</p>
+</div></section>
+
+<!-- ================= WEEK 5 ================= -->
+<section class="ch" id="w5"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">05</div>
+    <div class="ch-t">
+      <p class="wkl">Week five · CAT 1 this week</p>
+      <h2>Supervised classification</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Design a class scheme whose classes are actually separable</li>
+    <li>Collect training data that represents the variation in each class</li>
+    <li>Build a feature stack combining spectral, temporal and terrain information</li>
+    <li>Train and apply a classifier in Earth Engine</li>
+    <li>Recognise overfitting before the accuracy assessment tells you</li>
+  </ul></div>
+
+  <h3>The class scheme comes first</h3>
+  <p>Before any code, decide what you are mapping. Two constraints bind, and beginners routinely violate both.</p>
+  <p><strong>Classes must be spectrally separable.</strong> "Maize" and "sorghum" may be indistinguishable on any single date. "Smallholder farm" and "commercial farm" differ by ownership, not reflectance, and no classifier can see ownership. If two classes cannot be told apart by the sensor, merge them or find a feature that does separate them — usually a temporal one.</p>
+  <p><strong>Classes must be exhaustive and mutually exclusive.</strong> Every pixel must belong to exactly one class. A scheme with "forest", "cropland" and "wetland" has nowhere to put a road. The classifier will assign it somewhere regardless, silently, and your accuracy assessment will not tell you which of your classes absorbed it.</p>
+  <p>Start from an established scheme — the FAO Land Cover Classification System, or Kenya's national land-cover classes — rather than inventing one. It costs nothing and makes your product comparable with everyone else's.</p>
+
+  <h3>Training data</h3>
+  <p>This is where classification projects succeed or fail, and it takes longer than everything else combined.</p>
+  <ul>
+    <li><strong>How many?</strong> A working minimum is around 50–100 pixels per class; more for spectrally variable classes. Random forest is fairly tolerant of imbalance, but a class with 20 samples against another with 2,000 will be under-predicted.</li>
+    <li><strong>Distributed how?</strong> Spread across the study area, not clustered where it was convenient to digitise. Training polygons drawn along one road produce a classifier that works along that road.</li>
+    <li><strong>Capturing what?</strong> The <em>internal variation</em> of each class. "Cropland" includes bare newly-planted fields, dense mid-season canopy, and senesced stubble. Train only on the green mid-season appearance and every bare field will be classified as soil.</li>
+    <li><strong>From where?</strong> High-resolution imagery in the Code Editor, existing verified maps, and field data. Record the source and the date of each sample — a training point digitised from 2019 imagery is not valid for a 2026 map if the land changed.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>Training data must never come from the map you are validating</h5>
+    <p>It is tempting to draw training polygons, classify, look at the result, and then add more polygons where it looks wrong. That is legitimate iterative refinement of the <em>training</em> set — but the moment you validate against points chosen the same way, your accuracy is meaningless, because you have measured how well the classifier reproduces your own opinion.</p>
+    <p>Validation data must be an independent probability sample drawn <em>after</em> the map exists, by a design that does not depend on the map's appearance. This is not a formality; it is the difference between a reported accuracy that means something and one that does not. Week 6 is entirely about doing it properly.</p>
+  </div>
+
+  <h3>Feature stacks</h3>
+  <p>You are not limited to the spectral bands of one date. A classifier can use any co-registered layer, and adding the right ones usually helps more than changing the algorithm:</p>
+  <ul>
+    <li><strong>Spectral</strong> — the bands of a seasonal composite.</li>
+    <li><strong>Indices</strong> — NDVI, NDMI, NDBI, MNDWI. Cheap, and they encode useful non-linear combinations.</li>
+    <li><strong>Temporal</strong> — separate dry-season and wet-season composites, or per-pixel percentiles across the year. For crop mapping this is normally the single most valuable addition, because it is phenology that separates crop types.</li>
+    <li><strong>Terrain</strong> — elevation, slope, aspect. Strong for natural vegetation, which is often altitudinally zoned.</li>
+    <li><strong>Texture</strong> — local variance or GLCM measures. Useful for built-up areas, which are spectrally heterogeneous at fine scale.</li>
+    <li><strong>Radar</strong> — Sentinel-1 backscatter adds structural information the optical bands cannot see. Week 8.</li>
+  </ul>
+
+<span class="lang">JavaScript · Earth Engine</span>
+<pre><code><span class="cm">// ---- build a feature stack: two seasons, indices, terrain -------------</span>
+<span class="kw">var</span> dry = buildComposite(<span class="st">'2025-01-01'</span>, <span class="st">'2025-03-31'</span>);
+<span class="kw">var</span> wet = buildComposite(<span class="st">'2025-04-01'</span>, <span class="st">'2025-06-30'</span>);
+<span class="kw">var</span> dem = ee.Image(<span class="st">'USGS/SRTMGL1_003'</span>);
+
+<span class="kw">var</span> stack = dry.select([<span class="st">'B2'</span>,<span class="st">'B3'</span>,<span class="st">'B4'</span>,<span class="st">'B8'</span>,<span class="st">'B11'</span>,<span class="st">'B12'</span>])
+                 .rename([<span class="st">'d_B2'</span>,<span class="st">'d_B3'</span>,<span class="st">'d_B4'</span>,<span class="st">'d_B8'</span>,<span class="st">'d_B11'</span>,<span class="st">'d_B12'</span>])
+  .addBands(wet.select([<span class="st">'B2'</span>,<span class="st">'B3'</span>,<span class="st">'B4'</span>,<span class="st">'B8'</span>,<span class="st">'B11'</span>,<span class="st">'B12'</span>])
+                 .rename([<span class="st">'w_B2'</span>,<span class="st">'w_B3'</span>,<span class="st">'w_B4'</span>,<span class="st">'w_B8'</span>,<span class="st">'w_B11'</span>,<span class="st">'w_B12'</span>]))
+  .addBands(dry.normalizedDifference([<span class="st">'B8'</span>,<span class="st">'B4'</span>]).rename(<span class="st">'d_NDVI'</span>))
+  .addBands(wet.normalizedDifference([<span class="st">'B8'</span>,<span class="st">'B4'</span>]).rename(<span class="st">'w_NDVI'</span>))
+  .addBands(dem.rename(<span class="st">'elev'</span>))
+  .addBands(ee.Terrain.slope(dem).rename(<span class="st">'slope'</span>));
+
+<span class="cm">// ---- sample the stack at the training polygons ------------------------</span>
+<span class="kw">var</span> training = stack.sampleRegions({
+  collection: trainingPolygons,   <span class="cm">// must carry a 'class' property</span>
+  properties: [<span class="st">'class'</span>],
+  scale: 10,
+  tileScale: 4                    <span class="cm">// raise this if you hit memory limits</span>
+});
+
+<span class="cm">// ---- train, and hold back nothing here — validation is a SEPARATE sample</span>
+<span class="kw">var</span> classifier = ee.Classifier.smileRandomForest({
+  numberOfTrees: 300,
+  minLeafPopulation: 3
+}).train({
+  features: training,
+  classProperty: <span class="st">'class'</span>,
+  inputProperties: stack.bandNames()
+});
+
+<span class="kw">var</span> classified = stack.classify(classifier);
+
+<span class="cm">// ---- which features are actually doing the work? ----------------------</span>
+print(<span class="st">'variable importance:'</span>, classifier.explain().get(<span class="st">'importance'</span>));</code></pre>
+
+  <h3>Choosing a classifier</h3>
+  <table class="tbl">
+    <tr><th style="width:11em">Classifier</th><th>Character</th></tr>
+    <tr><td><strong>CART</strong></td><td>A single decision tree. Interpretable — you can read the rules — but unstable: a small change in training data gives a different tree. Use it to understand, not to publish.</td></tr>
+    <tr><td><strong>Random forest</strong></td><td>Hundreds of trees on bootstrapped samples, voting. Robust, handles many correlated features, needs almost no tuning, gives variable importance. <strong>The default choice</strong>, and it is hard to beat.</td></tr>
+    <tr><td><strong>Gradient boosting</strong></td><td>Often marginally better than RF, at the cost of real tuning sensitivity. Worth trying once you have a working RF baseline.</td></tr>
+    <tr><td><strong>SVM</strong></td><td>Strong with limited training data and high-dimensional features. Slow on large areas, and kernel and cost parameters matter a great deal.</td></tr>
+    <tr><td><strong>Minimum distance, maximum likelihood</strong></td><td>The classical parametric methods. Still worth knowing — they appear throughout the older literature and in ENVI-based workflows you may inherit.</td></tr>
+  </table>
+  <p>Do not spend the semester comparing classifiers. On most real problems the difference between random forest and gradient boosting is a percentage point or two, while the difference between poor and good training data is ten or twenty. Spend your effort where the leverage is.</p>
+
+  <h3>Overfitting, and how to see it early</h3>
+  <p>A classifier that has memorised its training data will report near-perfect accuracy on that data and fail on anything else. Three signals, available before you run a formal assessment:</p>
+  <ul>
+    <li><strong>Training accuracy near 100%.</strong> Random forest will happily achieve this. It means nothing.</li>
+    <li><strong>Salt-and-pepper texture</strong> in the map — isolated single pixels of a class scattered through a homogeneous area. The model is responding to noise.</li>
+    <li><strong>Nonsense in the variable importance</strong> — a band you added carelessly dominating the model, which usually means it correlates with your training locations rather than with your classes.</li>
+  </ul>
+  <p>Remedies: more and better-distributed training data; fewer, less correlated features; a larger <code>minLeafPopulation</code>; and — the one that actually settles the question — an honest validation sample, next week.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 5 — Build a land-cover map</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Define a six-class scheme for your study area. Write one sentence per class defining it, and justify in two sentences why you expect each pair to be separable.</li>
+        <li>Collect at least 80 training polygons per class, spread across the area, and deliberately including the internal variation of each class.</li>
+        <li>Build a feature stack with dry and wet season composites, at least two indices, and terrain.</li>
+        <li>Train a random forest. Map the result with a sensible legend.</li>
+        <li>Print the variable importance. Which five features carry the model? Does that make physical sense?</li>
+        <li>Retrain using only the dry-season bands. Compare the maps. Quantify what the temporal information bought you.</li>
+        <li>Look for salt-and-pepper and for classes bleeding into one another. Name the two classes most confused, and predict — from week 1's spectral figure — which band would separate them.</li>
+        <li>Retrain with <code>minLeafPopulation</code> of 1 and of 10. Describe the difference in map texture.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Compute Jeffries–Matusita separability between every class pair from your training data. Which pair is weakest, and does it match what the map shows?</li>
+        <li>Add Sentinel-1 VV and VH to the stack. Which classes improve, and why would radar help those particularly?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Give two properties a class scheme must have, and an example of a scheme that fails each.</li>
+    <li>Why must training data capture within-class variation? Give a concrete failure.</li>
+    <li>Why is 99% training accuracy not good news?</li>
+    <li>Why does a time-series stack usually beat a better classifier on a single date?</li>
+    <li>You see isolated single-pixel patches scattered through a homogeneous area. What is happening and what are your options?</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Cardille <em>et al.</em>, part F2 on classification. Belgiu &amp; Drăguţ (2016), "Random forest in remote sensing: A review", <em>ISPRS Journal</em> 114. Foody (2002) on classification accuracy, <em>RSE</em> 80 — read it before week 6.</p>
+</div></section>
+
+<!-- ================= WEEK 6 ================= -->
+<section class="ch" id="w6"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">06</div>
+    <div class="ch-t">
+      <p class="wkl">Week six · the centre of this unit</p>
+      <h2>Accuracy assessment done properly</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Explain why training accuracy and holdout accuracy are both inadequate</li>
+    <li>Design a stratified random validation sample and compute its size</li>
+    <li>Build a confusion matrix and compute overall, producer's and user's accuracy</li>
+    <li>State the case against kappa</li>
+    <li>Produce a bias-adjusted area estimate with a confidence interval</li>
+  </ul></div>
+
+  <h3>The number you computed last week is not an accuracy</h3>
+  <p>Random forest reports an accuracy on its training data. It is typically above 95% and it is worthless — the model has seen those pixels. Splitting your training polygons into train and test is better but still inadequate, for a reason specific to this field: your training polygons were not a probability sample. You drew them where you were confident, which is where the classes are pure and obvious. The map's errors live at boundaries, in mixed pixels, and in the ambiguous cases you avoided digitising. A holdout from your training set contains none of them.</p>
+  <p>An accuracy figure is only meaningful if the validation points were selected by a <strong>probability sampling design</strong> — every pixel in the map having a known, non-zero chance of selection. That is the requirement, and everything in this chapter follows from it.</p>
+
+  <h3>Designing the sample</h3>
+  <p><strong>Simple random</strong> is valid but inefficient: rare classes get few points. If built-up land is 3% of your area, a 200-point random sample gives you about six built-up points, from which you can say almost nothing about that class.</p>
+  <p><strong>Stratified random</strong> — strata being the map classes — is the standard choice. Allocate points to each class deliberately, ensuring even rare classes get enough (a common floor is 50 per class), and weight the results by class area afterwards. That weighting is the step that students omit, and it is what makes the arithmetic below different from a plain confusion matrix.</p>
+  <p>For sample size, Cochran's formula for stratified estimation of overall accuracy:</p>
+  <div class="eq">
+    <span class="f"><var>n</var> = ( <span class="frac"><span class="t">∑ <var>W</var><sub><var>i</var></sub> <var>S</var><sub><var>i</var></sub></span><span class="b"><var>S</var>(Ô)</span></span> )<sup>2</sup> ,&nbsp;&nbsp;&nbsp; <var>S</var><sub><var>i</var></sub> = √( <var>U</var><sub><var>i</var></sub>(1 − <var>U</var><sub><var>i</var></sub>) )</span>
+    <p class="whr"><var>W</var><sub><var>i</var></sub> is the area proportion of map class <var>i</var>, <var>U</var><sub><var>i</var></sub> your <em>guess</em> at that class's user's accuracy, and <var>S</var>(Ô) the standard error you are willing to accept on overall accuracy — 0.01 is a common target. In practice this lands most projects between 200 and 800 points.</p>
+  </div>
+  <p>Then interpret each sample point against the best reference data you can obtain — high-resolution imagery, field visits, or both — <em>without looking at the map's classification of that point</em>. If you know what the map said, you will agree with it more often, and that bias is not recoverable afterwards.</p>
+
+  <div class="worked">
+    <h5>Worked example — a full assessment, end to end</h5>
+    <p>A three-class map of a 900 km² area. Mapped areas: forest 270 km² (30%), cropland 540 km² (60%), built-up 90 km² (10%). A stratified random sample of 200 points is allocated 60 / 100 / 40 and interpreted against high-resolution imagery.</p>
+    <p><strong>The confusion matrix</strong>, in sample counts. Rows are what the map said; columns are what the reference says.</p>
+    <div class="scroll">
+    <table class="tbl matrix" style="margin:.8rem 0">
+      <tr><th></th><th>Ref forest</th><th>Ref crop</th><th>Ref built</th><th>Total</th></tr>
+      <tr><th>Map forest</th><td class="diag">50</td><td>8</td><td>2</td><td>60</td></tr>
+      <tr><th>Map cropland</th><td>12</td><td class="diag">82</td><td>6</td><td>100</td></tr>
+      <tr><th>Map built</th><td>2</td><td>8</td><td class="diag">30</td><td>40</td></tr>
+      <tr class="tot"><th>Total</th><td>64</td><td>98</td><td>38</td><td>200</td></tr>
+    </table>
+    </div>
+    <p>The naive overall accuracy is (50 + 82 + 30) / 200 = <strong>81.0%</strong>. <em>This figure is wrong</em>, because the sample was stratified: built-up land is 10% of the map but 20% of the sample, so it is over-represented. We must weight by area.</p>
+
+    <p><strong>Step 1 — convert counts to area proportions.</strong> For each cell, <var>p̂</var><sub><var>ij</var></sub> = <var>W</var><sub><var>i</var></sub> × <var>n</var><sub><var>ij</var></sub> / <var>n</var><sub><var>i</var>·</sub>, with <var>W</var> = 0.30, 0.60, 0.10:</p>
+    <div class="scroll">
+    <table class="tbl matrix" style="margin:.8rem 0">
+      <tr><th></th><th>Forest</th><th>Crop</th><th>Built</th><th>W<sub>i</sub></th></tr>
+      <tr><th>Map forest</th><td class="diag">0.250</td><td>0.040</td><td>0.010</td><td>0.300</td></tr>
+      <tr><th>Map cropland</th><td>0.072</td><td class="diag">0.492</td><td>0.036</td><td>0.600</td></tr>
+      <tr><th>Map built</th><td>0.005</td><td>0.020</td><td class="diag">0.075</td><td>0.100</td></tr>
+      <tr class="tot"><th>Reference</th><td>0.327</td><td>0.552</td><td>0.121</td><td>1.000</td></tr>
+    </table>
+    </div>
+
+    <p><strong>Step 2 — the accuracies.</strong> Overall accuracy is the sum of the diagonal: 0.250 + 0.492 + 0.075 = <strong>81.7%</strong>.</p>
+    <table class="tbl" style="margin:.7rem 0">
+      <tr><th>Class</th><th>User's accuracy</th><th>Producer's accuracy</th></tr>
+      <tr><td>Forest</td><td class="n">0.250/0.300 = 83.3%</td><td class="n">0.250/0.327 = 76.5%</td></tr>
+      <tr><td>Cropland</td><td class="n">0.492/0.600 = 82.0%</td><td class="n">0.492/0.552 = 89.1%</td></tr>
+      <tr><td>Built-up</td><td class="n">0.075/0.100 = 75.0%</td><td class="n">0.075/0.121 = <strong>62.0%</strong></td></tr>
+    </table>
+    <p>Read those two columns as answers to different questions. <strong>User's accuracy</strong> answers <em>"the map says built-up here — how often is that right?"</em> — 75%, the reliability a user experiences. <strong>Producer's accuracy</strong> answers <em>"of the land that really is built-up, how much did the map find?"</em> — only 62%. The map is missing more than a third of the built-up land. That asymmetry is invisible in the overall figure.</p>
+
+    <p><strong>Step 3 — the bias-adjusted area.</strong> The reference column totals estimate the true area proportions, so:</p>
+    <table class="tbl" style="margin:.7rem 0">
+      <tr><th>Class</th><th>Mapped area</th><th>Adjusted estimate</th><th>Difference</th></tr>
+      <tr><td>Forest</td><td class="n">270 km²</td><td class="n">294.3 km²</td><td class="n">+9%</td></tr>
+      <tr><td>Cropland</td><td class="n">540 km²</td><td class="n">496.8 km²</td><td class="n">−8%</td></tr>
+      <tr><td>Built-up</td><td class="n">90 km²</td><td class="n"><strong>108.9 km²</strong></td><td class="n"><strong>+21%</strong></td></tr>
+    </table>
+
+    <p><strong>Step 4 — the confidence interval.</strong> The standard error of an estimated area proportion under stratified sampling is</p>
+    <div class="eq" style="background:var(--paper);margin:.9rem 0">
+      <span class="f"><var>S</var>(<var>p̂</var><sub>·<var>k</var></sub>) = √( ∑<sub><var>i</var></sub> <var>W</var><sub><var>i</var></sub><sup>2</sup> <span class="frac"><span class="t">(<var>n</var><sub><var>ik</var></sub>/<var>n</var><sub><var>i</var>·</sub>)(1 − <var>n</var><sub><var>ik</var></sub>/<var>n</var><sub><var>i</var>·</sub>)</span><span class="b"><var>n</var><sub><var>i</var>·</sub> − 1</span></span> )</span>
+    </div>
+    <p>For built-up: the three strata contribute 0.30²×(2/60)(58/60)/59 = 0.0000492, 0.60²×(6/100)(94/100)/99 = 0.0002051, and 0.10²×(30/40)(10/40)/39 = 0.0000481. The sum is 0.0003023, so <var>S</var> = 0.0174. At 95% confidence that is ±1.96 × 0.0174 = ±0.0341 in proportion, or <strong>±30.7 km²</strong>.</p>
+    <p style="font-size:1.02rem;margin-top:1rem"><strong>The reportable result: built-up area = 109 ± 31 km² (95% CI).</strong></p>
+    <p>Compare that with what a student would otherwise have written: <em>"built-up area is 90 km², overall accuracy 81%."</em> Both numbers in that sentence are wrong — the area by 21%, and the accuracy by a bias whose direction you could not have guessed. And the honest version carries an interval nearly a third as wide as the estimate, which is itself the most important thing the reader needs to know.</p>
+  </div>
+
+  <div class="warn">
+    <h5>Do not report kappa</h5>
+    <p>Kappa purports to correct overall accuracy for agreement "expected by chance". Pontius &amp; Millones (2011) showed the correction is not useful: kappa is very highly correlated with overall accuracy, so it adds no information, and its chance-agreement baseline — that a classifier assigns classes at random in proportion to their marginals — describes no classifier anyone builds.</p>
+    <p>It persists because reviewers expect it. Report overall, producer's and user's accuracy with confidence intervals, plus quantity and allocation disagreement if you want a summary of error structure. If a reviewer insists on kappa, give it, and cite Pontius &amp; Millones in the same sentence.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 6 — Validate your map honestly</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Compute the area of each class in your week 5 map, and the proportions <var>W</var><sub><var>i</var></sub>.</li>
+        <li>Use Cochran's formula to determine sample size for <var>S</var>(Ô) = 0.01. State your assumed user's accuracies and justify them.</li>
+        <li>Draw a stratified random sample with at least 50 points per class, using Earth Engine's <code>stratifiedSample</code>.</li>
+        <li><strong>Interpret every point against high-resolution imagery without looking at the classification.</strong> Hide the map layer while you work. Record uncertain points rather than guessing, and report how many there were.</li>
+        <li>Build the confusion matrix. Compute the naive overall accuracy first, then the area-weighted version. Report both and explain the gap.</li>
+        <li>Compute user's and producer's accuracy for every class. Identify the class the map handles worst, and say whether it is an omission or a commission problem.</li>
+        <li>Compute bias-adjusted areas with 95% confidence intervals for every class. Compare with the mapped areas.</li>
+        <li>Write the accuracy statement as it would appear in a paper — three sentences, no jargon beyond the standard terms.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Have a classmate independently interpret 50 of your validation points. Compute inter-interpreter agreement. What does the disagreement rate imply about the ceiling on your reported accuracy?</li>
+        <li>Compute quantity and allocation disagreement following Pontius &amp; Millones, and compare what they tell you against what kappa would have.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why is a holdout from your training polygons not an adequate validation set?</li>
+    <li>Distinguish user's from producer's accuracy in one sentence each, using a class from your own map.</li>
+    <li>Why must a stratified sample be area-weighted before computing overall accuracy?</li>
+    <li>Your map says a class covers 90 km² and the adjusted estimate is 109 km². Which do you report, and why?</li>
+    <li>Give the two-part argument against kappa.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> <strong>Olofsson <em>et al.</em> (2014), "Good practices for estimating area and assessing accuracy of land change", <em>RSE</em> 148 — read this one properly; it is the standard the field works to.</strong> Pontius &amp; Millones (2011), <em>IJRS</em> 32(15). Stehman &amp; Foody (2019), "Key issues in rigorous accuracy assessment", <em>RSE</em> 231.</p>
+</div></section>
+
+<!-- ================= WEEK 7 ================= -->
+<section class="ch" id="w7"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">07</div>
+    <div class="ch-t">
+      <p class="wkl">Week seven</p>
+      <h2>Change detection</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Choose a change-detection method appropriate to the change you are looking for</li>
+    <li>Explain why post-classification comparison compounds error, and quantify it</li>
+    <li>Set and defend a change threshold</li>
+    <li>Describe the time-series algorithms and say when each applies</li>
+    <li>Distinguish detection from attribution</li>
+  </ul></div>
+
+  <h3>Two images are not enough on their own</h3>
+  <p>The naive approach — classify 2000, classify 2025, compare — is the most common method in the literature and the most error-prone. Before anything else, three things must be true of your two images, and if they are not, everything you find is artefact:</p>
+  <ul>
+    <li><strong>Same season.</strong> An image from March and one from August differ enormously through phenology alone. Comparing them detects the calendar, not change.</li>
+    <li><strong>Radiometrically consistent.</strong> Both Level-2 surface reflectance, ideally from the same sensor, with the same corrections applied.</li>
+    <li><strong>Co-registered.</strong> A half-pixel misregistration produces a bright halo of spurious change along every edge in the scene — field boundaries, roads, river banks. It is one of the most common sources of a change map that is mostly rubbish.</li>
+  </ul>
+
+  <h3>The error compounding problem</h3>
+
+  <div class="worked">
+    <h5>Worked example — why post-classification comparison usually fails</h5>
+    <p>A 1,000 km² area. Suppose 5% of it — 50 km² — genuinely changed. You have two land-cover maps, each with 85% overall accuracy, which is a respectable figure.</p>
+    <p>A pixel is flagged as changed when the two maps disagree. For a pixel to be classified correctly on <em>both</em> dates: 0.85 × 0.85 = <strong>0.7225</strong>. So roughly 28% of pixels have at least one wrong label.</p>
+    <p><strong>Of the 950 km² that did not change</strong>, most of those disagreements show up as spurious change — on the order of <strong>250 km²</strong> falsely flagged.</p>
+    <p><strong>Of the 50 km² that did change</strong>, only about 72% is caught on both dates — roughly <strong>36 km²</strong> correctly flagged.</p>
+    <p>So the change map flags around 285 km², of which about 36 km² is real. <strong>Roughly one flagged pixel in eight is genuine change.</strong></p>
+    <p>Two caveats keep this honest. It assumes the two maps' errors are independent, and in practice they correlate — same classifier, same training data, same confusions — which reduces the spurious rate somewhat. And the arithmetic is illustrative, not a substitute for measuring your own maps. But the structural point survives every refinement: <strong>when real change is rare, classification error dominates the change signal.</strong> This is why direct methods, which compare the imagery rather than the classifications, are usually preferable — and why any change map must be validated as a change map, with its own sample, not inferred from the accuracies of its inputs.</p>
+  </div>
+
+  <h3>The methods</h3>
+  <table class="tbl">
+    <tr><th style="width:12em">Method</th><th>How, and when</th></tr>
+    <tr><td><strong>Image differencing</strong></td><td>Subtract one date's index from the other and threshold. Simple, robust, and it avoids the compounding problem entirely because no classification is involved. Best when the change has a clear spectral direction — deforestation, burn, flood.</td></tr>
+    <tr><td><strong>Image ratioing</strong></td><td>Divide rather than subtract. Less sensitive to multiplicative differences in illumination between dates.</td></tr>
+    <tr><td><strong>Change vector analysis</strong></td><td>Treat the multi-band difference as a vector: its <em>magnitude</em> says how much changed, its <em>direction</em> hints at what kind of change. More informative than a single index difference.</td></tr>
+    <tr><td><strong>Post-classification comparison</strong></td><td>The only method that names both the from-class and the to-class, which is what a land-cover transition matrix needs. Use it when you need that, and validate the change map independently.</td></tr>
+    <tr><td><strong>Time-series algorithms</strong></td><td>Use every available observation rather than two. Far more robust. See below.</td></tr>
+  </table>
+
+  <h3>Setting a threshold</h3>
+  <p>Differencing gives you a continuous surface; you must decide what counts as change. Three approaches, in increasing defensibility:</p>
+  <ul>
+    <li><strong>Statistical</strong> — a fixed number of standard deviations from the mean difference, commonly 1.5 or 2. Easy, arbitrary, and it assumes the no-change population dominates.</li>
+    <li><strong>Histogram-based</strong> — if the difference image is bimodal, put the threshold in the trough between the modes. Better, when the histogram cooperates.</li>
+    <li><strong>Reference-based</strong> — take a small independent sample, interpret it, and choose the threshold that gives the balance of omission and commission your application needs. More work, and the only one you can properly defend.</li>
+  </ul>
+  <p>Whichever you use, state it and show the histogram with the threshold marked. And recognise the choice is not purely technical: a low threshold catches more real change and more false alarms. Which error is worse depends on what happens next — a forest-loss alert that triggers a ranger patrol tolerates false alarms far better than one that triggers a prosecution.</p>
+
+  <h3>Time-series algorithms</h3>
+  <p>Using two dates throws away everything in between. The modern approach fits a model to a pixel's whole history and looks for departures.</p>
+  <ul>
+    <li><strong>LandTrendr</strong> — fits straight-line segments to an annual index series and identifies breakpoints. Designed for the Landsat record; excellent at separating abrupt disturbance from slow recovery, and it dates the disturbance to the year.</li>
+    <li><strong>CCDC</strong> (Continuous Change Detection and Classification) — fits a harmonic model to all available observations, and flags a change when consecutive residuals exceed expectation. Uses every image rather than one per year, so it can date change to within weeks. Computationally heavy.</li>
+    <li><strong>BFAST</strong> — decomposes a series into trend, season and remainder, and tests for structural breaks in the trend. Strong statistical footing, and it distinguishes a genuine break from a seasonal excursion.</li>
+  </ul>
+  <p>All three share one advantage: because they use the seasonal cycle as their baseline, a dry year does not read as deforestation. Bi-temporal methods have no way to make that distinction.</p>
+
+  <div class="warn">
+    <h5>Detection is not attribution</h5>
+    <p>Your algorithm found a break. It does not know whether the cause was logging, fire, charcoal burning, drought, disease, or a cloud your mask missed. Attribution requires additional evidence — the shape and edge geometry of the patch, the spectral direction of the change, the season, the recovery trajectory afterwards, ancillary data, and often a field visit or a conversation with someone local.</p>
+    <p>Reporting "500 ha of deforestation" when you have detected 500 ha of <em>negative NBR change</em> is a claim your data does not support, and in a context where such claims affect land-use policy and individual liability, the distinction matters a great deal.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 7 — Urban expansion around Nairobi and Thika</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Build same-season composites for 2000, 2010 and 2025 from harmonised Landsat and Sentinel-2. Verify the dates and confirm co-registration.</li>
+        <li>Compute NDBI and NDVI for each date. Difference 2000→2025 for both.</li>
+        <li>Plot the histogram of the NDBI difference. Is it bimodal? Set a threshold by two different methods and map both results.</li>
+        <li>Take an independent sample of 100 points, interpret each as changed or unchanged against high-resolution imagery, and use it to choose a defensible threshold. Report how much it differs from the statistical one.</li>
+        <li>Classify all three dates and perform post-classification comparison. Build the full transition matrix.</li>
+        <li>Compare the direct-differencing and post-classification change maps. Quantify the disagreement and explain it in terms of the compounding argument above.</li>
+        <li><strong>Validate the change map itself</strong> with its own stratified sample — changed and unchanged strata — and report user's and producer's accuracy for the change class.</li>
+        <li>Report the area of new built-up land with a confidence interval, using week 6's method.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Run LandTrendr over the Mau forest complex and map the year of disturbance. Compare against the published record.</li>
+        <li>Implement change vector analysis and use the direction of the vector to separate two different kinds of change.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Name three conditions two images must satisfy before you difference them.</li>
+    <li>Two maps at 85% accuracy, 5% real change. Roughly what fraction of flagged change is genuine, and why?</li>
+    <li>When is post-classification comparison the right method despite its weakness?</li>
+    <li>Why do time-series algorithms avoid mistaking a dry year for deforestation?</li>
+    <li>Distinguish detection from attribution, with an example where the difference has consequences.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Kennedy <em>et al.</em> (2010) on LandTrendr, <em>RSE</em> 114. Zhu &amp; Woodcock (2014) on CCDC, <em>RSE</em> 144. Verbesselt <em>et al.</em> (2010) on BFAST, <em>RSE</em> 114. Olofsson <em>et al.</em> (2014) again — its area-estimation guidance applies with particular force to change.</p>
+</div></section>
+
+<!-- ================= WEEK 8 ================= -->
+<section class="ch" id="w8"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">08</div>
+    <div class="ch-t">
+      <p class="wkl">Week eight</p>
+      <h2>Radar — seeing through cloud</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Explain why SAR works when optical sensing does not</li>
+    <li>State what controls backscatter and read a backscatter image</li>
+    <li>Recognise layover, foreshortening and shadow</li>
+    <li>Interpret polarisation and the VV/VH ratio</li>
+    <li>Map flood extent from Sentinel-1</li>
+  </ul></div>
+
+  <h3>The problem SAR solves</h3>
+  <p>Optical remote sensing fails under cloud, and much of Kenya is cloudy exactly when the interesting things happen. During the long rains, a whole month can pass without a usable Sentinel-2 observation over the highlands — and floods, planting, and rapid vegetation change all occur in precisely that window. Optical sensing is systematically blind to the events it is most needed for.</p>
+  <p>Synthetic Aperture Radar supplies its own illumination at microwave wavelengths that pass through cloud unimpeded. Sentinel-1 operates in C-band at 5.405 GHz — a wavelength of about 5.6 cm — and images regardless of cloud, day or night, every six to twelve days.</p>
+
+  <h3>What backscatter measures</h3>
+  <p>SAR does not measure reflected sunlight. It transmits a pulse and measures how much energy returns, reported as the backscatter coefficient σ⁰ in decibels. Three surface properties dominate:</p>
+  <ul>
+    <li><strong>Roughness</strong>, relative to the wavelength. A surface smooth at the 5.6 cm scale reflects the pulse away like a mirror — <em>specular</em> reflection — and almost nothing returns. Calm open water is the extreme case, which is why <strong>water appears very dark in SAR</strong>, typically below about −15 dB in VV against −5 to −10 dB for most land. This single fact is the basis of nearly all operational flood mapping.</li>
+    <li><strong>Moisture.</strong> The dielectric constant rises steeply with water content, so wetter soil and vegetation return more energy. Useful for soil moisture; also a confounder, because a wet field and a rough field can look alike.</li>
+    <li><strong>Structure.</strong> Volume scattering from a canopy, and double-bounce from vertical structures meeting the ground — building walls, flooded tree trunks, rice stems — which returns energy strongly back toward the sensor. Urban areas are bright in SAR for this reason.</li>
+  </ul>
+
+  <h3>Geometry, and its three distortions</h3>
+
+  <figure>
+    <svg viewBox="0 0 500 265" role="img" aria-label="Side-looking radar geometry showing layover, foreshortening and shadow">
+      <line x1="40" y1="200" x2="470" y2="200" stroke="var(--ink3)" stroke-width="1.2"/>
+      <rect x="352" y="192" width="90" height="8" fill="var(--acc)" opacity=".22"/>
+      <path d="M250,200 L285,110 L355,200 Z" fill="var(--ink3)" opacity=".16" stroke="var(--ink2)" stroke-width="1.4"/>
+      <rect x="104" y="8" width="32" height="16" fill="var(--acc)" rx="1"/>
+      <text x="120" y="36" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--acc)" text-anchor="middle">SAR</text>
+      <g stroke="var(--acc)" stroke-width="1.1" opacity=".85">
+        <line x1="120" y1="24" x2="250" y2="200"/>
+        <line x1="120" y1="24" x2="285" y2="110"/>
+      </g>
+      <line x1="285" y1="110" x2="441" y2="200" stroke="var(--acc)" stroke-width="1.1" stroke-dasharray="4 3" opacity=".7"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="8.5" fill="var(--ink2)">
+        <text x="196" y="146" transform="rotate(53 196 146)">slant range</text>
+      </g>
+      <g stroke="var(--ink2)" stroke-width="1.3" fill="none">
+        <path d="M252,214 L283,214"/><path d="M256,211 L252,214 L256,217"/><path d="M279,211 L283,214 L279,217"/>
+        <path d="M357,214 L439,214"/><path d="M361,211 L357,214 L361,217"/><path d="M435,211 L439,214 L435,217"/>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="9" text-anchor="middle">
+        <text x="267" y="230" fill="var(--acc)">layover</text>
+        <text x="267" y="242" fill="var(--ink3)" font-size="8">front slope</text>
+        <text x="398" y="230" fill="var(--acc)">shadow</text>
+        <text x="398" y="242" fill="var(--ink3)" font-size="8">no return at all</text>
+        <text x="320" y="152" fill="var(--ink3)" font-size="8.5">back slope</text>
+        <text x="320" y="163" fill="var(--ink3)" font-size="8">stretched</text>
+      </g>
+      <circle cx="285" cy="110" r="3.5" fill="var(--acc)"/>
+      <text x="292" y="103" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="var(--acc)">summit returns first</text>
+      <text x="250" y="258" font-family="Spectral, serif" font-style="italic" font-size="10" fill="var(--ink3)" text-anchor="middle">Radar orders returns by distance from the sensor, not by position on the ground</text>
+    </svg>
+    <figcaption><b>Everything odd about SAR imagery follows from one fact:</b> the sensor looks sideways and sorts returns by slant range. Where a slope faces the sensor more steeply than the incidence angle, the <b>summit is nearer than the base</b>, so the mountain top appears to fall over toward the sensor — <b>layover</b>. A gentler facing slope is compressed rather than inverted — <b>foreshortening</b>. Behind the hill, nothing is illuminated at all — <b>shadow</b>, which contains no information whatever and must never be interpreted as a dark surface.</figcaption>
+  </figure>
+
+  <p>The practical consequence: in mountainous terrain — the Aberdares, Mount Kenya, the Rift escarpments — parts of every SAR scene are unusable, and a shadow region is not water even though it is as dark as water. Terrain-corrected products handle the geometry, but they cannot invent data where none was collected. Mask layover and shadow explicitly; Earth Engine's Sentinel-1 collection is terrain-corrected but does not mask them for you.</p>
+
+  <h3>Polarisation</h3>
+  <p>Sentinel-1 in its standard mode transmits vertically and receives both vertically (VV) and horizontally (VH). The pair carries structural information:</p>
+  <ul>
+    <li><strong>VV</strong> — co-polarised. Sensitive to surface roughness and moisture. The band for water and flood mapping.</li>
+    <li><strong>VH</strong> — cross-polarised. Energy only changes polarisation through multiple scattering, so VH responds to <em>volume</em> — canopy structure. The band for vegetation and crop structure.</li>
+    <li><strong>VH/VV ratio</strong> — separates volume scattering from surface scattering, and is often the most informative single feature for distinguishing crop types and growth stages.</li>
+  </ul>
+
+  <h3>Speckle</h3>
+  <p>SAR images have a grainy salt-and-pepper texture that is not noise in the ordinary sense. It arises from coherent interference among the many scatterers within a resolution cell, and it is deterministic — image the same scene twice under identical geometry and you get the same speckle pattern.</p>
+  <p>It still has to be reduced before most analysis. <strong>Multi-looking</strong> averages several independent looks, trading resolution for radiometric quality. <strong>Adaptive filters</strong> — Lee, refined Lee, Frost — smooth homogeneous areas while preserving edges. For a threshold-based flood map, a modest speckle filter makes the difference between a clean water mask and a shredded one. Do not over-filter: aggressive smoothing removes small water bodies along with the speckle.</p>
+
+<span class="lang">JavaScript · Earth Engine</span>
+<pre><code><span class="cm">// Sentinel-1 GRD in Earth Engine arrives terrain-corrected and in dB.</span>
+<span class="kw">var</span> s1 = ee.ImageCollection(<span class="st">'COPERNICUS/S1_GRD'</span>)
+  .filterBounds(aoi)
+  .filter(ee.Filter.eq(<span class="st">'instrumentMode'</span>, <span class="st">'IW'</span>))
+  .filter(ee.Filter.listContains(<span class="st">'transmitterReceiverPolarisation'</span>, <span class="st">'VV'</span>))
+  .filter(ee.Filter.eq(<span class="st">'orbitProperties_pass'</span>, <span class="st">'DESCENDING'</span>))  <span class="cm">// keep geometry constant</span>
+  .select(<span class="st">'VV'</span>);
+
+<span class="kw">var</span> before = s1.filterDate(<span class="st">'2026-03-01'</span>, <span class="st">'2026-03-25'</span>).median();
+<span class="kw">var</span> after  = s1.filterDate(<span class="st">'2026-04-20'</span>, <span class="st">'2026-04-30'</span>).median();
+
+<span class="cm">// speckle reduction — enough to stabilise the threshold, not enough to erase ponds</span>
+<span class="kw">var</span> smooth = <span class="kw">function</span>(img) {
+  <span class="kw">return</span> img.focalMedian(50, <span class="st">'circle'</span>, <span class="st">'meters'</span>);
+};
+
+<span class="cm">// water is specular: very low backscatter. Threshold, then remove pre-existing water.</span>
+<span class="kw">var</span> THRESH = -16;                          <span class="cm">// dB — CHECK THIS against your own histogram</span>
+<span class="kw">var</span> waterAfter  = smooth(after ).lt(THRESH);
+<span class="kw">var</span> waterBefore = smooth(before).lt(THRESH);
+<span class="kw">var</span> flooded = waterAfter.and(waterBefore.not());
+
+<span class="cm">// exclude permanent water and steep terrain, where shadow mimics water</span>
+<span class="kw">var</span> jrc   = ee.Image(<span class="st">'JRC/GSW1_4/GlobalSurfaceWater'</span>).select(<span class="st">'seasonality'</span>);
+<span class="kw">var</span> slope = ee.Terrain.slope(ee.Image(<span class="st">'USGS/SRTMGL1_003'</span>));
+flooded = flooded.updateMask(jrc.lt(5)).updateMask(slope.lt(5));
+
+<span class="kw">var</span> areaKm2 = flooded.multiply(ee.Image.pixelArea()).divide(1e6)
+  .reduceRegion({reducer: ee.Reducer.sum(), geometry: aoi, scale: 20, maxPixels: 1e10});
+print(<span class="st">'flooded area, km²:'</span>, areaKm2);</code></pre>
+
+  <div class="warn">
+    <h5>Do not accept a threshold from a textbook</h5>
+    <p>The −16 dB above is a starting point, not a constant. The right threshold depends on the incidence angle, the wind — a roughened water surface backscatters far more than a calm one and can disappear from your mask entirely — the season, and your speckle filtering. Plot the histogram of your own scene: open water should appear as a distinct low mode, and the threshold belongs in the trough.</p>
+    <p>And mask the confusers explicitly, as the code above does. Radar shadow, dry smooth sand, and asphalt all produce low backscatter and will otherwise be mapped as flood. A flood map that includes the runway at Wilson Airport has not been checked.</p>
+  </div>
+
+  <div class="prac">
+    <div class="ph">Practical 8 — Map a real flood</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Choose a documented Kenyan flood event — Budalangi, Garissa on the Tana, or Tana River county. Find its dates.</li>
+        <li>Attempt an optical assessment first: how many usable cloud-free Sentinel-2 scenes exist in the two weeks after onset? Record the answer. It is the argument for this entire week.</li>
+        <li>Build before and after Sentinel-1 VV composites. Keep the orbit direction constant and say why that matters.</li>
+        <li>Display both. Identify permanent water, and describe what the flooded area looks like relative to its surroundings.</li>
+        <li>Plot the VV histogram for both dates. Identify the water mode and choose your threshold from the trough, not from these notes.</li>
+        <li>Map flood extent as newly-water. Mask permanent water using the JRC dataset and steep slopes.</li>
+        <li>Report the flooded area in km². Overlay settlements and estimate exposed population, stating your assumptions.</li>
+        <li>Validate against any available optical imagery, news reports or official figures. Where does your map disagree, and why?</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Add VH and the VH/VV ratio and attempt to separate flooded vegetation — which double-bounces and appears <em>bright</em>, not dark — from open water.</li>
+        <li>Process a Sentinel-1 SLC pair in SNAP through to an interferogram, and interpret the coherence image over the flooded area.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why is open water dark in SAR?</li>
+    <li>Explain layover in one sentence, and say why it cannot be corrected by better processing.</li>
+    <li>What does VH respond to that VV does not?</li>
+    <li>Why is speckle not noise in the usual sense, and why must it still be reduced?</li>
+    <li>Name three surfaces that could be falsely mapped as flood by a simple threshold, and how you would exclude each.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Richards, <em>Remote Sensing with Imaging Radar</em> (2009), ch. 1–3. The ESA Sentinel-1 user guide. Cardille <em>et al.</em>, part F3 on SAR in Earth Engine. Moreira <em>et al.</em> (2013), "A tutorial on synthetic aperture radar", <em>IEEE GRSM</em> 1(1) — the best single introduction available.</p>
+</div></section>
+
+<!-- ================= WEEK 9 ================= -->
+<section class="ch" id="w9"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">09</div>
+    <div class="ch-t">
+      <p class="wkl">Week nine</p>
+      <h2>Thermal, water and atmosphere</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Retrieve land surface temperature and state its assumptions</li>
+    <li>Quantify an urban heat island against a defensible rural reference</li>
+    <li>Describe how evapotranspiration is estimated from imagery</li>
+    <li>Use the JRC surface water dataset to analyse water body change</li>
+    <li>Read a Sentinel-5P atmospheric product and state its limitations</li>
+  </ul></div>
+
+  <h3>Land surface temperature</h3>
+  <p>A thermal sensor measures emitted radiance, from which brightness temperature follows by inverting the Planck function. Converting that to the actual surface temperature requires <strong>emissivity</strong> — how efficiently a surface radiates compared with a perfect black body. Water is near 0.99, dense vegetation about 0.98, bare soil 0.92–0.96, and concrete and metal roofing lower still and highly variable.</p>
+  <p>Get emissivity wrong and your temperature is wrong: an error of 0.01 in emissivity translates to roughly 0.5–0.7 K. Most operational approaches estimate emissivity from NDVI via a vegetation-cover fraction, which works reasonably over vegetated land and poorly over the mixed urban surfaces where you most want the answer.</p>
+  <p>Note also what LST is and is not. It is the <em>radiometric temperature of the surface</em> — the roof, the road, the leaf canopy — not the air temperature a person experiences. On a sunny afternoon a tarmac surface can read 20 K above the air temperature two metres above it. Reporting LST as "temperature" without qualification is a real misrepresentation, and it appears in published work.</p>
+
+  <div class="worked">
+    <h5>Worked example — LST from Landsat Collection 2</h5>
+    <p>Landsat Collection 2 Level-2 provides a surface temperature band, <code>ST_B10</code>, as scaled integers. The documented conversion is <strong>kelvin = DN × 0.00341802 + 149.0</strong>.</p>
+    <p>A pixel over the Nairobi CBD reads <strong>DN = 44,000</strong>.</p>
+    <p>44,000 × 0.00341802 = 150.39<br>150.39 + 149.0 = <strong>299.39 K</strong><br>299.39 − 273.15 = <strong>26.2 °C</strong></p>
+    <p>Now the two ways students get this wrong. Forget the scale entirely and you report 44,000 — obviously absurd, and therefore harmless. Subtract 273.15 from the raw DN and you report <strong>43,727 °C</strong>, equally absurd. But apply the multiplier and <em>forget the 149.0 offset</em> and you report 150.4 K, or −122.8 °C — a number that is wrong by 150 degrees and yet looks like a temperature. That third error is the dangerous one, because it survives a careless glance.</p>
+    <p><strong>Always sanity-check against physical reality.</strong> Land surface temperature in Kenya should fall roughly between 10 °C and 60 °C. Anything outside that means a scaling error, not a discovery.</p>
+  </div>
+
+  <h3>Urban heat islands</h3>
+  <p>Cities are hotter than their surroundings: dark impervious surfaces absorb more shortwave radiation, there is little vegetation to cool by transpiration, and the urban geometry traps longwave radiation. The measurement is straightforward and the design decisions are where the difficulty lies.</p>
+  <ul>
+    <li><strong>Choosing the rural reference</strong> is the whole method. It must be genuinely comparable — similar elevation, similar background land cover, close enough that regional climate is the same. An irrigated farm as your reference produces a spuriously large heat island; a bare quarry produces a spuriously small one, or a negative one.</li>
+    <li><strong>Time of day matters enormously.</strong> Landsat overpasses Kenya at around 10:30 local time, well before the afternoon peak. Daytime and night-time heat islands have different magnitudes and different physical causes, and a satellite that only ever sees mid-morning cannot tell you about either extreme.</li>
+    <li><strong>Relate it to something.</strong> The useful analysis is not the temperature map but the relationship — LST against NDVI, against impervious fraction, against distance from the centre. That is what supports a recommendation about tree planting or roofing materials.</li>
+  </ul>
+
+  <h3>Evapotranspiration</h3>
+  <p>ET is the largest term in the water balance of most Kenyan catchments and the one hardest to measure directly. Satellite methods exploit the surface energy balance: net radiation is partitioned between ground heat flux, sensible heat and latent heat, and latent heat <em>is</em> evapotranspiration. Because a well-watered surface stays cool through transpiration while a water-stressed one heats up, surface temperature carries the signal.</p>
+  <ul>
+    <li><strong>SEBAL</strong> and <strong>METRIC</strong> anchor the energy balance at two extreme pixels within the scene — a "hot" dry pixel with no ET and a "cold" wet pixel at maximum ET — and interpolate between. Accurate, but the operator chooses those anchor pixels, and the answer depends on that choice.</li>
+    <li><strong>SSEBop</strong> uses pre-defined boundary conditions rather than scene-specific anchors, which makes it reproducible and operational at the cost of some local accuracy.</li>
+  </ul>
+  <p>The applications are concrete and Kenyan: irrigation scheduling in the Rift Valley horticulture schemes, water allocation in the Ewaso Ng'iro basin, and crop water productivity assessment. FAO's WaPOR portal publishes ET for Africa and is worth knowing.</p>
+
+  <h3>Surface water</h3>
+  <p>The JRC Global Surface Water dataset is a finished product built from 40 years of Landsat, and it saves you an enormous amount of work. It provides, at 30 m: occurrence (the percentage of observations in which each pixel was water), change intensity, seasonality, recurrence, and transitions between permanent, seasonal and no water.</p>
+  <p>Kenya offers unusually good material here. The Rift Valley lakes — Baringo, Nakuru, Naivasha, Turkana — have undergone dramatic and well-documented level changes, with substantial rises since about 2010 that displaced settlements and flooded infrastructure. The occurrence layer distinguishes the historically permanent lake from the recently inundated margin immediately, and that distinction is exactly what a planning question needs.</p>
+
+  <h3>Atmospheric composition</h3>
+  <p>Sentinel-5P's TROPOMI instrument measures NO₂, CO, SO₂, CH₄, O₃ and aerosol index daily at roughly 5.5 × 3.5 km. Three limitations to state whenever you use it:</p>
+  <ul>
+    <li>It measures a <strong>column</strong> — the total through the whole atmosphere — not a ground-level concentration. The relationship between column NO₂ and what a person breathes depends on the vertical distribution, which varies.</li>
+    <li>The pixel is kilometres across. It resolves a city, not a road.</li>
+    <li>Cloud blocks retrieval, so the record is patchy, and the gaps are not random.</li>
+  </ul>
+  <p>Within those limits it is genuinely useful: NO₂ over Nairobi shows a clear weekday–weekend cycle that tracks traffic, and the aerosol index picks up biomass burning across the region during the dry season.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 9 — Nairobi's heat island, and a Rift Valley lake</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Retrieve LST over Nairobi from Landsat Collection 2 for a cloud-free dry-season date. Apply the scale and offset correctly and sanity-check the range before doing anything else.</li>
+        <li>Map LST with a sensible palette. Identify the hottest and coolest areas and relate them to what is on the ground.</li>
+        <li>Compute NDVI for the same date. Plot LST against NDVI for 1,000 random points, fit a line, and report the slope in °C per unit NDVI.</li>
+        <li>Define an urban core and a rural reference. Justify your reference in three sentences. Compute the heat island magnitude.</li>
+        <li>Test the sensitivity: recompute with two different rural references and report how much the answer moves. This is the honest part of the exercise.</li>
+        <li>Load the JRC surface water dataset for a Rift Valley lake. Map occurrence and seasonality, and quantify the area that changed from land to water since 2010.</li>
+        <li>Overlay settlements and roads on the newly inundated area and estimate what was affected.</li>
+        <li>Load Sentinel-5P NO₂ over Nairobi. Compare weekday and weekend means over one year and report the difference with its uncertainty.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Compute LST for the same date across five years and test whether the heat island is intensifying. State clearly why five mid-morning observations are weak evidence either way.</li>
+        <li>Compute an SSEBop-style ET estimate for an irrigation scheme and compare with published crop water requirements.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why does surface temperature retrieval need emissivity, and what does a 0.01 error cost you?</li>
+    <li>Distinguish land surface temperature from air temperature, with a case where confusing them matters.</li>
+    <li>What makes a rural reference defensible in a heat island study?</li>
+    <li>Why does Landsat overpass timing limit what you can say about urban heat?</li>
+    <li>Give three limitations of Sentinel-5P NO₂ that belong in any methods section using it.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> The USGS Landsat Collection 2 Level-2 Science Product guide, for the scale factors and the surface temperature algorithm. Pekel <em>et al.</em> (2016), "High-resolution mapping of global surface water and its long-term changes", <em>Nature</em> 540. Senay <em>et al.</em> (2013) on SSEBop, <em>JAWRA</em> 49(3).</p>
+</div></section>
+
+<!-- ================= WEEK 10 ================= -->
+<section class="ch" id="w10"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">10</div>
+    <div class="ch-t">
+      <p class="wkl">Week ten · CAT 2 this week</p>
+      <h2>Ground truth, uncertainty and ethics</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Design a field campaign that actually supports your analysis</li>
+    <li>Choose a positioning method matched to your pixel size</li>
+    <li>Handle the mismatch between a field plot and a pixel</li>
+    <li>Communicate uncertainty to someone who must act on it</li>
+    <li>Identify the ethical questions your project raises, and answer them</li>
+  </ul></div>
+
+  <h3>"Ground truth" is a misleading phrase</h3>
+  <p>Field data is not truth. It is another observation, with its own errors: the GPS fix, the observer's judgement, the date it was collected, the definition of the class in the observer's head. Two competent field workers will disagree on perhaps 5–15% of land-cover calls at boundaries and in mixed cover — and that disagreement rate is a ceiling on any accuracy you can demonstrate. If your interpreters agree only 90% of the time, you cannot demonstrate 95% map accuracy, because you have no instrument capable of measuring it.</p>
+  <p>The honest term is <em>reference data</em>, and the honest practice is to report how it was collected, by whom, when, and with what agreement between interpreters.</p>
+
+  <h3>Designing a field campaign</h3>
+  <ul>
+    <li><strong>Sample by design, not by road.</strong> The single biggest weakness in most student and much professional field data is that everything was collected within 200 m of a passable track. That is a biased sample of the landscape and it biases everything computed from it. If access forces you to sample near roads, say so explicitly and discuss the direction of the bias.</li>
+    <li><strong>Match the timing.</strong> Land cover observed in August cannot validate a March image in an agricultural landscape. For crops, timing is everything.</li>
+    <li><strong>Record the plot, not just the point.</strong> Note the homogeneity of the surroundings — a point in a 5-hectare uniform field is far more useful than one at a boundary.</li>
+    <li><strong>Record uncertainty.</strong> Let observers mark a call as uncertain rather than forcing a choice. Those records are informative, and discarding them silently biases the assessment toward easy cases.</li>
+    <li><strong>Use a structured digital form.</strong> ODK or KoboToolbox on a phone: enforced field types, automatic GPS capture, photographs, timestamps, and no transcription step. Both work offline and sync later, which matters in the field.</li>
+  </ul>
+
+  <h3>Positioning</h3>
+  <table class="tbl">
+    <tr><th>Method</th><th>Accuracy</th><th>Adequate for</th></tr>
+    <tr><td>Smartphone GNSS</td><td class="n">3–5 m</td><td>30 m Landsat pixels, and 10 m Sentinel-2 in homogeneous cover</td></tr>
+    <tr><td>Mapping-grade receiver</td><td class="n">0.5–2 m</td><td>10 m pixels near boundaries; small features</td></tr>
+    <tr><td>RTK / PPK</td><td class="n">~2 cm</td><td>Very-high-resolution validation; individual trees; structures</td></tr>
+  </table>
+  <p>Match the method to the pixel. A 3 m smartphone error on a 30 m pixel is a tenth of a pixel and irrelevant; the same error on 3 m PlanetScope imagery puts you in the wrong pixel entirely. And record the accuracy the device reports for each point — under canopy or between tall buildings it degrades sharply, and knowing which points are weak lets you weight or exclude them later.</p>
+
+  <h3>Scale mismatch</h3>
+  <p>A Landsat pixel is 30 × 30 m — 900 m². A typical field plot might be 10 × 10 m, about one ninth of that. You are comparing a measurement of part of a pixel against a value integrated over all of it, and in a smallholder landscape with fields smaller than a pixel, most pixels are mixtures.</p>
+  <p>This is not a solved problem, but it is a manageable one. Sample in patches large enough to contain a full pixel with margin; record the fractional composition of a plot rather than a single label where you can; or move to a finer sensor when the landscape demands it. Above all, state the mismatch in your methods — a reader needs to know that your 30 m map was validated with 10 m plots in a landscape of half-hectare fields.</p>
+
+  <h3>Communicating uncertainty</h3>
+  <p>A county planner does not want a confusion matrix. They want to know whether they can act on the map. Translate:</p>
+  <ul>
+    <li><strong>Say what the number means.</strong> Not "producer's accuracy 62%" but "the map finds about three fifths of the built-up land; roughly two fifths is missed, so treat this as a minimum estimate of urban extent."</li>
+    <li><strong>Give the interval, always.</strong> "109 ± 31 km²" is honest. "109 km²" implies a precision you do not have.</li>
+    <li><strong>Say where the map should not be used.</strong> Which classes are unreliable, which areas had persistent cloud, which season the map represents.</li>
+    <li><strong>Say what would improve it</strong>, and what that would cost. This turns a limitation into a decision the client can make.</li>
+  </ul>
+
+  <h3>Ethics</h3>
+  <p>Earth observation watches people who did not consent and mostly do not know. That is worth sitting with rather than passing over, and four questions arise directly in the projects you will build.</p>
+
+  <h4>Who is being observed, and who benefits?</h4>
+  <p>Mapping informal settlements can direct services to people who need them, and it can support eviction. The imagery is identical; the difference is who commissioned the map and what happens next. You are entitled to ask that question, and in professional practice you should.</p>
+
+  <h4>Resolution is a policy choice</h4>
+  <p>At 30 m you map settlement extent. At 30 cm you map individual structures and can count them. The finer product is more useful and more dangerous, and choosing the resolution is choosing what becomes possible. Default to the coarsest resolution that answers the question.</p>
+
+  <h4>Accuracy has asymmetric consequences</h4>
+  <p>A crop map that under-detects smallholder plots may exclude those farmers from an input subsidy. A forest-loss map with high commission error may implicate the wrong landholder. When errors fall unevenly on people with different power to contest them, the class-level accuracies in week 6 are not a technical annex — they are the fairness analysis.</p>
+
+  <h4>Open data cuts both ways</h4>
+  <p>Publishing your map openly is usually right: it enables verification, reuse, and accountability. But a map of water points during a resource conflict, or of a wildlife population under poaching pressure, is a targeting aid. Kenya has open data commitments and a Data Protection Act; know the framework, and know that legal compliance is a floor rather than the whole of the question.</p>
+
+  <div class="prac">
+    <div class="ph">Practical 10 — Field validation, and an ethics statement</div>
+    <div class="pb">
+      <h6>Core <span class="tier">everyone</span></h6>
+      <ol>
+        <li>Design a field form in KoboToolbox or ODK: location, land cover class, homogeneity, confidence, photograph, observer, timestamp.</li>
+        <li>Draw 40 stratified random points on or near campus. Plan an efficient route that does not degrade into a road transect, and say how you protected against that.</li>
+        <li>Collect the data in the field. Record the GNSS accuracy at every point.</li>
+        <li><strong>Have a classmate independently classify 15 of your points.</strong> Compute your agreement rate. Report it, and state explicitly what ceiling it places on any accuracy you can claim.</li>
+        <li>Compare your field observations against your week 5 classification. Which classes were confused, and does it match what the week 6 assessment predicted?</li>
+        <li>Quantify the scale mismatch: for each point, record what fraction of the surrounding 10 m and 30 m cell shares its class. How many points are unambiguous at each resolution?</li>
+        <li>Write a half-page summary of your map's accuracy addressed to a county planning officer. No confusion matrix, no jargon, and it must be actionable.</li>
+        <li>Write a one-page ethics statement for your project: who is observed, who benefits, what resolution you chose and why, who could be harmed by an error or by the data leaking, and what you did about it.</li>
+      </ol>
+      <h6>Extension <span class="tier">if you have time</span></h6>
+      <ol>
+        <li>Repeat a subset of points with a mapping-grade receiver and quantify how much positional error changed the extracted pixel values.</li>
+        <li>Analyse your class-level accuracies for asymmetric consequences: if this map allocated a subsidy, which group would be disadvantaged by its errors?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="check"><h5>Self-test</h5><ol>
+    <li>Why is "ground truth" a misleading term, and what limit does interpreter disagreement place on reported accuracy?</li>
+    <li>Why is road-accessible sampling a problem, and what do you do if access forces it?</li>
+    <li>A smartphone GNSS gives 4 m accuracy. Adequate for Sentinel-2? For PlanetScope? Explain.</li>
+    <li>Rewrite "producer's accuracy for built-up is 62%" for a county planner.</li>
+    <li>Give a case where the ethically correct choice is a coarser product than you could produce.</li>
+  </ol></div>
+
+  <p class="rdg"><b>Reading.</b> Stehman &amp; Foody (2019), <em>RSE</em> 231, on reference data quality. Kenya's Data Protection Act (2019). Kwan (2016) on algorithmic geographies and the ethics of geospatial data, <em>Annals of the AAG</em> 106(2).</p>
+</div></section>
+
+<!-- ================= WEEK 11 ================= -->
+<section class="ch" id="w11"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">11</div>
+    <div class="ch-t">
+      <p class="wkl">Week eleven</p>
+      <h2>Applied projects and synthesis</h2>
+    </div>
+  </div>
+
+  <div class="lo"><h5>By the end of this week you should be able to</h5><ul>
+    <li>Choose a method for an unfamiliar applied problem and defend the choice</li>
+    <li>State what an operational service needs beyond a good map</li>
+    <li>Present and defend an analysis under questioning</li>
+  </ul></div>
+
+  <h3>Where Earth observation actually gets used</h3>
+  <p><strong>Agriculture and food security.</strong> Crop type and area, condition monitoring, yield forecasting, drought early warning. In Kenya this runs through NDMA's bulletins and FEWS NET, and it is directly operational — it triggers resource allocation. The hard parts are smallholder field sizes below the pixel and persistent cloud during the growing season, which is why week 8 exists.</p>
+  <p><strong>Forestry and carbon.</strong> Deforestation and degradation monitoring, REDD+ measurement, reporting and verification. Carbon finance requires accuracy assessments that meet published standards — which is why week 6 is the centre of this unit rather than an afterthought. A forest-change map without a probability-sample accuracy assessment and bias-adjusted areas has no financial value at all.</p>
+  <p><strong>Urban planning.</strong> Growth monitoring, informal settlement mapping, heat islands, green space, infrastructure planning. Kenyan cities are growing faster than surveys can track, which makes EO the only practical instrument, and raises every question in week 10.</p>
+  <p><strong>Disaster response.</strong> Flood extent, landslides, fire, drought. The International Charter "Space and Major Disasters" provides free tasking after a declared disaster; response timelines are hours to days, which shapes every methodological choice toward the robust and the fast.</p>
+  <p><strong>Water resources.</strong> Surface water extent, lake levels, evapotranspiration, irrigation monitoring. Kenya's Rift Valley lake rises since 2010 are a well-documented case with real displacement consequences.</p>
+
+  <h3>From a map to a service</h3>
+  <p>Most student projects produce a map. Operational use needs several things a map does not have, and knowing this is part of what distinguishes a graduate:</p>
+  <ul>
+    <li><strong>Repeatability.</strong> It must run again next season without you. That means documented code, versioned inputs, and no manual steps you did once and forgot.</li>
+    <li><strong>Latency.</strong> A flood map delivered in three weeks is a historical record. Know the deadline the decision faces.</li>
+    <li><strong>A stated accuracy</strong>, produced the same way each cycle, so that change in the product can be distinguished from change on the ground.</li>
+    <li><strong>A delivery route.</strong> A GeoTIFF on your laptop is not a service. The Web Mapping unit is the other half of this.</li>
+    <li><strong>Someone who will act on it</strong>, and who has been involved early enough that the product answers their question rather than yours.</li>
+  </ul>
+
+  <div class="prac">
+    <div class="ph">Practical 11 — Project presentation and defence</div>
+    <div class="pb">
+      <h6>Format</h6>
+      <p>Ten minutes of presentation, five minutes of questions, in pairs. The reasoning behind your decisions is what is examined — not the appearance of your maps.</p>
+      <h6>You must be able to answer</h6>
+      <ul>
+        <li>Why this sensor? What did you give up by choosing it?</li>
+        <li>Show me your validation sample. How was it drawn, and when was it interpreted relative to the map?</li>
+        <li>What is your worst class, and is it an omission or a commission problem?</li>
+        <li>Your map says this area is X km². What is the bias-adjusted estimate and its confidence interval?</li>
+        <li>Show me where on this map you would not trust the result.</li>
+        <li>Who could be harmed by an error in this map, and does the error fall evenly?</li>
+        <li>What would you do differently with another month?</li>
+      </ul>
+      <h6>Deliverable</h6>
+      <p>A report of no more than eight pages: the question, the data and why, the preprocessing, the method, the validation design and full accuracy assessment with bias-adjusted areas and confidence intervals, the limitations, and the ethics statement. Submit your Earth Engine script — it must run from a clean account. Include the AI-use declaration: which tools, which prompts, what they produced, what you changed and why.</p>
+    </div>
+  </div>
+
+  <h3>What to carry out of this unit</h3>
+  <p>The platforms will change. Earth Engine is roughly a decade old; the sensors you have used will be superseded; the classifiers will be replaced by things that work better and explain themselves less. What does not change is the structure of the problem: an instrument measuring reflected or emitted radiation, an atmosphere in the way, a pixel that averages a piece of a world that does not respect pixel boundaries, and a person who will act on the map.</p>
+  <p>And one habit, which is the reason week 6 sits at the centre of this reader. <strong>A classified image is not a map until it has been validated with a probability sample.</strong> The classification is the easy part, and it now takes fifteen lines of code that a language model will write for you in seconds. The validation is the part that makes the result mean something — and it is the part nobody can do for you, because it requires going and looking.</p>
+
+  <p class="rdg"><b>Reading.</b> Cardille <em>et al.</em>, parts A1–A3 on applications. Olofsson <em>et al.</em> (2014) once more. The GFOI Methods and Guidance Documentation for the REDD+ reporting context.</p>
+</div></section>
+
+<!-- ================= APPENDIX A ================= -->
+<section class="ch" id="appA"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">A</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix A</p>
+      <h2>Earth Engine self-check</h2>
+    </div>
+  </div>
+
+  <p>The Code Editor is JavaScript. If you have taken Web Mapping you already have the language; if not, the subset you need is small. Work through these before week 2, without help of any kind — no notes, no search, no AI assistant. The point is to find out what you have.</p>
+
+  <div class="lo" style="background:var(--surface);border:1px solid var(--rule)">
+    <h5 style="color:var(--ink3)">Scoring yourself honestly</h5>
+    <ul>
+      <li><strong>Comfortable with all ten</strong> — go straight to the Extension tasks.</li>
+      <li><strong>Fine on 1–6, unsure on 7–10</strong> — the usual position. Tasks 7–10 are the client/server concept, and week 2 teaches it properly. Read the Earth Engine "Client vs Server" guide before the practical.</li>
+      <li><strong>Struggling with 1–6</strong> — that is the JavaScript itself, and it is a weekend of work with the resources below. Do it before week 2 rather than during it, and come and see me in week 1.</li>
+    </ul>
+  </div>
+
+  <h3>The ten tasks</h3>
+  <ol class="body">
+    <li>Declare a variable holding the string <code>"Kiambu"</code> and print it to the console.</li>
+    <li>Write a function that takes a number and returns it multiplied by 0.0001. Call it with 4500.</li>
+    <li>Declare an object with properties <code>name</code>, <code>zoom</code> and <code>bands</code> (an array of three strings). Print the second band.</li>
+    <li>Explain what method chaining does in <code>collection.filterDate(a, b).filterBounds(g).median()</code>, and in what order the operations apply.</li>
+    <li>Write a template literal producing <code>"Found 42 scenes"</code> from a variable <code>n</code>.</li>
+    <li>Explain the difference between <code>var x = 5;</code> and <code>var x = ee.Number(5);</code>.</li>
+    <li>Why does the following not work, and what should you write instead?<br><code style="display:block;margin:.4rem 0 0">if (image.get('CLOUD_COVER') &lt; 20) { print('clear'); }</code></li>
+    <li>Why does this loop fail?<br><code style="display:block;margin:.4rem 0 0">for (var i = 0; i &lt; collection.size(); i++) { ... }</code></li>
+    <li>Rewrite this using <code>map()</code>: "add an NDVI band to every image in a collection".</li>
+    <li>You call <code>image.reduceRegion({reducer: ee.Reducer.mean(), geometry: aoi})</code> and get an unexpected number. What did you omit?</li>
+  </ol>
+  <p>Tasks 1–5 are ordinary JavaScript. Tasks 6–10 are the Earth Engine concept, and getting them wrong now is completely normal — but getting them wrong in week 5 will cost you a practical.</p>
+
+  <h3>Five things that will actually bite you</h3>
+  <ul>
+    <li><strong>Server objects are not values.</strong> You cannot compare an <code>ee.Number</code> with <code>&lt;</code>, loop over an <code>ee.List</code> with <code>for</code>, or print one with <code>console.log</code>. Use <code>ee.Filter</code>, <code>map()</code>, and <code>print()</code>.</li>
+    <li><strong><code>print()</code> is expensive and limited.</strong> It fetches to the client and will fail on large objects. Never call it inside a <code>map()</code>.</li>
+    <li><strong>Always pass <code>scale</code> to reducers.</strong> Omit it and Earth Engine chooses one — usually the projection of the first band, which is rarely what you meant, and the number will be wrong without complaint.</li>
+    <li><strong>Scale factors differ per product.</strong> Sentinel-2 divides by 10000; Landsat Collection 2 has a multiplier <em>and</em> an offset. Reflectance outside 0–1 means you have skipped one.</li>
+    <li><strong><code>copyProperties</code> preserves the timestamp.</strong> Forget it inside a mapped function and every later time-series operation fails, often silently.</li>
+  </ul>
+
+  <h3>Where to go</h3>
+  <ul>
+    <li><strong>Cardille <em>et al.</em>, <em>Cloud-Based Remote Sensing with Google Earth Engine</em></strong> (2023) — free, open access, and the set text for this unit. Part F1 is the fastest route in.</li>
+    <li><strong>The Earth Engine "Client vs Server" guide</strong> — two pages, and it is the concept everything else rests on.</li>
+    <li><strong>The Earth Engine tutorials and Developer Guide</strong> — well written, and the Code Editor's autocomplete works well enough to explore with.</li>
+    <li><strong>MDN "JavaScript first steps"</strong>, if the gap is the language rather than the platform.</li>
+    <li><strong>Awesome Earth Engine</strong> and the Earth Engine community catalog — worked scripts for most of what this unit covers.</li>
+  </ul>
+
+  <div class="warn">
+    <h5>On using AI assistants in this unit</h5>
+    <p>They are permitted, and declared. They are genuinely good at Earth Engine boilerplate — a cloud mask, a composite, an export block — and using them for that is sensible.</p>
+    <p>Know how they fail here, because the failures are specific and they all produce output that looks completely normal. Generated Earth Engine code routinely: omits or misapplies scale factors, so NDVI comes out in the thousands; reports accuracy from training data; quotes kappa as the headline statistic; compares NDVI across years with no cloud masking; uses a fixed backscatter threshold copied from a tutorial written for a different climate; and computes an area from a classified map with no bias adjustment and no confidence interval.</p>
+    <p>Every one of those is an error this unit trains you to catch, and every one produces a convincing map. The tool is an asset only if you can catch them — and the way you learn to catch them is by doing week 6 by hand, once, properly.</p>
+  </div>
+</div></section>
+
+<!-- ================= APPENDIX B ================= -->
+<section class="ch" id="appB"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">B</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix B</p>
+      <h2>Bands, scale factors, formulas</h2>
+    </div>
+  </div>
+  <p>This sheet is supplied in the CATs and the final examination.</p>
+
+  <h3>Sentinel-2 MSI</h3>
+  <div class="scroll">
+  <table class="tbl">
+    <tr><th>Band</th><th>Centre</th><th>Res.</th><th>Use</th></tr>
+    <tr><td class="n">B2</td><td class="n">490 nm</td><td class="n">10 m</td><td>Blue — aerosol correction in EVI, true colour</td></tr>
+    <tr><td class="n">B3</td><td class="n">560 nm</td><td class="n">10 m</td><td>Green — water indices, true colour</td></tr>
+    <tr><td class="n">B4</td><td class="n">665 nm</td><td class="n">10 m</td><td>Red — chlorophyll absorption</td></tr>
+    <tr><td class="n">B5–B7</td><td class="n">705–783 nm</td><td class="n">20 m</td><td>Red edge — crop stress, species discrimination</td></tr>
+    <tr><td class="n">B8</td><td class="n">842 nm</td><td class="n">10 m</td><td>NIR — the vegetation workhorse</td></tr>
+    <tr><td class="n">B8A</td><td class="n">865 nm</td><td class="n">20 m</td><td>Narrow NIR</td></tr>
+    <tr><td class="n">B11</td><td class="n">1610 nm</td><td class="n">20 m</td><td>SWIR — moisture, built-up, water</td></tr>
+    <tr><td class="n">B12</td><td class="n">2190 nm</td><td class="n">20 m</td><td>SWIR — burn severity, minerals</td></tr>
+    <tr><td class="n">SCL</td><td class="n">—</td><td class="n">20 m</td><td>Scene classification: 3 shadow, 8/9 cloud, 10 cirrus, 11 snow</td></tr>
+  </table>
+  </div>
+  <p style="font-size:.93rem">Landsat 8/9 equivalents: B2 blue, B3 green, B4 red, <strong>B5 NIR</strong>, B6 SWIR1, B7 SWIR2, B10 thermal. Note that NIR is B5 on Landsat and B8 on Sentinel-2 — the most common band-mixing error there is.</p>
+
+  <h3>Scale factors — check these every time</h3>
+  <table class="tbl">
+    <tr><th>Product</th><th>Conversion</th></tr>
+    <tr><td>Sentinel-2 L2A reflectance</td><td class="n">DN / 10000</td></tr>
+    <tr><td>Landsat C2 L2 reflectance</td><td class="n">DN × 0.0000275 − 0.2</td></tr>
+    <tr><td>Landsat C2 L2 surface temperature</td><td class="n">DN × 0.00341802 + 149.0 → K</td></tr>
+    <tr><td>Sentinel-1 GRD in Earth Engine</td><td class="n">already dB — do not rescale</td></tr>
+  </table>
+  <p style="font-size:.93rem"><strong>Sanity checks:</strong> surface reflectance ∈ [0, 1]; NDVI ∈ [−1, 1]; LST in Kenya ∈ roughly [10, 60] °C; Sentinel-1 VV σ⁰ ∈ roughly [−25, 0] dB.</p>
+
+  <h3>Indices, in Sentinel-2 bands</h3>
+  <div class="eq">
+    <span class="f">NDVI = (B8 − B4) / (B8 + B4)</span>
+    <span class="f">EVI = 2.5 (B8 − B4) / (B8 + 6·B4 − 7.5·B2 + 1)</span>
+    <span class="f">SAVI = 1.5 (B8 − B4) / (B8 + B4 + 0.5)</span>
+    <span class="f">NDMI = (B8 − B11) / (B8 + B11)&nbsp;&nbsp;<span style="font-size:.8em;color:var(--ink3)">canopy moisture</span></span>
+    <span class="f">NDWI = (B3 − B8) / (B3 + B8)&nbsp;&nbsp;<span style="font-size:.8em;color:var(--ink3)">open water — McFeeters</span></span>
+    <span class="f">MNDWI = (B3 − B11) / (B3 + B11)&nbsp;&nbsp;<span style="font-size:.8em;color:var(--ink3)">water, better in cities</span></span>
+    <span class="f">NDBI = (B11 − B8) / (B11 + B8)&nbsp;&nbsp;<span style="font-size:.8em;color:var(--ink3)">built-up</span></span>
+    <span class="f">NBR = (B8 − B12) / (B8 + B12)&nbsp;&nbsp;&nbsp; dNBR = NBR<sub>pre</sub> − NBR<sub>post</sub></span>
+  </div>
+
+  <h3>Accuracy and area</h3>
+  <div class="eq">
+    <span class="f"><var>p̂</var><sub><var>ij</var></sub> = <var>W</var><sub><var>i</var></sub> · <var>n</var><sub><var>ij</var></sub> / <var>n</var><sub><var>i</var>·</sub>&nbsp;&nbsp;&nbsp;<span style="font-size:.8em;color:var(--ink3)">area-weight a stratified matrix</span></span>
+    <span class="f">OA = ∑<sub><var>j</var></sub> <var>p̂</var><sub><var>jj</var></sub>&nbsp;&nbsp;&nbsp; UA<sub><var>i</var></sub> = <var>p̂</var><sub><var>ii</var></sub> / <var>p̂</var><sub><var>i</var>·</sub>&nbsp;&nbsp;&nbsp; PA<sub><var>j</var></sub> = <var>p̂</var><sub><var>jj</var></sub> / <var>p̂</var><sub>·<var>j</var></sub></span>
+    <span class="f"><var>S</var>(<var>p̂</var><sub>·<var>k</var></sub>) = √( ∑<sub><var>i</var></sub> <var>W</var><sub><var>i</var></sub><sup>2</sup> (<var>n</var><sub><var>ik</var></sub>/<var>n</var><sub><var>i</var>·</sub>)(1 − <var>n</var><sub><var>ik</var></sub>/<var>n</var><sub><var>i</var>·</sub>) / (<var>n</var><sub><var>i</var>·</sub> − 1) )</span>
+    <span class="f"><var>n</var> = ( ∑ <var>W</var><sub><var>i</var></sub><var>S</var><sub><var>i</var></sub> / <var>S</var>(Ô) )<sup>2</sup>,&nbsp;&nbsp; <var>S</var><sub><var>i</var></sub> = √(<var>U</var><sub><var>i</var></sub>(1−<var>U</var><sub><var>i</var></sub>))&nbsp;&nbsp;<span style="font-size:.8em;color:var(--ink3)">sample size</span></span>
+    <span class="f">VCI = 100 (NDVI − NDVI<sub>min</sub>) / (NDVI<sub>max</sub> − NDVI<sub>min</sub>)</span>
+  </div>
+
+  <h3>Earth Engine, minimum viable</h3>
+<span class="lang">JavaScript · Earth Engine</span>
+<pre><code>ee.ImageCollection(id).filterBounds(g).filterDate(a, b)
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 30))
+collection.map(fn) · collection.median() · collection.qualityMosaic('NDVI')
+image.select(bands).rename(names) · image.updateMask(mask)
+image.normalizedDifference(['B8','B4'])       // any normalised difference
+image.addBands(other) · image.clip(geom)
+image.reduceRegion({reducer, geometry, scale, maxPixels})   // scale is REQUIRED
+image.reduceRegions({collection, reducer, scale})
+image.sampleRegions({collection, properties, scale})
+image.stratifiedSample({numPoints, classBand, region, scale})
+ee.Classifier.smileRandomForest(n).train({features, classProperty, inputProperties})
+classified.errorMatrix('reference', 'classification')
+ee.Image.pixelArea()                          // for area sums
+Export.image.toDrive({image, region, scale, crs, maxPixels})
+Export.table.toDrive({collection, fileFormat: 'CSV'})</code></pre>
+</div></section>
+
+<!-- ================= APPENDIX C ================= -->
+<section class="ch" id="appC"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">C</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix C</p>
+      <h2>Datasets</h2>
+    </div>
+  </div>
+  <div class="scroll">
+  <table class="tbl">
+    <tr><th>Collection</th><th>Earth Engine ID</th><th>Used in</th></tr>
+    <tr><td>Sentinel-2 L2A, harmonised</td><td class="n">COPERNICUS/S2_SR_HARMONIZED</td><td class="n">1–7, 9</td></tr>
+    <tr><td>Sentinel-2 cloud probability</td><td class="n">COPERNICUS/S2_CLOUD_PROBABILITY</td><td class="n">2</td></tr>
+    <tr><td>Landsat 9 C2 L2</td><td class="n">LANDSAT/LC09/C02/T1_L2</td><td class="n">3, 7, 9</td></tr>
+    <tr><td>Landsat 8 C2 L2</td><td class="n">LANDSAT/LC08/C02/T1_L2</td><td class="n">3, 7, 9</td></tr>
+    <tr><td>Landsat 5 TM C2 L2</td><td class="n">LANDSAT/LT05/C02/T1_L2</td><td class="n">7</td></tr>
+    <tr><td>Sentinel-1 GRD</td><td class="n">COPERNICUS/S1_GRD</td><td class="n">8</td></tr>
+    <tr><td>Sentinel-5P NO₂</td><td class="n">COPERNICUS/S5P/OFFL/L3_NO2</td><td class="n">9</td></tr>
+    <tr><td>SRTM 30 m DEM</td><td class="n">USGS/SRTMGL1_003</td><td class="n">3, 5, 8, 9</td></tr>
+    <tr><td>JRC Global Surface Water</td><td class="n">JRC/GSW1_4/GlobalSurfaceWater</td><td class="n">8, 9</td></tr>
+    <tr><td>CHIRPS daily rainfall</td><td class="n">UCSB-CHG/CHIRPS/DAILY</td><td class="n">4</td></tr>
+    <tr><td>MODIS vegetation indices</td><td class="n">MODIS/061/MOD13Q1</td><td class="n">4</td></tr>
+    <tr><td>Administrative boundaries</td><td class="n">FAO/GAUL/2015/level2</td><td class="n">all</td></tr>
+    <tr><td>WorldPop population</td><td class="n">WorldPop/GP/100m/pop</td><td class="n">8, 9</td></tr>
+  </table>
+  </div>
+
+  <h3>Supplied locally</h3>
+  <ul>
+    <li><strong>Training and validation polygons</strong> for two study areas, so a practical can proceed while your own collection is still in progress.</li>
+    <li><strong>Pre-exported GeoTIFF composites</strong> for the key weeks — the offline fallback for when the lab network fails.</li>
+    <li><strong>Field data</strong> from previous cohorts' campus campaigns, with the interpreter-agreement statistics attached.</li>
+    <li><strong>Kenyan county and sub-county boundaries</strong>, cleaned, for use where GAUL is out of date.</li>
+  </ul>
+
+  <p class="rdg" style="margin-top:2rem">Earth Engine collections carry the licence terms of their originating agency — Copernicus data is free and open with attribution; Landsat is public domain; CHIRPS and WorldPop have their own citation requirements. Cite the dataset, not just the platform, and cite Gorelick <em>et al.</em> (2017) for Earth Engine itself.</p>
+
+  <p class="rdg"><b>EGS 2403 Remote Sensing Applications</b> · Course reader, edition 1.0 · Jomo Kenyatta University of Agriculture and Technology · September 2026. Corrections and suggestions are welcome and will be credited in the next edition.</p>
+</div></section>
+
+<!-- ================= APPENDIX D ================= -->
+<section class="ch" id="appD"><div class="wrap col">
+  <div class="ch-head">
+    <div class="ch-n">D</div>
+    <div class="ch-t">
+      <p class="wkl">Appendix D</p>
+      <h2>The same analysis, without Google</h2>
+    </div>
+  </div>
+
+  <p>This unit teaches Earth Engine. Earth Engine is a product, owned by one company, offered under terms that company sets and can change. It is reasonable to ask what happens to your skills if it does — and the honest answer is worth more to you than the platform is.</p>
+
+  <h3>The risk is not hypothetical</h3>
+  <p>Google has changed the terms of geospatial products before, with real consequences for people who had built on them. In 2018 the Google Maps Platform moved to a pay-as-you-go model with a monthly credit; a great deal of academic, NGO and small-business mapping that had run free for years suddenly carried a bill, and some of it simply stopped. Earth Engine itself moved to a commercial footing in 2023, with paid tiers for commercial users alongside continued free access for research, education and non-profit work. Free academic access remains, and there is no signal that it is going away — but it is a policy, not a guarantee, and policies are revised.</p>
+  <p>Set against that: the value is real. In a lab where the connection is unreliable and the machines are modest, a platform that transfers no imagery at all and does the computation elsewhere is not a convenience, it is the difference between doing this work and not doing it. That is why this unit teaches it.</p>
+
+  <h3>What actually transfers</h3>
+  <p>Nearly everything. Strip away the API and the workflow in every chapter of this reader is the same five operations:</p>
+  <ol class="body">
+    <li>Search an archive by space, time and metadata</li>
+    <li>Mask the pixels you cannot use</li>
+    <li>Reduce many observations to one composite, or to a time series</li>
+    <li>Compute band arithmetic and derived features</li>
+    <li>Classify, validate, and estimate area with an interval</li>
+  </ol>
+  <p>None of that is Google's. The sensor physics of week 1, the index choices of week 4, the training design of week 5, the whole of week 6, the change-detection logic of week 7, the radar geometry of week 8 — all of it is platform-independent, and all of it is the part that takes a semester to learn. What is Google-specific is the syntax, and syntax is the cheap part. A competent analyst moves between these environments in a week.</p>
+
+  <h3>The open alternative, named concretely</h3>
+  <p>The cloud-native geospatial stack does the same job with open standards and open tools:</p>
+  <ul>
+    <li><strong>STAC</strong> — SpatioTemporal Asset Catalog, a JSON specification for describing and searching imagery archives. Replaces <code>ee.ImageCollection(...).filter(...)</code>. Public endpoints include Element 84's Earth Search over the AWS Sentinel-2 archive (no account needed) and Microsoft's Planetary Computer.</li>
+    <li><strong>COG</strong> — Cloud-Optimised GeoTIFF. Internally tiled with overviews, so an HTTP range request fetches only the window and zoom level you need. This is what stops "no downloads" from being unique to Earth Engine.</li>
+    <li><strong>odc-stac</strong> or <strong>stackstac</strong> — load STAC search results straight into an <code>xarray</code> cube.</li>
+    <li><strong>xarray + dask</strong> — labelled, lazy, chunked arrays. Nothing is read until you ask for a result, which is the same deferred-execution idea Earth Engine uses.</li>
+    <li><strong>rioxarray / rasterio</strong> — raster I/O, reprojection, writing GeoTIFFs.</li>
+    <li><strong>openEO</strong> — a standardised API for Earth observation processing, implemented by the EU's Copernicus Data Space Ecosystem among others. This is the hedge worth knowing about: it is a <em>specification</em>, so code written against it is not tied to any one provider.</li>
+  </ul>
+
+  <h3>Side by side</h3>
+  <p>Week 2's central script, in both environments. Read them together — the operations line up one for one.</p>
+
+<span class="lang">JavaScript · Earth Engine</span>
+<pre><code><span class="kw">var</span> s2 = ee.ImageCollection(<span class="st">'COPERNICUS/S2_SR_HARMONIZED'</span>)
+  .filterBounds(aoi)
+  .filterDate(<span class="st">'2025-01-01'</span>, <span class="st">'2025-12-31'</span>)
+  .filter(ee.Filter.lt(<span class="st">'CLOUDY_PIXEL_PERCENTAGE'</span>, 40));
+
+<span class="kw">var</span> masked = s2.map(<span class="kw">function</span>(img) {
+  <span class="kw">var</span> scl = img.select(<span class="st">'SCL'</span>);
+  <span class="kw">var</span> clear = scl.neq(3).and(scl.neq(8)).and(scl.neq(9))
+                 .and(scl.neq(10)).and(scl.neq(11));
+  <span class="kw">return</span> img.updateMask(clear).divide(10000);
+});
+
+<span class="kw">var</span> composite = masked.median();
+<span class="kw">var</span> ndvi = composite.normalizedDifference([<span class="st">'B8'</span>, <span class="st">'B4'</span>]);
+
+Export.image.toDrive({image: ndvi, region: aoi, scale: 10});</code></pre>
+
+<span class="lang">Python · STAC + COG</span>
+<pre><code><span class="kw">import</span> pystac_client, odc.stac, rioxarray
+
+bbox = [36.6, -1.3, 37.2, -0.9]        <span class="cm"># Kiambu</span>
+
+<span class="cm"># 1. SEARCH — STAC replaces ee.ImageCollection().filter()</span>
+catalog = pystac_client.Client.open(<span class="st">"https://earth-search.aws.element84.com/v1"</span>)
+items = catalog.search(
+    collections=[<span class="st">"sentinel-2-l2a"</span>],
+    bbox=bbox,
+    datetime=<span class="st">"2025-01-01/2025-12-31"</span>,
+    query={<span class="st">"eo:cloud_cover"</span>: {<span class="st">"lt"</span>: <span class="st">40</span>}},
+).item_collection()
+print(f<span class="st">"{len(items)} scenes found"</span>)
+
+<span class="cm"># 2. LOAD — lazily, into an xarray cube backed by dask.</span>
+<span class="cm">#    Nothing is downloaded yet: COG range requests happen on demand.</span>
+ds = odc.stac.load(
+    items,
+    bands=[<span class="st">"red"</span>, <span class="st">"nir"</span>, <span class="st">"scl"</span>],
+    resolution=<span class="st">10</span>,
+    bbox=bbox,
+    chunks={<span class="st">"x"</span>: <span class="st">2048</span>, <span class="st">"y"</span>: <span class="st">2048</span>},
+)
+
+<span class="cm"># 3. MASK — the same SCL classes as the Earth Engine version</span>
+clear = ~ds.scl.isin([<span class="st">3</span>, <span class="st">8</span>, <span class="st">9</span>, <span class="st">10</span>, <span class="st">11</span>])
+ds = ds.where(clear) / <span class="st">10000</span>          <span class="cm"># the scale factor does not go away</span>
+
+<span class="cm"># 4. COMPOSITE and 5. BAND MATH</span>
+composite = ds.median(dim=<span class="st">"time"</span>)
+ndvi = (composite.nir - composite.red) / (composite.nir + composite.red)
+
+<span class="cm"># only NOW does anything actually transfer or compute</span>
+ndvi.compute().rio.to_raster(<span class="st">"ndvi_kiambu_2025.tif"</span>)</code></pre>
+
+  <p>Two things to notice. The <em>shape</em> is identical — search, mask, composite, band maths, write — and both environments defer execution until you ask for a result, so the mental model transfers directly. And the scale factor is still there in the Python version, because it is a property of the Sentinel-2 product, not of the platform. Every trap in this reader is a trap in both stacks.</p>
+
+  <h3>The honest comparison</h3>
+  <div class="scroll">
+  <table class="tbl">
+    <tr><th></th><th>Earth Engine</th><th>STAC + COG + Python</th></tr>
+    <tr><td><strong>Install</strong></td><td>None — a browser</td><td>A conda environment, and it will fight you once</td></tr>
+    <tr><td><strong>Compute</strong></td><td>Google's, free at academic scale</td><td>Yours. A laptop handles a county; a country needs a cluster or a cloud bill</td></tr>
+    <tr><td><strong>Data transfer</strong></td><td>Effectively zero</td><td>Range requests — tens of MB for a county-year, not the gigabytes of full-scene download</td></tr>
+    <tr><td><strong>Ceiling</strong></td><td>Continental, casually</td><td>Bounded by your hardware or your budget</td></tr>
+    <tr><td><strong>Reproducible in 2036</strong></td><td>If Google still offers it on these terms</td><td>Yes, if you pin your versions — the data and the tools are public</td></tr>
+    <tr><td><strong>Who can revoke it</strong></td><td>Google</td><td>Nobody, in practice — though the hosting is still someone's cloud</td></tr>
+    <tr><td><strong>Learning curve</strong></td><td>Shallow, then the client/server wall in week 2</td><td>Steeper at the start, no wall afterwards</td></tr>
+    <tr><td><strong>Employability</strong></td><td>Widely used in NGOs, agencies, research</td><td>Increasingly the industry standard for production pipelines</td></tr>
+  </table>
+  </div>
+  <p>Note the row that people forget: the open stack does not remove the dependency on someone's cloud, it moves it. Earth Search runs on AWS; the Planetary Computer is Microsoft's. What it removes is <em>lock-in</em> — your code is not written against a proprietary API, so switching provider is a changed URL rather than a rewrite.</p>
+
+  <div class="defn">
+    <p><b class="term">The recommendation this unit follows.</b> Learn Earth Engine, because in this environment it is what makes the work possible, and because a semester spent fighting installations is a semester not spent on accuracy assessment.</p>
+    <p>Then port one complete workflow out of it, deliberately, before you graduate. The port is what converts a platform skill into a transferable one — and having done it once, you will know that the answer to "what if Google changes the terms" is <em>a week of work</em>, not a lost career.</p>
+  </div>
+
+  <h3>Reducing your exposure while you use it</h3>
+  <ul>
+    <li><strong>Export your intermediates.</strong> A composite or a classified map living only as an Earth Engine asset is trapped. Export the ones that cost real computation as GeoTIFFs you hold yourself.</li>
+    <li><strong>Keep the science separate from the API.</strong> Write your index definitions, thresholds, class schemes and validation design as documented decisions, not as buried lines of platform-specific code. Those are the assets; the API calls are scaffolding.</li>
+    <li><strong>Know <code>geemap</code>.</strong> It drives Earth Engine from Python, which puts your work in the same language and notebook environment as the open stack — a half-step that makes the eventual port much shorter.</li>
+    <li><strong>Watch openEO and the Copernicus Data Space Ecosystem.</strong> A European, standards-based, publicly funded alternative is a genuinely different kind of dependency from a single company's product.</li>
+  </ul>
+
+  <div class="prac">
+    <div class="ph">Exercise D — Port it yourself</div>
+    <div class="pb">
+      <p>Do this once, at any point after week 4. It is the most valuable two hours in the unit for your career, and it is a legitimate project component.</p>
+      <ol>
+        <li>Install the open stack: <code>conda install -c conda-forge pystac-client odc-stac xarray rioxarray dask matplotlib</code>.</li>
+        <li>Take your week 2 composite script and reproduce it in Python against Earth Search. Same area, same dates, same cloud filter, same SCL mask.</li>
+        <li>Compute NDVI both ways and difference the two rasters. They will not be identical — record where and by how much, and work out why. Resampling, the exact masking, and reprojection all contribute.</li>
+        <li>Record what each took: setup time, run time, and megabytes transferred. Report all three.</li>
+        <li>Write half a page: which would you choose for a two-week consultancy mapping one county, and which for a five-year national monitoring programme that must still run after you leave? They are not the same answer, and the reasoning is the point.</li>
+      </ol>
+    </div>
+  </div>
+
+  <p class="rdg"><b>Reading.</b> The STAC specification and the <code>pystac-client</code> documentation. The Cloud-Native Geospatial Foundation's introductory material. The openEO API documentation and the Copernicus Data Space Ecosystem. Gorelick <em>et al.</em> (2017) for what Earth Engine set out to be, read alongside Google's current Earth Engine terms of service — the comparison is itself instructive.</p>
+</div></section>

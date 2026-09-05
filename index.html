@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JKUAT Geospatial Units</title>
+<meta name="description" content="Course readers and data for EGS 2405 Geostatistics, EGS 2403 Remote Sensing Applications and EGE 2531 Web Mapping.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F1F3F0; --surface:#FAFBF9; --surface2:#E6EAE5;
+  --ink:#141A1B; --ink2:#3D4849; --ink3:#6C7877;
+  --rule:#D0D8D2; --rule-soft:#E1E6E1;
+  --accent:#2F5D62;
+  --geo:#4B3F8F; --geo-wash:#EAE7F5;
+  --web:#0E6E78; --web-wash:#E0EFF1;
+  --rs:#B8443A;  --rs-wash:#F6E7E4;
+  --code-bg:#EEF0EC;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1213; --surface:#151A1B; --surface2:#1D2425;
+    --ink:#E6EBE8; --ink2:#B3BEBB; --ink3:#7C8A87;
+    --rule:#293233; --rule-soft:#202829;
+    --accent:#7FB3B8;
+    --geo:#9C91E2; --geo-wash:#1F1F38;
+    --web:#5FB3BE; --web-wash:#12262A;
+    --rs:#E8877C;  --rs-wash:#31201E;
+    --code-bg:#191F20;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1213; --surface:#151A1B; --surface2:#1D2425;
+  --ink:#E6EBE8; --ink2:#B3BEBB; --ink3:#7C8A87;
+  --rule:#293233; --rule-soft:#202829;
+  --accent:#7FB3B8;
+  --geo:#9C91E2; --geo-wash:#1F1F38;
+  --web:#5FB3BE; --web-wash:#12262A;
+  --rs:#E8877C;  --rs-wash:#31201E;
+  --code-bg:#191F20;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);margin:0;
+  font-family:"Spectral",Georgia,serif;font-size:17.5px;line-height:1.66;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.ui{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;text-wrap:balance}
+code,kbd,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(1.1rem,4vw,3rem)}
+.col{max-width:68ch}
+
+.mast{padding:clamp(3rem,7vw,5.5rem) 0 clamp(2rem,4vw,3rem);border-bottom:2px solid var(--accent)}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 1.3rem}
+.mast h1{font-size:clamp(2.3rem,6.2vw,4rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;margin:0 0 .7rem}
+.mast .sub{font-size:clamp(1.02rem,2.2vw,1.3rem);color:var(--ink2);margin:0;max-width:58ch;line-height:1.45}
+
+section{padding:clamp(2.4rem,5vw,3.6rem) 0}
+.band{border-top:1px solid var(--rule)}
+h2.sec{font-size:clamp(1.35rem,2.8vw,1.85rem);font-weight:700;letter-spacing:-.025em;margin:0 0 1.1rem;line-height:1.15}
+p{margin:0 0 1.05rem}
+.lede{color:var(--ink2)}
+
+/* unit cards */
+.units{display:grid;gap:1.15rem;margin:0;padding:0;list-style:none}
+.unit{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--u);
+  border-radius:3px;padding:1.5rem clamp(1.1rem,2.5vw,1.9rem)}
+.unit .code{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--u);margin:0 0 .5rem;font-weight:600}
+.unit h3{font-size:clamp(1.3rem,2.6vw,1.65rem);font-weight:700;letter-spacing:-.02em;margin:0 0 .5rem;line-height:1.15}
+.unit h3 a{color:var(--ink);text-decoration:none;border-bottom:2px solid var(--u)}
+.unit h3 a:hover{color:var(--u)}
+.unit .desc{color:var(--ink2);margin:0 0 1rem;max-width:62ch;font-size:.98rem}
+.unit .stack{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--ink3);
+  margin:0 0 1.1rem;letter-spacing:.02em}
+.acts{display:flex;flex-wrap:wrap;gap:.5rem}
+.btn{font-family:"Archivo",sans-serif;font-size:.82rem;font-weight:600;text-decoration:none;
+  padding:.5rem .95rem;border-radius:3px;border:1px solid var(--u);color:var(--u);
+  background:transparent;display:inline-block;line-height:1.2}
+.btn.solid{background:var(--u);color:var(--surface);border-color:var(--u)}
+.btn:hover{background:var(--uw)}
+.btn.solid:hover{opacity:.88;background:var(--u)}
+.u-geo{--u:var(--geo);--uw:var(--geo-wash)}
+.u-rs{--u:var(--rs);--uw:var(--rs-wash)}
+.u-web{--u:var(--web);--uw:var(--web-wash)}
+
+/* data listing */
+.files{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0 2rem;
+  margin:.6rem 0 0;padding:0;list-style:none}
+.files li{border-bottom:1px solid var(--rule-soft)}
+.files a{display:block;padding:.42rem 0;text-decoration:none;color:var(--ink2);
+  font-family:"IBM Plex Mono",monospace;font-size:.79rem}
+.files a:hover{color:var(--u,var(--accent))}
+details{margin-top:.9rem}
+summary{cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.75rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+summary:hover{color:var(--ink2)}
+
+.note{background:var(--surface2);border-radius:3px;padding:1.15rem 1.4rem;margin:1.4rem 0 0;
+  font-size:.95rem;color:var(--ink2);max-width:70ch}
+.note b{color:var(--ink);font-weight:600}
+code{background:var(--code-bg);padding:.12em .38em;border-radius:2px;font-size:.87em}
+footer{border-top:1px solid var(--rule);padding:2.2rem 0 3.5rem;color:var(--ink3);font-size:.86rem}
+footer p{max-width:70ch}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="kicker">JKUAT · Geomatic Engineering &amp; Geospatial Information Systems</p>
+    <h1>Three geospatial units</h1>
+    <p class="sub">Full course readers and the data that goes with them, for
+      Geostatistics, Remote Sensing Applications and Web Mapping. Everything on
+      this page is free to read, download and reuse.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <ul class="units">
+
+      <li class="unit u-geo">
+        <p class="code">EGS 2405 · Fourth year</p>
+        <h3><a href="egs2405/">Geostatistics</a></h3>
+        <p class="desc">Eleven weeks from spatial autocorrelation to kriging and
+          simulation. Variogram modelling, anisotropy, non-stationarity, and why
+          a degree is not a distance.</p>
+        <p class="stack">scikit-gstat · PyKrige · GeoPandas</p>
+        <div class="acts">
+          <a class="btn solid" href="egs2405/">Read the unit</a>
+          <a class="btn" href="egs2405/egs2405-data.zip">Data (zip)</a>
+        </div>
+        <details>
+          <summary>Individual data files</summary>
+          <ul class="files">
+            <li><a href="egs2405/data/kiambu_soc.csv">kiambu_soc.csv</a></li>
+            <li><a href="egs2405/data/samples.csv">samples.csv</a></li>
+            <li><a href="egs2405/data/g01_nugget.csv">g01_nugget.csv</a></li>
+            <li><a href="egs2405/data/g02_spherical.csv">g02_spherical.csv</a></li>
+            <li><a href="egs2405/data/g03_anisotropic.csv">g03_anisotropic.csv</a></li>
+            <li><a href="egs2405/data/g04_trend.csv">g04_trend.csv</a></li>
+            <li><a href="egs2405/data/g05_nested.csv">g05_nested.csv</a></li>
+            <li><a href="egs2405/data/g06_outliers.csv">g06_outliers.csv</a></li>
+          </ul>
+        </details>
+      </li>
+
+      <li class="unit u-rs">
+        <p class="code">EGS 2403</p>
+        <h3><a href="egs2403/">Remote Sensing Applications</a></h3>
+        <p class="desc">Sensors, atmospheric correction, indices, classification
+          and change detection — built around week six, where a classified image
+          becomes a map only once it has been validated with a probability
+          sample.</p>
+        <p class="stack">Google Earth Engine · QGIS · a STAC/COG port in Appendix D</p>
+        <p class="desc" style="font-size:.9rem;color:var(--ink3)">Week 6 needs a
+          token for the interpretation server, issued to you individually. Ask
+          if you do not have one.</p>
+        <div class="acts">
+          <a class="btn solid" href="egs2403/">Read the unit</a>
+          <a class="btn" href="egs2403/egs2403-data.zip">Data (zip)</a>
+        </div>
+        <details>
+          <summary>Individual data files</summary>
+          <ul class="files">
+            <li><a href="egs2403/data/landcover_map_2025.tif">landcover_map_2025.tif</a></li>
+            <li><a href="egs2403/data/class_legend.csv">class_legend.csv</a></li>
+            <li><a href="egs2403/data/study_area.geojson">study_area.geojson</a></li>
+            <li><a href="egs2403/interpret.py">interpret.py</a></li>
+          </ul>
+        </details>
+      </li>
+
+      <li class="unit u-web">
+        <p class="code">EGE 2531</p>
+        <h3><a href="ege2531/">Web Mapping</a></h3>
+        <p class="desc">The full stack: Leaflet in the browser, PostGIS behind
+          it, GeoServer publishing OGC services, and a deployment that survives
+          leaving your laptop.</p>
+        <p class="stack">Leaflet · PostGIS · GeoServer · Flask</p>
+        <div class="acts">
+          <a class="btn solid" href="ege2531/">Read the unit</a>
+          <a class="btn" href="ege2531/ege2531-data.zip">Data (zip)</a>
+        </div>
+        <details>
+          <summary>Individual data files</summary>
+          <ul class="files">
+            <li><a href="ege2531/data/facilities.geojson">facilities.geojson</a></li>
+            <li><a href="ege2531/data/facilities_register_dirty.csv">facilities_register_dirty.csv</a></li>
+            <li><a href="ege2531/data/kenya_counties_simplified.geojson">kenya_counties_simplified.geojson</a></li>
+            <li><a href="ege2531/data/kenya_counties.geojson">kenya_counties.geojson (7.8 MB)</a></li>
+          </ul>
+        </details>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap col">
+    <h2 class="sec">About the data</h2>
+    <p class="lede">The facility register and every geostatistics dataset are
+      <b>synthetic</b>. That is deliberate: a simulated field has a known
+      variogram and a simulated register has known faults, so your work can be
+      checked against the answer rather than against an opinion. The county
+      boundaries are real, from
+      <a href="https://www.geoboundaries.org/">geoBoundaries</a> (public domain),
+      because real polygons behave in ways synthetic ones do not.</p>
+    <p class="lede">The datasets are regenerated with a new random seed each
+      year, so a set of answers from a previous cohort will not fit this year's
+      data.</p>
+    <div class="note">
+      <b>Working offline.</b> Everything here totals about 9 MB, and the zips
+      are self-contained. Download them once on a good connection and you can
+      work through the whole unit without one. Ask if you would rather have it
+      on a USB stick.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Course readers and synthetic datasets for JKUAT. The readers and
+      generated data may be reused and adapted for teaching, with attribution.
+      County boundaries are geoBoundaries ADM1 (public domain). Corrections and
+      bug reports are welcome — an error you find in a reader is worth finding.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+class_id,class_name
+1,forest
+2,cropland
+3,grassland
+4,built-up
+5,water

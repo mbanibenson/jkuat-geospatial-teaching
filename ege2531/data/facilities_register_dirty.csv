@@ -1,0 +1,630 @@
+facility_id,name,county,level,beds,operational,lon,lat
+HF-0609,Kibra Dispensary II,Nairobi,2,8,True,36.877596,-1.222445
+HF-0495,Roysambu Nursing Home,Nairobi,3,38,True,36.946258,-1.281239
+HF-0125,Kiharu Level 5 Hospital,Murang'a,5,233,True,37.230458,-0.976571
+HF-0099,Kigumo Level 5 Hospital,Murang'a,5,323,True,37.051348,-0.716018
+HF-0239,Kalama Health Centre II,Machakos,3,29,True,37.777748,-1.026261
+HF-0560,Ilbissil Level 5 Hospital IV,Kajiado,5,206,True,37.089313,-1.882804
+HF-0307,Isinya Health Centre II,Kajiado,3,45,True,36.507205,-1.472433
+HF-0573,Gilgil Dispensary II,Nakuru,2,0,True,36.174372,-0.220635
+HF-0593,Kamukunji Sub-County Hospital,Nairobi,4,83,True,36.839594,-1.294842
+HF-0151,Gatundu Sub-County Hospital,Kiambu,4,139,False,37.139829,-1.224372
+HF-0206,Embakasi Dispensary III,Nairobi,2,3,True,36.699019,-1.326385
+HF-0515,Westlands Health Centre II,Nairobi,3,13,True,36.774271,-1.239781
+HF-0187,Kuresoi Level 5 Hospital IV,Nakuru,5,372,True,36.215394,-0.892073
+HF-0279,Kimana Nursing Home,Kajiado,3,29,True,36.366621,-1.864783
+HF-0081,Elburgon Sub-County Hospital; OPD,Nakuru,4,125,True,35.896448,-0.227601
+HF-0011,Githunguri Nursing Home,Kiambu,3,10,True,36.808097,-0.977189
+HF-0383,Mwala Sub-County Hospital,Machakos,4,175,True,-0.883116,37.441591
+HF-0018,Kamwangi Dispensary,Kiambu,2,6,True,36.557871,-0.921669
+HF-0465,Starehe Dispensary V,Nairobi,2,4,True,36.861638,-1.272463
+HF-0055,Mathioya Dispensary,Murang'a,2,0,True,36.83557,-0.701832
+HF-0601,Yatta Health Centre,Machakos,3,46,True,37.432019,-1.377874
+HF-0305,Ilbissil Dispensary,Kajiado,2,1,True,36.490672,-1.828197
+HF-0263,Tigoni Medical Clinic,Kiambu,2,6,True,36.659121,-0.854457
+HF-0072,Njoro Level 5 Hospital,Nakuru,5,374,True,35.933578,-0.077881
+HF-0548,Ndeiya Health Centre,Kiambu,3,33,True,36.569955,-1.195337
+HF-0020,Westlands Dispensary; OPD,Nairobi,2,8,False,36.862748,-1.2167
+HF-0132,Kalama Level 5 Hospital,Machakos,5,402,True,37.090742,-1.517407
+HF-0014,Kitengela Nursing Home,Kajiado,3,14,True,37.444613,-2.646408
+HF-0272,Subukia Health Centre II,Nakuru,3,28,True,36.529315,-0.754124
+HF-0228,Starehe Dispensary II,Nairobi,2,1,True,37.045656,-1.272152
+HF-0178,Kiharu Health Centre,Murang'a,3,18,False,37.041939,-0.996874
+HF-0615,Kabete Sub-County Hospital II,Kiambu,4,84,True,36.652876,-0.843542
+HF-0366,Mwala Dispensary II,Machakos,2,8,True,37.24744,-1.739111
+HF-0100,Loitokitok Medical Clinic,Kajiado,2,5,True,36.735099,-1.577956
+HF-0148,Kamukunji Dispensary,Nairobi,2,6,True,36.796822,-1.214837
+HF-0041,Mathare Nursing Home,Nairobi,3,23,True,36.868036,-1.3914
+HF-0312,Westlands Level 5 Hospital,Nairobi,5,336,True,36.958155,-1.284828
+HF-0411,Ruiru Nursing Home II,Kiambu,3,27,True,37.06824,-1.20667
+HF-0193,Roysambu Level 5 Hospital II,Nairobi,5,264,True,36.735572,-1.369098
+HF-0408,Ting'ang'a Medical Clinic II,Kiambu,2,5,False,36.892187,-1.188246
+HF-0280,Matungulu Nursing Home III,Machakos,3,18,True,37.10533,-1.69918
+HF-0508,Njiru Nursing Home,Nairobi,3,29,True,36.938876,-1.225924
+HF-0173,Ruaraka Dispensary II,Nairobi,2,8,True,36.918333,-1.234416
+HF-0568,Langata Medical Clinic II,Nairobi,2,0,True,36.740392,-1.300326
+HF-0378,Njiru Dispensary,Nairobi,2,2,True,36.86724,-1.309124
+HF-90146,Kitengela Sub-County Hosptal,Kajiado,4,126,True,36.809637,-2.461703
+HF-0015,Subukia Medical Clinic,Nakuru,2,3,True,36.303617,-0.630776
+HF-0534,Gatundu Dispensary,Kiambu,2,5,True,-1.097242,36.64383
+HF-0202,Njoro Health Centre II,Nakuru,3,15,False,36.462701,-1.000338
+HF-0327,Kahuro Medical Clinic,Murang'a,2,5,True,36.99704,-0.936586
+HF-0050,Sabasaba Sub-County Hospital,Murang'a,4,134,True,36.776085,-0.646944
+HF-0511,Tala Medical Clinic,Machakos,2,6,True,37.588677,-1.483519
+HF-0294,Gilgil Sub-County Hospital II,Nakuru,4,179,false,35.751326,-0.271888
+HF-0412,Embakasi Nursing Home III,Nairobi,3,12,True,36.763153,-1.307344
+HF-0556,Mai Mahiu Health Centre,Nakuru,3,23,True,35.969178,-0.407599
+HF-0207,Kiharu Health Centre II,Murang'a,3,37,True,37.251744,-0.834467
+HF-0531,Riabai Level 5 Hospital II,Kiambu,5,324,True,36.798475,-1.092804
+HF-0585,Tigoni Medical Clinic III,Kiambu,0,1,True,36.697032,-1.088848
+HF-0021,Githunguri Level 5 Hospital,Kiambu,5,184,True,36.609069,-0.897704
+HF-0209,Makadara Health Centre,Nairobi,3,19,True,36.869588,-1.393339
+HF-0519,"Elburgon Medical Clinic II, Annexe",Nakuru,2,0,True,35.456634,-0.325326
+HF-0533,Masinga Medical Clinic II,Machakos,2,2,True,37.445926,-1.464536
+HF-0424,Kimana Level 5 Hospital,Kajiado,5,402,True,36.74555,-2.051823
+HF-0361,Masinga Sub-County Hospital II,Machakos,0,166,True,37.262881,-1.430793
+HF-0348,Riabai Nursing Home,Kiambu,3,31,True,37.139311,-1.062028
+HF-0522,Ruiru Dispensary,Kiambu,2,5,True,36.644723,-0.778952
+HF-0065,Kahuro Level 5 Hospital,Murang'a,5,256,True,37.357693,-1.089238
+HF-0497,Ndeiya Level 5 Hospital,Kiambu,5,346,True,36.690869,-0.941179
+HF-0242,Kasarani Level 5 Hospital,Nairobi,5,256,True,36.943823,-1.316863
+HF-0587,Kigumo Level 5 Hospital II,Murang'a,5,418,True,37.23,-0.85
+HF-0302,Ongata Rongai Dispensary II,Kajiado,2,4,True,36.249866,-1.781918
+HF-0227,Naivasha Health Centre,Nakuru,3,38,True,36.377922,-0.706473
+HF-0265,Kayole Nursing Home III,Nairobi,3,14,True,37.083492,-1.237708
+HF-0257,Kamwangi Nursing Home III,Kiambu,3,17,True,36.967927,-1.224009
+HF-0343,Masinga Dispensary II,Machakos,2,0,True,37.742067,-1.48232
+HF-0566,Salgaa Level 5 Hospital II,Nakuru,5,357,True,36.046646,-0.264107
+HF-0134,Lari Health Centre,Kiambu,3,31,True,37.000642,-1.032906
+HF-0338,Embakasi Nursing Home II,Nairobi,3,36,True,37.03729,-1.267208
+HF-0155,Starehe Health Centre II,Nairobi,3,15,True,36.940162,-1.426121
+HF-0067,Ruaraka Health Centre,Nairobi,3,31,True,36.764826,-1.277314
+HF-0362,Limuru Nursing Home,Kiambu,3,10,True,NA,
+HF-0109,Elburgon Dispensary,Nakuru,2,2,True,36.194053,-0.753831
+HF-0001,Maragua Dispensary,Murang'a,2,4,True,37.040975,-0.877101
+HF-0179,Kabete Sub-County Hospital,Kiambu,4,104,True,36.75932,-0.959234
+HF-0324,Juja Medical Clinic II,Kiambu,2,1,True,36.8651,-0.941645
+HF-0487,Gatanga Sub-County Hospital,Murang'a,4,123,True,37.154574,-0.793358
+HF-0047,Roysambu Level 5 Hospital,Nairobi,5,353,True,36.784989,-1.24058
+HF-0477,Athi River Health Centre II,Machakos,3,26,True,37.002705,-1.316891
+HF-0248,Kathiani Sub-County Hospital,Machakos,4,110,True,37.405021,-1.251914
+HF-0142,Bahati Sub-County Hospital,Nakuru,4,175,True,36.21781,-0.472899
+HF-0203,Njoro Health Centre III,Nakuru,3,24,True,35.83631,-0.147827
+HF-90607,Kitengela Health Center III,Kajiado,3,17,True,36.225565,-1.359339
+HF-0269,Dagoretti Sub-County Hospital,Nairobi,4,76,True,37.044758,-1.289707
+HF-0510,Tala Health Centre II,Machakos,3,43,True,37.397899,-1.132018
+HF-0596,Tala Level 5 Hospital III,Machakos,5,226,True,37.310823,-1.132373
+HF-0201,Kangundo Sub-County Hospital II,Machakos,4,171,True,37.172453,-1.471365
+HF-0094,Ruaraka Medical Clinic,Nairobi,2,2,True,37.069791,-1.28922
+HF-0452,Athi River Medical Clinic II,Machakos,2,1,True,37.214038,-1.210282
+HF-0268,Rongai Dispensary,Nakuru,2,8,False,36.122216,-0.201731
+HF-0423,Masinga Dispensary III,Machakos,2,5,True,37.576564,-1.149237
+HF-0341,Ndeiya Sub-County Hospital II,Kiambu,4,140,True,36.676957,-1.088261
+HF-0483,Masinga Sub-County Hospital III,Machakos,4,145,True,0.0,0.0
+HF-0159,Naivasha Dispensary,Nakuru,2,0,True,36.485044,-0.726572
+HF-0602,Roysambu Nursing Home III,Nairobi,3,36,True,36.828263,-1.320161
+HF-0605,Mai Mahiu Medical Clinic V,Nakuru,2,3,True,36.436616,-0.846888
+HF-0461,Kikuyu Dispensary II,Kiambu,2,1,True,37.068048,-1.216084
+HF-0399,Maragua Level 5 Hospital VI,Murang'a,5,256,True,37.156285,-0.859939
+HF-0090,Sabasaba Nursing Home II,Murang'a,3,23,True,37.27814,-0.90615
+HF-0379,Sabasaba Nursing Home IV,Murang'a,3,29,True,36.850247,-0.73312
+HF-0537,Athi River Nursing Home III,Machakos,3,38,True,37.599988,-1.5071
+HF-0164,Githunguri Nursing Home II,Kiambu,3,18,True,36.769423,-1.125341
+HF-0607,Kitengela Health Centre III,Kajiado,3,17,True,36.226305,-1.359689
+HF-0484,Kitengela Medical Clinic II,Kajiado,2,3,True,36.111696,-1.636448
+HF-0285,Athi River Health Centre,Machakos,3,16,True,37.758576,-1.365111
+HF-0591,Naivasha Sub-County Hospital II,Nakuru,4,100,True,,
+HF-0604,Starehe Health Centre III,Nairobi,3,22,True,36.866188,-1.307127
+HF-0589,Njiru  Sub-County  Hospital,Nairobi,4,172,True,36.678365,-1.327486
+HF-0450,Ting'ang'a Sub-County Hospital,Kiambu,4,166,True,36.92436,-0.99392
+HF-0332,Embakasi Sub-County Hospital,Nairobi,4,100,True,36.967423,-1.312089
+HF-0273,Mai Mahiu Medical Clinic,Nakuru,2,5,True,36.51,-1.14
+HF-0200,Kiharu Medical Clinic,Murang'a,2,4,True,36.902085,-0.837991
+HF-0451,Ruiru Health Centre III,Kiambu,3,39,True,36.686177,-1.09511
+HF-0139,Karuri Level 5 Hospital II,Kiambu,5,341,True,37.059148,-1.19131
+HF-0180,Ruiru Health Centre II,Kiambu,3,27,True,36.84878,-1.098459
+HF-0347,Mathioya Nursing Home,Murang'a,3,20,True,36.834905,-0.595768
+HF-0328,Kigumo Nursing Home,Murang'a,3,15,False,37.001114,-0.890488
+HF-0059,Kangema Level 5 Hospital,Murang'a,5,401,True,36.923714,-0.926338
+HF-0363,Loitokitok Health Centre,Kajiado,3,31,True,36.585283,-1.753996
+HF-0271,Kalama Health Centre III,Machakos,3,37,True,37.795511,-0.930612
+HF-0419,Kikuyu Dispensary,Kiambu,2,0,True,36.693616,-0.920309
+HF-0478,Karuri Medical Clinic II,Kiambu,2,0,True,36.921002,-1.144806
+HF-0349,Kenol Health Centre,Murang'a,3,16,T,37.109479,-0.700454
+HF-0350,Makadara Medical Clinic,Nairobi,2,2,True,36.877393,-1.40432
+HF-0107,Kayole Dispensary II,Nairobi,2,2,True,36.77333,-1.274819
+HF-0066,Gatundu Nursing Home,Kiambu,3,39,True,36.762693,-1.019546
+HF-0074,Riabai Medical Clinic,Kiambu,2,5,True,0.0,0.0
+HF-0290,Lari Nursing Home,Kiambu,3,26,True,36.95108,-1.100271
+HF-0113,Matungulu Health Centre,Machakos,3,39,True,37.139342,-1.576948
+HF-0225,Athi River Sub-County Hospital II,Machakos,4,104,T,37.093455,-1.5106
+HF-0550,Kikuyu Sub-County Hospital II,Kiambu,4,95,True,37.032285,-1.149025
+HF-0337,Subukia Sub-County Hospital II,Nakuru,4,125,True,35.433797,-0.324458
+HF-0054,Kikuyu Health Centre,Kiambu,3,45,False,36.846252,-0.985171
+HF-0244,Kabete Medical Clinic II,Kiambu,2,4,True,36.868949,-1.171114
+HF-0401,Sabasaba Health Centre II,Murang'a,3,20,True,37.005531,-0.80653
+HF-0489,Kiharu Dispensary II,Murang'a,2,5,True,37.398314,-1.030313
+HF-0538,Isinya Medical Clinic,Kajiado,2,5,True,37.176015,-2.632666
+HF-0199,Ting'ang'a Dispensary II,Kiambu,2,0,True,36.619072,-0.88298
+HF-0528,Ting'ang'a Level 5 Hospital IV,Kiambu,5,286,True,36.852307,-1.147221
+HF-0216,Mathioya Medical Clinic,Murang'a,2,2,0,36.978504,-0.771409
+HF-0184,Embakasi Level 5 Hospital,Nairobi,5,354,True,37.049852,-1.280861
+HF-0595,Ilbissil Level 5 Hospital VI,Kajiado,5,341,True,37.664244,-2.74591
+HF-0118,Embakasi Dispensary,Nairobi,2,3,True,37.024411,-1.276531
+HF-0562,Mavoko Sub-County Hospital II,Machakos,4,166,True,37.267547,-1.411673
+HF-0298,Masinga Dispensary,Machakos,2,0,True,37.364795,-1.226999
+HF-0544,Limuru Sub-County Hospital,Kiambu,4,97,False,36.762558,-1.156975
+HF-0503,Ongata Rongai Nursing Home,Kajiado,3,32,True,36.428528,-1.440028
+HF-0308,SABASABA HEALTH CENTRE,Murang'a,3,40,True,36.907362,-0.754215
+HF-0001,Maragua Dispensary,Murang'a,2,4,True,37.040975,-0.877101
+HF-0185,Kalama Medical Clinic,Machakos,2,3,False,37.731424,-0.871891
+HF-0606,Embakasi Medical Clinic II,Nairobi,2,6,True,36.780907,-1.334946
+HF-0123,Ruiru Health Centre,Kiambu,3,32,True,36.71698,-0.893475
+HF-0575,Kamukunji Level 5 Hospital II,Nairobi,0,393,True,37.065566,-1.247432
+HF-0427,Matungulu Dispensary II,Machakos,2,0,True,37.203002,-1.398622
+HF-0590,Kanunga Medical Clinic II,Kiambu,2,-14,True,36.66802,-1.022524
+HF-0588,Isinya Dispensary III,Kajiado,2,1,True,36.563674,-2.062921
+HF-0404,Molo Nursing Home II,Nakuru,3,40,True,35.92647,-0.445032
+HF-0393,Isinya Dispensary II,Kajiado,2,8,True,36.58131,-2.029472
+HF-0458,Kenol Sub-County Hospital,Murang'a,4,98,True,37.204828,-0.947548
+HF-0570,Roysambu Health Centre,Nairobi,3,35,True,36.911777,-1.244355
+HF-0481,Mai Mahiu Medical Clinic IV,Nakuru,2,4,True,36.180636,-0.882976
+HF-0274,Mathare Dispensary,Nairobi,2,8,False,36.797788,-1.255679
+HF-0574,Ngewa Level 5 Hospital,Kiambu,5,378,False,36.783974,-1.117156
+HF-0215,Molo Dispensary,Nakuru,2,5,True,35.892145,-0.066003
+HF-0333,Mwala Medical Clinic II,Machakos,2,4,True,37.730975,-1.432482
+HF-0058,Njoro Medical Clinic,Nakuru,2,1,True,36.129319,-0.460873
+HF-0506,Kenol Medical Clinic II,Murang'a,2,0,True,,
+HF-0127,Kuresoi Level 5 Hospital II,Nakuru,5,284,True,36.518337,-1.029243
+HF-0292,Bahati Sub-County Hospital II,Nakuru,4,104,True,36.464998,-0.963522
+HF-0236,Mavoko Dispensary II,Machakos,2,7,True,37.669114,-1.25514
+HF-0167,Langata Medical Clinic,Nairobi,2,0,True,37.03642,-1.281708
+HF-0434,Athi River Level 5 Hospital III,Machakos,5,268,True,37.222907,-1.094148
+HF-0189,Tala Health Centre,Machakos,3,41,True,37.473326,-1.195696
+HF-0230,Kabete Nursing Home III,Kiambu,3,38,True,36.948103,-1.090391
+HF-0407,Roysambu Level 5 Hospital III,Nairobi,5,385,True,36.85045,-1.244229
+HF-0567,Kandara Sub-County Hospital II,Murang'a,4,108,True,37.091505,-0.838197
+HF-0431,Tala Level 5 Hospital,Machakos,5,318,,37.705442,-1.514508
+HF-0403,Makadara Nursing Home,Nairobi,3,39,FALSE,36.938634,-1.43054
+HF-0388,Kangundo Dispensary,Machakos,2,2,True,37.737808,-1.026119
+HF-0463,Ting'ang'a Health Centre,Kiambu,3,40,True,36.810781,-0.87173
+HF-0490,Salgaa Nursing Home III,Nakuru,3,12,no,35.905182,-0.483789
+HF-0425,Mathioya Medical Clinic II,Murang'a,2,5,True,37.249901,-0.807323
+HF-0160,Kayole Health Centre,Nairobi,3,15,True,36.831801,-1.258179
+HF-0447,Ongata Rongai Dispensary III,Kajiado,2,8,True,36.574718,-1.481234
+HF-0004,Molo Sub-County Hospital,Nakuru,4,68,True,36.098382,-0.544374
+HF-0190,Kigumo Sub-County Hospital,Murang'a,4,86,True,36.847468,-0.686728
+HF-0471,Kabete Dispensary III,Kiambu,2,3,True,36.750598,-0.847641
+HF-0569,Kigumo Dispensary,Murang'a,2,0,True,37.05492,-0.799398
+HF-0306,Kangundo Medical Clinic II,Machakos,2,5,True,37.683284,-1.418582
+HF-0131,Ngong Medical Clinic,Kajiado,2,6,True,36.242756,-1.922116
+HF-0115,Loitokitok Nursing Home,Kajiado,3,26,N,36.26396,-2.228997
+HF-0342,Loitokitok Nursing Home II,Kajiado,3,14,True,37.694088,-2.817704
+HF-0056,Tigoni Level 5 Hospital,Kiambu,5,377,True,37.081927,-1.07034
+HF-0069,Dagoretti Dispensary,Nairobi,2,2,True,36.749652,-1.373899
+HF-0539,  Mathare Level 5 Hospital II,Nairobi,5,287,True,36.831932,-1.215542
+HF-0034,Ngong Level 5 Hospital,Kajiado,5,255,True,37.379939,-2.519926
+HF-0494,Ilbissil Level 5 Hospital III,Kajiado,5,404,True,36.871412,-2.35402
+HF-0438,Njoro Health Centre IV,Nakuru,3,13,True,,
+HF-90271,Kalama Health Center III,Machakos,3,37,True,37.79543,-0.930399
+HF-0284,Matungulu Sub-County Hospital,Machakos,4,177,True,37.83005,-1.05065
+HF-0501,Kasarani Medical Clinic II,Nairobi,2,6,True,36.785134,-1.200561
+HF-0221,Gatundu Health Centre,Kiambu,3,34,True,36.74,-0.88
+HF-0255,Mashuuru Medical Clinic,Kajiado,2,5,True,36.791514,-2.360482
+HF-0105,Tigoni Nursing Home,Kiambu,3,40,True,36.591179,-0.91194
+HF-0444,Kanunga Medical Clinic,Kiambu,2,5,True,37.016757,-1.222506
+HF-0418,Ndeiya Nursing Home,Kiambu,3,13,True,36.734525,-0.908644
+HF-0334,Kitengela Health Centre,Kajiado,3,27,True,36.312083,-1.713369
+HF-0022,Kathiani Medical Clinic,Machakos,2,3,True,37.399611,-1.052085
+HF-0136,Lari Medical Clinic,Kiambu,2,5,True,37.016832,-1.065037
+HF-0092,Ruaraka Dispensary,Nairobi,2,0,True,36.92395,-1.406445
+HF-0509,Gilgil Medical Clinic III,Nakuru,2,6,True,36.239928,0.066477
+HF-0429,Kiharu Sub-County Hospital III,Murang'a,4,143,True,36.780986,-0.699686
+HF-0088,Kabete Nursing Home,Kiambu,3,35,N,36.648856,-0.982038
+HF-0547,Ilbissil Dispensary III,Kajiado,2,4,True,37.03492,-2.230405
+HF-0437,Maragua Sub-County Hospital II,Murang'a,4,73,True,36.969698,-0.827038
+HF-0288,Kalama Dispensary,Machakos,2,0,False,37.254948,-1.287298
+HF-0459,Kathiani Level 5 Hospital,Machakos,5,228,False,37.703068,-0.971634
+HF-0240,Juja Health Centre II,Kiambu,3,36,True,NULL,
+HF-0283,Kanunga Nursing Home II,Kiambu,3,36,True,36.902816,-1.002772
+HF-0158,Kamukunji Dispensary II,Nairobi,2,1,True,36.759898,-1.380297
+HF-0101,Ting'ang'a Nursing Home,Kiambu,3,12,True,37.135339,-1.175734
+HF-0017,LOITOKITOK LEVEL 5 HOSPITAL,Kajiado,5,199,True,36.384946,-2.27643
+HF-0592,Kasarani Sub-County Hospital V,Nairobi,4,99,True,36.761795,-1.370287
+HF-0357,Elburgon Nursing Home II,Nakuru,3,26,True,35.623746,-0.416723
+HF-0496,Thika Medical Clinic II,Kiambu,2,6,True,37.165572,-1.167212
+HF-0077,Elburgon Medical Clinic,Nakuru,2,3,True,36.493519,-0.883401
+HF-0532,Yatta Sub-County Hospital II,Machakos,4,104,True,37.362853,-0.926644
+HF-0083,Tigoni Level 5 Hospital II,Kiambu,5,249,True,36.856425,-1.095711
+HF-0053,Mwala Nursing Home,Machakos,3,40,True,37.464094,-0.925838
+HF-0070,Juja Health Centre,Kiambu,3,47,0,36.918075,-1.014514
+HF-0543,Kenol Sub-County Hospital II,Murang'a,4,79,True,37.268395,-0.935463
+HF-0397,Mavoko Health Centre III,Machakos,3,15,True,37.265246,-1.709672
+HF-0500,Roysambu Nursing Home II,Nairobi,3,15,True,36.852852,119.331701
+HF-0414,Kathiani Nursing Home,Machakos,3,29,True,37.195806,-1.725797
+HF-0177,Maragua Level 5 Hospital II,Murang'a,5,213,True,37.214578,-1.012876
+HF-0518,Kikuyu Medical Clinic,Kiambu,2,6,True,36.600477,-0.898307
+HF-0023,Kathiani Health Centre,Machakos,3,48,True,37.237068,-1.532958
+HF-0561,Sabasaba Medical Clinic II,Murang'a,2,1,True,36.88412,-0.794718
+HF-0035,Mai Mahiu Level 5 Hospital,Nakuru,5,269,True,35.728476,-0.382954
+HF-0524,Lari Nursing Home II,Kiambu,3,38,True,36.677598,-1.234298
+HF-0290,Lari Nursing Home,Kiambu,3,26,True,36.95108,-1.100271
+HF-0182,Kamwangi Health Centre,Kiambu,3,39,True,36.657173,-1.028946
+HF-0546,Thika Dispensary,Kiambu,2,1,True,36.717968,-1.018481
+HF-0572,Kuresoi Dispensary,Nakuru,2,5,True,36.300495,-0.406125
+HF-0203,Njoro Health Centre III,Nakuru,3,24,True,35.83631,-0.147827
+HF-0443,Rongai Sub-County Hospital II,Nakuru,4,N/A,True,36.416031,-1.022412
+HF-0042,Rongai Medical Clinic,Nakuru,2,3,True,36.431869,-0.876196
+HF-0013,Kanunga Nursing Home,Kiambu,3,14,True,36.665855,-1.039994
+HF-0345,Mashuuru Medical Clinic II,Kajiado,2,0,True,37.110652,-2.37929
+HF-0493,Embakasi Dispensary V,Nairobi,2,8,True,36.726293,-1.305132
+HF-0525,Kabete Medical Clinic V,Kiambu,2,3,True,37.106201,-1.044401
+HF-0003,Ruaraka Level 5 Hospital,Nairobi,5,290,True,36.714565,-1.344885
+HF-0154,Kandara Sub-County Hospital,Murang'a,4,170,True,37.236998,-0.957482
+HF-0143,Kuresoi Level 5 Hospital III,Nakuru,5,263,True,36.002236,-0.303752
+HF-0275,Kitengela Sub-County Hospital II,Kajiado,4,143,False,37.67,-2.55
+HF-0174,Embakasi Nursing Home,Nairobi,3,14,True,36.798928,-1.322592
+HF-0406,Embakasi Dispensary IV,Nairobi,2,2,True,36.745442,-1.245791
+HF-0197,Rongai Level 5 Hospital,Nakuru,5,373,1,36.127095,-0.015687
+HF-0301,Kabete Medical Clinic III,Kiambu,2,1,True,37.026546,-1.069054
+HF-0432,Karuri Nursing Home,Kiambu,3,28,True,36.747411,-1.119187
+HF-0030,Karuri Sub-County Hospital,Kiambu,4,108,True,36.968791,-1.092268
+HF-0486,Mavoko Health Centre IV,Machakos,3,16,True,37.254703,-1.166215
+HF-0208,Namanga Health Centre,Kajiado,3,35,True,36.141665,-1.87106
+HF-0504,Langata Sub-County Hospital II,Nairobi,4,139,True,36.77423,-1.324521
+HF-0386,Juja Dispensary IV,Kiambu,2,6,True,36.837712,-1.181182
+HF-0192,Lari Sub-County Hospital,Kiambu,4,142,False,36.912331,-1.077305
+HF-0037,Subukia Medical Clinic II,Nakuru,2,1,True,35.537492,-0.42461
+HF-0420,Ting'ang'a Nursing Home II,Kiambu,3,26,True,36.92292,-1.025397
+HF-0355,Kiharu Sub-County Hospital II,Murang'a,4,141,True,37.128641,-1.015418
+HF-0530,Westlands Nursing Home III,Nairobi,3,15,True,36.938479,-1.234021
+HF-0117,Starehe Health Centre,Nairobi,3,18,True,37.077986,-1.281613
+HF-0249,Juja Dispensary,Kiambu,2,2,True,36.671381,-1.186882
+HF-0517,Namanga Dispensary II,Kajiado,2,5,True,36.7005,-1.357993
+HF-0313,Riabai Sub-County Hospital,Kiambu,4,140,True,36.879784,-1.134227
+HF-0536,Bahati Medical Clinic II,Nakuru,2,2,True,35.881198,-0.259347
+HF-0289,Yatta Dispensary,Machakos,2,5,Y,37.298008,-1.220846
+HF-0439,Salgaa Level 5 Hospital,Nakuru,5,324,True,36.297428,-0.852183
+HF-0460,Molo Medical Clinic,Nakuru,2,1,True,35.647413,-0.627496
+HF-0392,Bahati Dispensary,Nakuru,2,2,True,36.243741,-0.627939
+HF-0540,Ruiru Level 5 Hospital II,Kiambu,5,318,True,37.037776,-1.035262
+HF-0258,Ting'ang'a Level 5 Hospital,Kiambu,5,297,True,36.763886,-0.904026
+HF-0303,Gilgil Medical Clinic,Nakuru,2,4,True,36.503029,-0.742473
+HF-0016,Kasarani Sub-County Hospital,Nairobi,4,124,True,36.974629,-1.307635
+HF-0012,Ting'ang'a Dispensary,Kiambu,2,4,True,36.692238,-1.031732
+HF-0129,Kenol Medical Clinic,Murang'a,2,2,True,37.130981,-0.989496
+HF-0449,Kayole Dispensary III,Nairobi,2,8,True,36.804559,-1.232081
+HF-0029,Starehe Dispensary,Nairobi,2,1,True,36.995779,-1.265987
+HF-0176,Kandara Dispensary,Murang'a,2,6,True,36.934831,-0.799794
+HF-0251,Athi River Level 5 Hospital II,Machakos,5,285,True,37.66983,-1.232594
+HF-0473,Ngewa Dispensary III,Kiambu,2,3,false,36.935915,-1.016161
+HF-0390,Gatanga Level 5 Hospital II,Murang'a,5,301,True,37.204962,-0.995371
+HF-0122,Kiharu Nursing Home  ,Murang'a,3,13,True,36.812353,-0.77718
+HF-0441,Isinya Level 5 Hospital III,Kajiado,5,362,True,36.978197,-1.742215
+HF-0120,Langata Level 5 Hospital,Nairobi,5,342,True,36.877446,-1.263761
+HF-0421,Ongata Rongai Level 5 Hospital II,Kajiado,5,378,True,36.282449,-1.680176
+HF-0166,Ilbissil Level 5 Hospital II,Kajiado,5,381,True,36.971743,-1.826915
+HF-0336,Starehe Sub-County Hospital,Nairobi,4,68,True,36.699022,-1.340204
+HF-0507,Kabete Medical Clinic IV,Kiambu,2,6,True,36.993023,-1.101067
+HF-0295,Salgaa Medical Clinic III,Nakuru,2,0,True,35.620522,-0.143751
+HF-0453,Kigumo Nursing Home II,Murang'a,3,28,True,,
+HF-0455,Maragua Medical Clinic,Murang'a,2,2,True,37.349339,-1.004359
+HF-0205,Ngewa Nursing Home II,Kiambu,3,19,no,36.801534,-0.985956
+HF-0043,Njiru Health Centre,Nairobi,3,40,False,36.978646,-1.230554
+HF-0354,Thika Sub-County Hospital,Kiambu,4,69,True,36.866719,-1.038745
+HF-0369,Kamwangi Nursing Home IV,Kiambu,3,10,True,36.643482,-1.159988
+HF-0133,Loitokitok Level 5 Hospital II,Kajiado,5,218,False,36.368189,-1.348704
+HF-0356,Isinya Nursing Home,Kajiado,3,23,True,37.135842,-2.474086
+HF-0598,Tigoni Level 5 Hospital III,Kiambu,5,280,True,36.664398,-0.872693
+HF-0405,Kuresoi Sub-County Hospital,Nakuru,4,67,True,36.152117,-0.290744
+HF-0545,Tala Sub-County Hospital III,Machakos,4,111,True,37.644683,-1.463996
+HF-0482,Ngewa Health Centre III,Kiambu,3,22,True,28.171553,-0.96744
+HF-0578,Bahati Dispensary II,Nakuru,2,2,True,36.191251,-0.763513
+HF-0214,Naivasha Medical Clinic II,Nakuru,2,3,True,36.427407,-0.88041
+HF-0046,Juja Medical Clinic,Kiambu,2,5,True,36.84792,-1.021844
+HF-0119,Kabete Medical Clinic,Kiambu,2,1,True,36.941208,-1.163464
+HF-0141,Yatta Medical Clinic,Machakos,2,6,True,37.680612,-1.365494
+HF-0161,Starehe Level 5 Hospital,Nairobi,5,228,True,37.084683,-1.264864
+HF-0297,Mashuuru Nursing Home,Kajiado,3,28,True,36.54317,-2.372181
+HF-0076,Ongata Rongai Dispensary,Kajiado,2,6,True,37.753907,-2.998339
+HF-0089,Ngewa Sub-County Hospital,Kiambu,4,153,True,36.57,-1.29
+HF-0456,Tigoni Medical Clinic II,Kiambu,2,2,yes,37.072974,-1.184386
+HF-0010,Ilbissil Level 5 Hospital,Kajiado,5,326,True,37.07699,-1.783334
+HF-0145,Riabai Dispensary,Kiambu,2,2,True,36.648292,-0.817488
+HF-0191,Maragua Level 5 Hospital III,Murang'a,5,212,True,37.114358,-0.970827
+HF-0571,Langata Nursing Home II,Nairobi,3,28,True,36.973221,-1.31752
+HF-0027,Kangundo Nursing Home,Machakos,3,13,True,37.386386,-0.991511
+HF-0311,Mathare Level 5 Hospital,Nairobi,5,360,True,36.908246,-1.30092
+HF-0612,Kamukunji Dispensary III,Nairobi,2,4,True,36.869059,-1.364032
+HF-0364,Githunguri Health Centre,Kiambu,3,35,True,37.282666,-1.038918
+HF-0051,Kiharu Dispensary,Murang'a,2,6,True,36.903985,-0.779775
+HF-0198,Riabai Level 5 Hospital,Kiambu,5,335,True,36.653444,-1.120378
+HF-0126,Kangema Medical Clinic,Murang'a,2,4,True,37.02917,-0.837391
+HF-0436,Mai Mahiu Sub-County Hospital,Nakuru,4,115,True,36.470084,-0.739833
+HF-0071,Kuresoi Level 5 Hospital,Nakuru,5,224,True,35.931978,-0.266725
+HF-0351,Kalama Level 5 Hospital II,Machakos,5,411,True,-1.466363,37.495119
+HF-0514,Sabasaba Health Centre III,Murang'a,3,12 beds,True,37.010562,-0.776782
+HF-0068,Rongai Medical Clinic II,Nakuru,2,1,True,-0.839882,36.217737
+HF-0196,Kibra Sub-County Hospital II  ,Nairobi,4,170,True,36.922355,-1.242662
+HF-0464,Ngewa Health Centre II,Kiambu,3,35,True,36.86546,-0.895087
+HF-0608,Rongai Sub-County Hospital III,Nakuru,4,155,True,36.3804,-0.487422
+HF-0310,Ongata Rongai Level 5 Hospital,Kajiado,5,417,True,36.898476,-1.962864
+HF-0433,Namanga Level 5 Hospital,Kajiado,5,219,True,36.345392,-1.627889
+HF-0430,Sabasaba Sub-County Hospital II,Murang'a,4,154,True,37.018525,-0.756574
+HF-0108,Kalama Health Centre,Machakos,3,20,True,37.138792,-1.498581
+HF-0025,Mavoko Health Centre,Machakos,3,38,True,37.183002,-1.749637
+HF-0287,Maragua Level 5 Hospital IV,Murang'a,5,254,True,37.204639,-0.963891
+HF-0121,Sabasaba Level 5 Hospital,Murang'a,7,278,True,37.295633,-0.909209
+HF-0237,Kayole Nursing Home II,Nairobi,3,22,True,36.970758,-1.253531
+HF-0610,Karuri Dispensary,Kiambu,2,3,False,-1.081621,36.733106
+HF-0300,Kanunga Sub-County Hospital,Kiambu,4,130,True,36.654022,-1.274179
+HF-0320,Gilgil Dispensary,Nakuru,2,12 beds,True,36.504012,-0.908773
+HF-0389,Maragua Health Centre III,Murang'a,3,39,False,36.997671,-0.823788
+HF-0470,Kikuyu Health Centre II,Kiambu,3,41,True,36.66361,-1.033829
+HF-0057,DAGORETTI HEALTH CENTRE,Nairobi,3,48,True,36.842553,-1.24597
+HF-0377,Bahati Medical Clinic,Nakuru,2,6,True,36.185385,-0.171121
+HF-0564,Matungulu Sub-County Hospital II,Machakos,4,113,True,29.443408,-1.144889
+HF-0480,Mai Mahiu Dispensary,Nakuru,2,4,True,NULL,
+HF-0387,Gatundu Level 5 Hospital,Kiambu,5,202,FALSE,36.698677,-0.866651
+HF-0448,Kigumo Health Centre,Murang'a,3,48,False,37.130359,-0.758874
+HF-0009,Gilgil Level 5 Hospital,Nakuru,5,388,True,35.915478,-0.509127
+HF-0286,Kangundo Medical Clinic,Machakos,2,4,True,37.810702,-0.939091
+HF-0146,Kitengela Sub-County Hospital,Kajiado,4,126,True,36.809579,-2.461655
+HF-0231,Gatundu Sub-County Hospital II,Kiambu,4,95,True,36.629447,-0.864187
+HF-0036,Athi River Sub-County Hospital,Machakos,4,151,True,37.252955,-1.604463
+HF-0415,Yatta Nursing Home,Machakos,3,27,True,37.176899,-1.63772
+HF-0172,Kibra Medical Clinic II,Nairobi,2,4,True,-1.202057,36.802285
+HF-0138,Mashuuru Sub-County Hospital,Kajiado,4,115,False,37.133816,-2.731987
+HF-0165,Ndeiya Medical Clinic,Kiambu,2,2,True,37.289287,-1.054835
+HF-0247,Starehe Dispensary III,Nairobi,2,4,no,36.811648,-1.334465
+HF-0611,Githunguri Dispensary,Kiambu,2,4,True,37.110509,-1.15468
+HF-0063,Mwala Dispensary,Machakos,2,4,true,37.419581,-1.330498
+HF-0318,Starehe Dispensary IV,Nairobi,2,0,True,36.962833,-1.249237
+HF-0245,gatundu sub-county hospital iii,Kiambu,4,69,True,36.777717,-0.974665
+HF-0291,Dagoretti Health Centre III,Nairobi,3,47,True,36.881064,-1.307385
+HF-0163,Ilbissil Sub-County Hospital,Kajiado,4,141,True,37.755104,-2.525137
+HF-0226,Mavoko Health Centre II,Machakos,3,44,True,37.459158,-1.403821
+HF-0322,Gatanga Level 5 Hospital,Murang'a,5,304,True,37.187035,-0.948028
+HF-0428,Maragua Health Centre IV,Murang'a,3,25,True,37.244494,-0.94096
+HF-0344,Athi River Sub-County Hospital III,Machakos,4,155,True,37.769485,-1.44788
+HF-0222,Tala Sub-County Hospital,Machakos,4,79,True,37.142791,-1.506812
+HF-0049,Kayole Nursing Home,Nairobi,3,35,True,37.02465,-1.261864
+HF-0319,Ongata Rongai Sub-County Hospital,Kajiado,4,104,True,37.715689,-2.728402
+HF-0114,Loitokitok Medical Clinic II,Kajiado,2,2,True,36.765859,-1.555248
+HF-0360,Gilgil Sub-County Hospital III,Nakuru,4,75,True,35.675191,-0.178872
+HF-0002,Ngewa Health Centre,Kiambu,3,47,True,36.62885,-1.177803
+HF-0032,Sabasaba Nursing Home,Murang'a,3,20,True,37.204823,-0.715222
+HF-0060,Gatundu Medical Clinic,Kiambu,2,5,True,37.079136,-1.153762
+HF-0256,Salgaa Nursing Home,Nakuru,3,16,True,36.029503,-0.335608
+HF-0340,Mai Mahiu Medical Clinic II,Nakuru,2,5,True,36.212772,0.007747
+HF-0140,Kamwangi Nursing Home,Kiambu,3,23,True,36.599875,-1.031782
+HF-0304,Ting'ang'a Level 5 Hospital II,Kiambu,5,375,True,37.173151,-1.156796
+HF-0559,Riabai Health Centre II,Kiambu,3,32,True,36.766942,-0.988185
+HF-0153,Loitokitok Level 5 Hospital III,Kajiado,5,379,True,30.667279,-2.235822
+HF-0330,Rongai Level 5 Hospital II,Nakuru,5,221,False,35.812531,-0.442842
+HF-90079,Langata Sub-County Hosptal,Nairobi,4,87,True,36.91436,-1.393314
+HF-0293,Westlands Health Centre,Nairobi,3,38,True,36.818408,-1.308531
+HF-0577,Riabai Medical Clinic II,Kiambu,2,5,True,36.858133,-1.182375
+HF-0400,KANGUNDO NURSING HOME II,Machakos,3,29,True,37.296714,-1.179744
+HF-0323,Ngewa Sub-County Hospital II,Kiambu,4,61,False,37.018851,-1.045685
+HF-0224,Salgaa  Medical  Clinic  II,Nakuru,2,3,True,36.400149,-0.716235
+HF-0413,Kabete Dispensary,Kiambu,2,0,1,37.049644,-1.191035
+HF-0195,Matungulu Nursing Home II,Machakos,3,38,False,37.325938,-1.240332
+HF-0096,Njoro Health Centre,Nakuru,3,23,True,36.166818,-0.692604
+HF-0599,Tala Health Centre III,Machakos,3,37,True,37.389305,-1.458758
+HF-0170,Kamwangi Nursing Home II,Kiambu,3,12,True,36.628402,-0.789324
+HF-0373,Maragua Level 5 Hospital V,Murang'a,5,242,True,36.725026,-0.622911
+HF-0583,Mathioya Sub-County Hospital,Murang'a,4,177,True,37.061518,-0.783532
+HF-0374,Kasarani Medical Clinic,Nairobi,2,5,True,36.792164,-1.294342
+HF-0416,Embakasi Sub-County Hospital II,Nairobi,4,91,True,36.69,-1.33
+HF-0417,Langata Level 5 Hospital II,Nairobi,5,224,True,36.890929,-1.364265
+HF-0526,Kandara Health Centre,Murang'a,3,42,no,37.001287,-0.937647
+HF-0106,Ruiru Level 5 Hospital,Kiambu,5,204,True,36.769267,-1.028413
+HF-0238,Mavoko Nursing Home,Machakos,3,21,True,37.411434,-1.287578
+HF-0492,Ndeiya Nursing Home II,Kiambu,3,33,True,27.768466,-1.035425
+HF-0270,Maragua Health Centre II,Murang'a,3,12,True,36.746123,-0.610491
+HF-0523,Kibra Sub-County Hospital III,Nairobi,4,111,TRUE,36.738002,-1.316449
+HF-0358,Naivasha Health Centre II,Nakuru,3,14,True,36.246882,0.07682
+HF-0498,Ilbissil Medical Clinic,Kajiado,2,6,True,37.537045,-2.221314
+HF-0325,Kuresoi Nursing Home,Nakuru,3,40,True,36.111188,-0.399601
+HF-0135,Kitengela Medical Clinic,Kajiado,2,2,True,36.473945,-2.143932
+HF-0098,Ruiru Medical Clinic,Kiambu,2,2,True,36.643339,-0.907983
+HF-0499,Ruaraka Medical Clinic II,Nairobi,2,6,True,36.813646,-1.213101
+HF-0186,Starehe Level 5 Hospital II,Nairobi,5,361,True,36.910351,-1.221163
+HF-0204,Ngewa Dispensary,Kiambu,2,7,True,36.953902,-0.996853
+HF-0116,Salgaa Health Centre,Nakuru,3,39,True,36.434786,-0.628954
+HF-0266,Matungulu Dispensary,Machakos,2,1,True,37.616151,-1.025562
+HF-0213,Mathioya Level 5 Hospital,Murang'a,5,407,True,36.888462,-0.695019
+HF-0267,Kangema Level 5 Hospital II,Murang'a,5,353,True,36.934557,-0.825804
+HF-0033,Kimana Dispensary,Kajiado,2,4,True,36.998446,-2.42536
+HF-0082,Kangundo Sub-County Hospital,Machakos,4,165,True,37.292434,-1.664302
+HF-0229,Kayole Sub-County Hospital,Nairobi,4,115,False,36.821148,-1.214878
+HF-0188,Kibra Dispensary,Nairobi,2,4,True,36.962736,-1.256693
+HF-0375,Mavoko Sub-County Hospital,Machakos,4,92,True,37.42202,-1.42981
+HF-0278,Gatundu Medical Clinic II,Kiambu,2,0,True,36.986284,-0.98737
+HF-0168,Bahati Nursing Home,Nakuru,3,40,True,36.106544,-0.001166
+HF-0335,Ndeiya Dispensary,Kiambu,2,8,FALSE,36.591298,-1.186721
+HF-0467,Kimana Medical Clinic II,Kajiado,2,2,True,36.704073,-1.589076
+HF-0062,Subukia Sub-County Hospital,Nakuru,4,144,True,36.439828,-1.092692
+HF-0234,Limuru Medical Clinic,Kiambu,2,6,True,36.616834,-1.049403
+HF-0157,Gilgil Nursing Home,Nakuru,3,12,True,36.366326,-0.799135
+HF-0329,Roysambu Dispensary,Nairobi,2,8,True,37.051872,-1.216938
+HF-0594,Dagoretti Health Centre V,Nairobi,3,20,True,36.757158,-1.233439
+HF-0261,Molo Dispensary II,Nakuru,2,7,True,36.35096,-0.723212
+HF-0381,Juja Dispensary III,Kiambu,2,5,True,36.78455,-0.934405
+HF-0586,Isinya Health Centre III,Kajiado,3,35,True,36.363079,-1.388872
+HF-0372,Tigoni Sub-County Hospital,Kiambu,4,79,True,36.934377,-1.024748
+HF-0019,Dagoretti Nursing Home,Nairobi,3,35,True,36.870597,-1.345859
+HF-0073,Isinya Health Centre,Kajiado,3,34,True,37.626205,-2.438814
+HF-0581,Kahuro Nursing Home III,Murang'a,3,28,True,36.957185,-0.645969
+HF-0250,Kamukunji Nursing Home,Nairobi,3,20,True,36.690346,-1.305678
+HF-0527,Tala Level 5 Hospital II,Machakos,5,341,True,37.707999,-1.379867
+HF-0394,Njoro Medical Clinic II,Nakuru,2,2,True,36.224704,-0.016451
+HF-0031,Ngong Dispensary,Kajiado,2,7,True,36.803307,-2.15633
+HF-0299,Lari Medical Clinic II,Kiambu,2,3,True,36.991118,-1.111684
+HF-0316,Riabai Health Centre,Kiambu,3,25,True,36.583077,-0.91475
+HF-0048,Kitengela Nursing Home II,Kajiado,3,33,True,37.271566,-2.186068
+HF-0085,Ngewa Nursing Home,Kiambu,3,12,False,36.599193,-1.249202
+HF-0542,Kayole Nursing Home IV,Nairobi,3,24,True,36.689279,-1.344949
+HF-0367,Ting'ang'a Dispensary III,Kiambu,2,0,True,36.773821,-1.040339
+HF-0210,Masinga Sub-County Hospital,Machakos,4,161,True,37.164683,-1.286347
+HF-0485,Ruiru Nursing Home III,Kiambu,3,37,True,36.954697,-1.186613
+HF-0097,Karuri Level 5 Hospital,Kiambu,5,193,False,37.11604,-1.162977
+HF-0529,Kanunga Health Centre II,Kiambu,3,12,True,37.161875,-1.188378
+HF-0075,Namanga Sub-County Hospital,Kajiado,4,94,True,36.457177,-1.646464
+HF-0520,Kathiani Dispensary II,Machakos,2,0,True,37.250726,-1.385752
+HF-0426,Loitokitok Sub-County Hospital II,Kajiado,4,179,True,36.834201,-1.714055
+HF-0446,Kabete Dispensary II,Kiambu,2,5,True,36.724963,-1.175179
+HF-0475,Ruaraka Level 5 Hospital II,Nairobi,5,190,True,36.824355,-1.344156
+HF-0281,Thika Medical Clinic,Kiambu,2,-34,True,36.797182,-1.108464
+HF-0144,Kayole Medical Clinic,Nairobi,2,3,True,36.863283,-1.268052
+HF-0052,Isinya Dispensary,Kajiado,2,1,True,37.634481,-2.656708
+HF-0614,Kahuro Sub-County Hospital,Murang'a,4,149,True,37.180565,-0.758443
+HF-90372,Tigoni Sub-County Hosptal,Kiambu,4,79,True,36.934573,-1.024983
+HF-0104,Salgaa  Medical  Clinic,Nakuru,2,3,True,36.265996,-0.416457
+HF-0516,Kahuro Health Centre,Murang'a,3,17,True,37.154252,-1.012664
+HF-0502,Kathiani Nursing Home II,Machakos,3,32,True,37.112795,-1.370753
+HF-0555,Kasarani Sub-County Hospital IV,Nairobi,4,163,True,36.689994,-1.275546
+HF-0102,Githunguri Sub-County Hospital,Kiambu,4,135,True,36.942477,-1.084828
+HF-0260,Gilgil Health Centre,Nakuru,3,47,True,35.954513,-0.13427
+HF-0398,Masinga Health Centre,Machakos,3,44,True,37.294151,-1.473024
+HF-0040,Naivasha Nursing Home,Nakuru,3,16,True,35.960457,-0.205138
+HF-0137,Rongai Nursing Home,Nakuru,3,38,True,35.573054,-0.398713
+HF-0314,Kahuro Nursing Home,Murang'a,3,12,True,36.972687,-0.877017
+HF-0353,Bahati Level 5 Hospital,Nakuru,5,192,True,35.685892,-0.335772
+HF-0219,Loitokitok Dispensary,Kajiado,2,2,True,36.734493,-1.488312
+HF-0044,Namanga Dispensary,Kajiado,2,7,True,36.602149,-1.974401
+HF-0262,Rongai Sub-County Hospital,Nakuru,4,121,True,35.974729,-0.531115
+HF-0147,Isinya Level 5 Hospital,Kajiado,5,229,True,36.212323,-1.946911
+HF-0084,Gilgil Sub-County Hospital,Nakuru,4,110,False,35.676459,-0.53336
+HF-0600,Kiharu Nursing Home III,Murang'a,3,37,True,37.250902,-0.801871
+HF-0112,Naivasha Sub-County Hospital; OPD,Nakuru,4,126,True,36.352214,-0.949068
+HF-0521,"Ilbissil Dispensary II ""Main""",Kajiado,2,3,True,37.543581,-2.17243
+HF-0045,Kayole Dispensary,Nairobi,2,8,True,36.800077,-1.259851
+HF-0445,Kahuro Medical Clinic II,Murang'a,2,0,True,36.903768,-0.740384
+HF-0095,Kabete Nursing Home II,Kiambu,3,26,True,37.055256,-1.19286
+HF-0252,Kanunga Health Centre,Kiambu,3,39,True,36.965808,-1.210112
+HF-0007,Namanga Medical Clinic,Kajiado,2,5,True,37.47904,-2.40766
+HF-0181,Athi River Level 5 Hospital,Machakos,5,307,True,37.208103,115.996246
+HF-0491,Gilgil Medical Clinic II,Nakuru,2,3,True,36.328677,-0.858856
+HF-0233,Sabasaba Nursing Home III,Murang'a,3,31,True,36.801434,-0.608975
+HF-0220,Juja Level 5 Hospital,Kiambu,5,301,True,36.673763,-0.804421
+HF-0558,Kangema Nursing Home II,Murang'a,3,15,true,37.251311,-0.883593
+HF-0277,Dagoretti Health Centre II,Nairobi,3,40,True,36.905425,-1.291906
+HF-0183,Njoro Sub-County Hospital,Nakuru,4,107,True,35.949129,-0.453182
+HF-0110,Njiru Medical Clinic,Nairobi,2,3,True,36.885601,-1.292493
+HF-0576,Ndeiya Dispensary II,Kiambu,2,5,True,37.36,-1.1
+HF-0111,Dagoretti Dispensary III,Nairobi,2,6,True,36.833387,-1.234844
+HF-0440,Mai Mahiu Medical Clinic III,Nakuru,2,2,False,36.31753,-0.532842
+HF-0006,Maragua Level 5 Hospital,Murang'a,5,225,True,37.217314,-0.943956
+HF-0194,Kathiani Health Centre II,Machakos,3,13,True,37.581042,-1.135368
+HF-0382,Kuresoi Medical Clinic,Nakuru,2,3,True,36.223608,-0.675367
+HF-0253,Lari Health Centre II,Kiambu,3,18,True,36.798761,-0.962638
+HF-0384,Dagoretti Health Centre IV,Nairobi,3,33,True,36.669648,-1.322357
+HF-0091,Kimana Medical Clinic,Kajiado,2,0,True,36.578384,-2.373856
+HF-0086,Mathioya Dispensary II,Murang'a,2,0,True,37.1716,-1.01206
+HF-0422,Mavoko Level 5 Hospital,Machakos,5,367,True,37.218005,-1.440305
+HF-0024,Mashuuru Level 5 Hospital,Kajiado,5,399,True,37.226846,-2.23019
+HF-0597,Njiru Level 5 Hospital,Nairobi,5,273,True,37.072344,-1.277479
+HF-0462,Kasarani Dispensary,Nairobi,2,5,True,36.760049,-1.269281
+HF-0211,Kigumo Sub-County Hospital II,Murang'a,4,135,True,37.147203,-0.891555
+HF-0613,Kalama Medical Clinic II,Machakos,2,6,True,37.402574,-0.923261
+HF-0128,Ruaraka Sub-County Hospital,Nairobi,4,150,True,36.83408,-1.345042
+HF-0557,Starehe Level 5 Hospital III,Nairobi,5,252,True,36.864187,-1.26388
+HF-0080,Kathiani Dispensary,Machakos,2,7,True,37.318657,-0.883268
+HF-0505,Westlands Level 5 Hospital II,Nairobi,5,212,True,36.823046,-1.374969
+HF-0466,Tigoni Health Centre,Kiambu,3,48,True,36.746465,-0.843112
+HF-0152,Matungulu Nursing Home,Machakos,3,-,True,37.147683,-1.411158
+HF-0162,Ngong Nursing Home,Kajiado,3,17,True,36.389315,-1.31042
+HF-0368,Kayole Level 5 Hospital,Nairobi,5,242,True,36.907263,-1.247724
+HF-0061,Maragua Sub-County Hospital,Murang'a,4,72,,37.172636,-0.733983
+HF-0580,Karuri Nursing Home II,Kiambu,3,30,True,37.137102,-1.155102
+HF-0395,Lari Level 5 Hospital,Kiambu,5,355,True,36.809797,-1.102289
+HF-0391,Kangema Sub-County Hospital,Murang'a,4,71,True,36.795203,-0.743353
+HF-0296,Salgaa Nursing Home II,Nakuru,3,38,True,36.002279,-0.485371
+HF-0078,Dagoretti Dispensary II,Nairobi,2,4,True,36.799939,-1.270401
+HF-0169,Ruiru Nursing Home,Kiambu,3,22,True,36.798636,-1.130992
+HF-0378,Njiru Dispensary,Nairobi,2,2,True,36.86724,-1.309124
+HF-0495,Roysambu Nursing Home,Nairobi,3,38,True,36.946258,-1.281239
+HF-0469,Molo Level 5 Hospital,Nakuru,5,411,True,35.79,-0.11
+HF-0584,Gatundu Health Centre II,Kiambu,3,15,True,36.637547,-0.958936
+HF-0442,Langata Nursing Home,Nairobi,3,39,True,36.921238,-1.305528
+HF-0603,Yatta Nursing Home II,Machakos,3,12,True,37.284871,-1.156682
+HF-90592,Kasarani Sub-County Hosptal V,Nairobi,4,99,True,36.762311,-1.369967
+HF-0565,Kayole Sub-County Hospital II,Nairobi,4,176,True,36.774891,-1.268044
+HF-0008,Subukia Health Centre,Nakuru,3,N/A,True,36.401394,-1.054948
+HF-0093,Westlands Nursing Home,Nairobi,3,40,True,NA,
+HF-0315,Ting'ang'a Level 5 Hospital III,Kiambu,5,420,False,36.781334,-0.862946
+HF-0549,Mathare Health Centre,Nairobi,3,38,True,36.705921,-1.277166
+HF-0254,Rongai Medical Clinic III,Nakuru,2,4,True,36.205818,0.211497
+HF-0476,Kanunga Level 5 Hospital,Kiambu,5,382,True,36.593589,-1.156999
+HF-0028,Ndeiya Sub-County Hospital,Kiambu,4,twelve,True,36.880378,-1.08255
+HF-0175,Kahuro Level 5 Hospital II,Murang'a,5,379,True,37.084321,-0.937387
+HF-0346,Westlands Dispensary II,Nairobi,2,1,True,37.102539,-1.267101
+HF-0402,Kitengela Dispensary,Kajiado,2,6,True,36.332206,-1.217928
+HF-0124,Kibra Medical Clinic,Nairobi,2,3,True,36.85459,-1.24684
+HF-0276,Kamwangi Level 5 Hospital,Kiambu,5,306,True,36.976649,-1.102435
+HF-0479,Kitengela Health Centre II,Kajiado,3,38,True,37.917593,-2.838191
+HF-0246,Subukia Nursing Home,Nakuru,3,14,True,36.25327,-0.410765
+HF-0553,Kenol Sub-County Hospital III  ,Murang'a,4,67,True,37.072086,-0.777591
+HF-0385,Limuru Dispensary,Kiambu,2,3,True,36.938777,-1.186675
+HF-0409,Ruiru Medical Clinic II,Kiambu,2,6,False,36.813702,-1.166844
+HF-0582,Maragua Dispensary II,Murang'a,2,6,True,36.712432,-0.657076
+HF-0326,Naivasha Level 5 Hospital,Nakuru,5,187,True,-0.837726,36.16504
+HF-0376,Kasarani Sub-County Hospital III,Nairobi,4,90,False,36.75514,-1.334572
+HF-0435,Mashuuru Nursing Home II,Kajiado,3,36,True,37.438568,-2.146452
+HF-0309,Juja Dispensary II,Kiambu,2,4,True,36.68754,-0.85591
+HF-0472,Westlands Nursing Home II,Nairobi,3,14,True,36.755998,-1.304659
+HF-0396,sabasaba level 5 hospital ii,Murang'a,5,250,True,37.164563,-0.953853
+HF-0232,Mwala Medical Clinic,Machakos,2,0,True,37.342632,-1.517399
+HF-0474,Kimana Nursing Home II,Kajiado,3,39,True,36.21876,-2.052307
+HF-90513,Kangema Nursing Home (Annex),Murang'a,3,35,True,37.142547,-0.825377
+HF-0552,Kathiani Medical Clinic II,Machakos,2,6,True,36.967888,-1.531103
+HF-0046,Juja Medical Clinic,Kiambu,2,5,True,36.84792,-1.021844
+HF-0454,Athi River Nursing Home II,Machakos,3,33,True,37.371148,-1.382994
+HF-0554,Namanga Level 5 Hospital II,Kajiado,5,300,True,37.222601,-2.733666
+HF-0039,Yatta Sub-County Hospital,Machakos,4,137,True,37.213644,-1.31824
+HF-0370,Kahuro Nursing Home II,Murang'a,3,24,True,37.102486,-0.768481
+HF-0365,Sabasaba Medical Clinic,Murang'a,2,0,True,36.980684,-0.800676
+HF-0218,Lari Sub-County Hospital III,Kiambu,4,128,True,36.82345,-0.978127
+HF-0352,Mashuuru Sub-County Hospital II,Kajiado,4,165,True,37.055047,-2.214417
+HF-0264,Isinya Level 5 Hospital II,Kajiado,5,331,True,36.769655,-1.84678
+HF-0541,Kuresoi Sub-County Hospital II,Nakuru,4,149,True,0.0,0.0
+HF-0457,Kikuyu Sub-County Hospital,Kiambu,4,130,True,36.767032,-0.893642
+HF-0026,Kasarani Sub-County Hospital II,Nairobi,4,98,False,36.752566,-1.314942
+HF-0212,Lari Sub-County Hospital II,Kiambu,4,117,True,37.341683,-1.106561
+HF-0468,Kibra Health Centre II,Nairobi,3,20,True,37.043321,-1.268243
+HF-0359,Karuri Medical Clinic,Kiambu,2,2,True,36.914642,-1.014046
+HF-0087,Kibra Sub-County Hospital,Nairobi,4,165,True,36.681671,-1.3188
+HF-0563,Naivasha Medical Clinic III,Nakuru,2,4,True,36.00422,-0.071165
+HF-0223,Loitokitok Sub-County Hospital,Kajiado,4,177,True,36.554486,-2.395286
+HF-0371,Kiharu Nursing Home II,Murang'a,3,19,True,36.880476,-0.772461
+HF-0380,Gatundu Medical Clinic III,Kiambu,2,1,True,36.635005,-0.88902
+HF-0339,Kamwangi Medical Clinic,Kiambu,2,6,True,37.12,-1.24
+HF-0103,Athi River Nursing Home,Machakos,3,10,True,37.528314,-1.27625
+HF-0079,Langata Sub-County Hospital,Nairobi,4,87,True,36.914917,-1.39347
+HF-90198,Riabai Level 5 Hosptal,Kiambu,5,335,True,36.653005,-1.120575
+HF-0513,Kangema Nursing Home,Murang'a,3,35,True,37.142855,-0.825521
+HF-0321,Masinga Medical Clinic,Machakos,2,2,1,37.720259,-0.839391
+HF-0282,Gatanga Health Centre,Murang'a,3,25,True,37.089068,-0.982692
+HF-0488,Tala Sub-County Hospital II,Machakos,4,unknown,True,37.57122,-1.244224
+HF-0259,Mwala Health Centre,Machakos,3,31,True,37.177739,-1.294358
+HF-0156,Embakasi Dispensary II,Nairobi,2,-32,True,36.845223,-1.372973
+HF-0579,Ilbissil Level 5 Hospital V,Kajiado,5,N/A,True,36.42099,-1.676644
+HF-0130,Ting'ang'a Medical Clinic,Kiambu,2,1,True,36.606089,-1.258367
+HF-0241,Athi River Medical Clinic,Machakos,2,4,False,37.608282,-1.341748
+HF-0535,Ongata Rongai Level 5 Hospital III,Kajiado,5,307,True,36.600635,-1.494808
+HF-0512,Embakasi Medical Clinic,Nairobi,2,1,0,36.829905,-1.296828
+HF-0064,Elburgon Nursing Home,Nakuru,3,10,True,36.326519,-0.414586
+HF-0243,Kasarani Nursing Home,Nairobi,3,13,True,36.789014,-1.371838
+HF-0331,Ngewa Dispensary II,Kiambu,2,3,True,36.812265,-0.946911
+HF-0171,Kibra Health Centre,Nairobi,3,44,True,36.78,-1.39
+HF-0410,Kandara Nursing Home,Murang'a,3,25,True,36.97425,-0.946976
+HF-0317,Kiharu Sub-County Hospital,Murang'a,4,79,True,36.739725,-0.71351
+HF-0005,Naivasha Medical Clinic,Nakuru,2,2,True,NA,
+HF-0217,Maragua Health Centre,Murang'a,3,43,True,37.317259,-0.998999
+HF-0038,Molo  Nursing  Home,Nakuru,3,26,True,35.641492,-0.450153
+HF-0150,Kamukunji Level 5 Hospital,Nairobi,5,326,False,36.72488,-1.371436
+HF-0235,Mavoko Dispensary,Machakos,2,1,True,37.310416,-1.497946
+HF-0551,Elburgon Nursing Home III,Nakuru,3,17,True,35.978981,-0.553913
+HF-0149,Matungulu Health Centre II,Machakos,3,18,True,37.430245,-1.321927
