@@ -181,6 +181,64 @@ figcaption b{color:var(--ink2);font-weight:600}
   .ch-n{font-size:2rem}
   .toc ol{grid-template-columns:1fr}
 }
+
+/* ================= PRINT =================
+   These readers are written for the screen, but students print them. Two
+   things make an unstyled print unusable: a reader whose machine is in dark
+   mode prints a solid dark page, and code blocks split across page breaks.
+   Both are handled below. Only the NEUTRAL tokens are reset — each unit keeps
+   its accent hue, which greys acceptably on a mono printer. */
+@media print{
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme="light"]){
+    --paper:#ffffff; --surface:#ffffff; --surface2:#f5f6f4;
+    --ink:#111417; --ink2:#33393a; --ink3:#5a6162;
+    --rule:#b9c0ba; --rule-soft:#dce0dc;
+    --wash:#ffffff; --warn-wash:#ffffff; --ok-wash:#ffffff;
+    --code-bg:#f4f5f2;
+  }
+  @page{ size:A4; margin:18mm 15mm 20mm; }
+  html,body{background:#fff !important;font-size:10.4pt;line-height:1.45}
+  .wrap{max-width:none;padding:0 0}
+  .col{max-width:none}
+
+  /* a title page, a contents page, then a page per chapter */
+  .mast{break-after:page}
+  .toc{break-after:page}
+  .ch{break-before:page;padding-top:0}
+  .ch:first-of-type{break-before:auto}
+
+  /* things that must never be split down the middle */
+  pre,table,figure,svg,.worked,.warn,.lo,.prac,.st,.rdg,.defn,.eq,.tbl,
+  .check,.tier,.diag,.matrix{
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  h1,h2,h3,h4,.ch-head,.wkl{break-after:avoid;page-break-after:avoid}
+  p,li{orphans:3;widows:3}
+
+  /* on screen these scroll sideways; on paper anything past the edge is
+     simply lost, so let it wrap instead */
+  .scroll,.tbl{overflow:visible !important}
+  pre{white-space:pre-wrap;word-wrap:break-word;font-size:8.5pt;
+      line-height:1.34;background:var(--code-bg);
+      border:0.5pt solid var(--rule-soft)}
+  table{font-size:9pt;width:100%}
+
+  /* panel tints cost toner and carry no meaning in grey — a rule does the
+     same job */
+  .worked,.warn,.lo,.prac,.st,.rdg,.check,.defn{
+    background:transparent !important;
+    border-left:2.5pt solid var(--rule);padding-left:10pt}
+
+  /* a printed page cannot be clicked, so external destinations are spelled
+     out; internal cross-references and the contents list are left alone */
+  a{text-decoration:none}
+  a[href^="http"]::after{content:" <" attr(href) ">";font-size:7.4pt;
+      font-family:"IBM Plex Mono",monospace;color:var(--ink3);
+      word-break:break-all}
+  .toc a::after,a[href^="#"]::after{content:none}
+}
 </style>
 
 <header class="mast">
