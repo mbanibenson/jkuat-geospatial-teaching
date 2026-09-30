@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiambu Health Facilities</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Kiambu Health Facilities</h1>
+    <p class="subtitle">EGE 2531 · Week 2 practical</p>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <h2>Filter</h2>
+
+      <label for="level-select">Minimum KEPH level</label>
+      <select id="level-select">
+        <option value="2">Level 2 and above</option>
+        <option value="3">Level 3 and above</option>
+        <option value="4">Level 4 and above</option>
+        <option value="5">Level 5 only</option>
+      </select>
+
+      <label class="check">
+        <input type="checkbox" id="operational-only">
+        Operational only
+      </label>
+
+      <p id="status" class="status">Loading…</p>
+      <ul id="facility-list" class="facility-list"></ul>
+
+      <p class="credit">Data: <a href="https://mbanibenson.github.io/jkuat-geospatial-teaching/">EGE 2531 data pack</a> (synthetic).</p>
+    </aside>
+
+    <div id="map" class="map"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

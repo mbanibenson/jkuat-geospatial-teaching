@@ -1,0 +1,82 @@
+/* Kiambu Health Facilities — EGE 2531 week 2 */
+
+/* Colours defined once, used everywhere with var(--name) */
+:root {
+  --teal: #0E6E78;
+  --ink: #1d2327;
+  --paper: #f7f7f5;
+  --line: #d9dcd8;
+}
+
+/* Width and height include padding and border — the sane box model */
+* {
+  box-sizing: border-box;
+}
+
+/* Let the page fill the whole window, with no default gap round the edge */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* body stacks the header above the main area: a column flexbox */
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.site-header {
+  background: var(--teal);
+  color: white;
+  padding: 12px 20px;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* main takes all the height left over, and puts sidebar and map side by side */
+.layout {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.sidebar {
+  width: 320px;
+  padding: 16px;
+  overflow-y: auto;
+  background: white;
+  border-right: 1px solid var(--line);
+}
+
+/* the map takes all the width left over */
+#map {
+  flex: 1;
+  position: relative;
+  background: #e3ece6;
+}
+
+/* On a phone: sidebar on top, map underneath */
+@media (max-width: 700px) {
+  .layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: auto;
+    max-height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+}

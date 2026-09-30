@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EGE 2531 Week 2 Practical</title>
+<meta name="description" content="HTML, CSS and JavaScript by building one small map page: Kiambu health facilities.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F0F3F2; --surface:#F9FBFA; --surface2:#E3EAE9;
+  --ink:#111A1B; --ink2:#384748; --ink3:#667778;
+  --rule:#CCD8D7; --rule-soft:#DEE7E6;
+  --acc:#0E6E78; --acc2:#0F8792; --wash:#DFEDEE;
+  --warn:#B8443A; --warn-wash:#F6E7E4;
+  --ok:#2F6E4F; --ok-wash:#E2EEE7;
+  --code-bg:#EBF0EF;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1213; --surface:#131A1B; --surface2:#1B2425;
+    --ink:#E4EBEA; --ink2:#AFBDBC; --ink3:#788888;
+    --rule:#263233; --rule-soft:#1E2829;
+    --acc:#42B4BE; --acc2:#5FC7D0; --wash:#0F2D30;
+    --warn:#E8877C; --warn-wash:#31201E;
+    --ok:#7FC49F; --ok-wash:#14261C;
+    --code-bg:#171F20;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1213; --surface:#131A1B; --surface2:#1B2425;
+  --ink:#E4EBEA; --ink2:#AFBDBC; --ink3:#788888;
+  --rule:#263233; --rule-soft:#1E2829;
+  --acc:#42B4BE; --acc2:#5FC7D0; --wash:#0F2D30;
+  --warn:#E8877C; --warn-wash:#31201E;
+  --ok:#7FC49F; --ok-wash:#14261C;
+  --code-bg:#171F20;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);margin:0;
+  font-family:"Spectral",Georgia,serif;font-size:17.5px;line-height:1.66;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6,.ui{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;text-wrap:balance}
+code,kbd,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+a{color:var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(1.1rem,4vw,3rem)}
+.col{max-width:70ch}
+
+.mast{padding:clamp(3rem,7vw,5rem) 0 clamp(2rem,4vw,3rem);border-bottom:2px solid var(--acc)}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--acc);margin:0 0 1.3rem}
+.mast h1{font-size:clamp(2.4rem,6.5vw,4.2rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:0 0 .5rem}
+.mast .sub{font-size:clamp(1.05rem,2.2vw,1.35rem);color:var(--ink2);margin:0 0 2.2rem;max-width:56ch;line-height:1.45}
+.mast-meta{display:flex;flex-wrap:wrap;gap:.45rem 2.2rem;font-family:"IBM Plex Mono",monospace;
+  font-size:.73rem;letter-spacing:.05em;color:var(--ink3)}
+.mast-meta b{color:var(--ink2);font-weight:500}
+
+.toc{background:var(--surface);border-bottom:1px solid var(--rule);padding:2.2rem 0 2.4rem}
+.toc h2{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 1.1rem;font-weight:500}
+.toc ol{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:0 2.4rem}
+.toc li{border-bottom:1px solid var(--rule-soft)}
+.toc a{display:flex;gap:.85rem;align-items:baseline;padding:.5rem 0;text-decoration:none;color:var(--ink2);font-size:.94rem}
+.toc a:hover{color:var(--acc)}
+.toc a .n{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--acc);min-width:1.9em;font-weight:500}
+.toc .front a .n{color:var(--ink3)}
+
+section{padding:clamp(2.6rem,5vw,4rem) 0}
+.band{border-top:1px solid var(--rule)}
+h2.sec{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-.025em;margin:0 0 1.2rem;line-height:1.15}
+
+.ch{border-top:1px solid var(--rule);padding-top:clamp(2.4rem,5vw,3.6rem)}
+.ch-head{display:grid;grid-template-columns:auto 1fr;gap:0 1.6rem;align-items:start;margin-bottom:1.8rem}
+.ch-n{font-family:"IBM Plex Mono",monospace;font-size:clamp(2.4rem,6vw,3.8rem);font-weight:600;
+  color:var(--acc);line-height:.82;letter-spacing:-.04em;opacity:.9}
+.ch-t h2{font-size:clamp(1.55rem,3.4vw,2.25rem);font-weight:700;letter-spacing:-.028em;margin:0 0 .35rem;line-height:1.12}
+.ch-t .wkl{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink3);margin:0 0 .55rem}
+p{margin:0 0 1.05rem}
+h3{font-size:1.22rem;font-weight:700;letter-spacing:-.015em;margin:2.3rem 0 .7rem;line-height:1.25}
+h4{font-size:1.02rem;font-weight:600;margin:1.6rem 0 .45rem}
+ul,ol.body{margin:0 0 1.1rem;padding-left:1.2rem}
+li{margin-bottom:.45rem}
+strong{font-weight:600}
+
+.lo{background:var(--wash);padding:1.1rem 1.3rem;margin:0 0 2rem;max-width:70ch}
+.lo h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acc);margin:0 0 .6rem;font-weight:600}
+.lo ul{margin:0;padding-left:1.1rem;font-size:.94rem;line-height:1.5}
+.lo li{margin-bottom:.3rem;color:var(--ink2)}
+
+.defn{border-left:3px solid var(--acc);padding:.15rem 0 .15rem 1.15rem;margin:1.6rem 0;max-width:70ch}
+.defn p{margin:0;font-size:.97rem}
+.defn p + p{margin-top:.6rem}
+.defn b.term{font-weight:600;color:var(--acc)}
+
+.eq{margin:1.5rem 0;padding:1rem 1.2rem;background:var(--surface);border:1px solid var(--rule-soft);
+  max-width:70ch;overflow-x:auto}
+.eq .f{font-family:"Spectral",Georgia,serif;font-size:1.08rem;text-align:center;display:block;line-height:2}
+.eq .whr{font-size:.87rem;color:var(--ink3);margin:.7rem 0 0;text-align:left;line-height:1.5}
+var,.v{font-style:italic;font-family:"Spectral",Georgia,serif}
+sub,sup{line-height:0}
+.frac{display:inline-block;vertical-align:-.55em;text-align:center;font-size:.86em;margin:0 .18em}
+.frac .t{display:block;padding:0 .3em;border-bottom:1px solid currentColor;line-height:1.35}
+.frac .b{display:block;padding:0 .3em;line-height:1.35}
+
+pre{background:var(--code-bg);border:1px solid var(--rule-soft);padding:1rem 1.15rem;margin:1.4rem 0;
+  overflow-x:auto;max-width:76ch;font-size:.82rem;line-height:1.62;border-radius:2px}
+pre code{font-family:"IBM Plex Mono",monospace;color:var(--ink)}
+.cm{color:var(--ink3);font-style:italic}
+.kw{color:var(--acc)}
+.st{color:var(--ok)}
+.fn{color:var(--warn)}
+p code,li code,td code{font-family:"IBM Plex Mono",monospace;font-size:.85em;
+  background:var(--surface2);padding:.1em .34em;border-radius:2px}
+.lang{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink3);margin:1.4rem 0 -1.1rem;display:block}
+
+.worked{background:var(--surface);border:1px solid var(--rule);padding:1.35rem 1.5rem;margin:1.8rem 0;max-width:76ch}
+.worked > h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acc);margin:0 0 .9rem;font-weight:600}
+.worked p{font-size:.96rem}
+.worked p:last-child{margin-bottom:0}
+
+.warn{border-left:3px solid var(--warn);background:var(--warn-wash);padding:1rem 1.25rem;margin:1.7rem 0;max-width:72ch}
+.warn h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--warn);margin:0 0 .5rem;font-weight:600}
+.warn p{margin:0;font-size:.95rem;line-height:1.55}
+.warn p + p{margin-top:.6rem}
+
+.prac{border:1px solid var(--acc);margin:2.2rem 0;max-width:76ch}
+.prac .ph{background:var(--acc);color:#F0F3F2;padding:.55rem 1.2rem;
+  font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;font-weight:500}
+:root[data-theme="dark"] .prac .ph{color:#0C1213}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .prac .ph{color:#0C1213}}
+.prac .pb{padding:1.15rem 1.3rem}
+.prac h6{font-family:"Archivo",sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.03em;
+  text-transform:uppercase;margin:1.3rem 0 .5rem;color:var(--acc)}
+.prac h6:first-child{margin-top:0}
+.prac ol,.prac ul{margin:0 0 .3rem;padding-left:1.2rem;font-size:.94rem;line-height:1.55}
+.prac li{margin-bottom:.35rem;color:var(--ink2)}
+.prac p{font-size:.94rem;margin-bottom:.7rem}
+.tier{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid currentColor;padding:.1rem .38rem;margin-left:.5rem;vertical-align:.15em}
+
+.check{background:var(--surface);border-top:2px solid var(--rule);padding:1.2rem 0 0;margin:2.2rem 0 0;max-width:72ch}
+.check h5{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 .7rem;font-weight:500}
+.check ol{padding-left:1.3rem;margin:0 0 1rem;font-size:.94rem;line-height:1.55}
+.check li{margin-bottom:.4rem;color:var(--ink2)}
+.rdg{font-size:.9rem;color:var(--ink3);max-width:72ch;margin:1.2rem 0 0;
+  padding-top:.9rem;border-top:1px solid var(--rule-soft)}
+.rdg b{color:var(--ink2);font-weight:600}
+
+figure{margin:1.9rem 0;max-width:76ch}
+figure svg{display:block;width:100%;height:auto;max-width:560px}
+figcaption{font-size:.85rem;color:var(--ink3);margin-top:.6rem;line-height:1.5;max-width:62ch}
+figcaption b{color:var(--ink2);font-weight:600}
+
+.tbl{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem;max-width:76ch}
+.tbl th,.tbl td{text-align:left;padding:.5rem .8rem .5rem 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.tbl th{font-family:"Archivo",sans-serif;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink3);font-weight:600;border-bottom:1px solid var(--rule)}
+.tbl td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.scroll{overflow-x:auto}
+
+@media (max-width:720px){
+  body{font-size:16.5px}
+  .ch-head{grid-template-columns:1fr;gap:.5rem}
+  .ch-n{font-size:2rem}
+  .toc ol{grid-template-columns:1fr}
+}
+
+/* ================= PRINT =================
+   These readers are written for the screen, but students print them. Two
+   things make an unstyled print unusable: a reader whose machine is in dark
+   mode prints a solid dark page, and code blocks split across page breaks.
+   Both are handled below. Only the NEUTRAL tokens are reset — each unit keeps
+   its accent hue, which greys acceptably on a mono printer. */
+@media print{
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme="light"]){
+    --paper:#ffffff; --surface:#ffffff; --surface2:#f5f6f4;
+    --ink:#111417; --ink2:#33393a; --ink3:#5a6162;
+    --rule:#b9c0ba; --rule-soft:#dce0dc;
+    --wash:#ffffff; --warn-wash:#ffffff; --ok-wash:#ffffff;
+    --code-bg:#f4f5f2;
+  }
+  @page{ size:A4; margin:18mm 15mm 20mm; }
+  html,body{background:#fff !important;font-size:10.4pt;line-height:1.45}
+  .wrap{max-width:none;padding:0 0}
+  .col{max-width:none}
+
+  /* a title page, a contents page, then a page per chapter */
+  .mast{break-after:page}
+  .toc{break-after:page}
+  .ch{break-before:page;padding-top:0}
+  .ch:first-of-type{break-before:auto}
+
+  /* things that must never be split down the middle */
+  /* Short items that a split ruins. */
+  pre,table,figure,svg,.eq,.defn,.tbl,.diag,.matrix{
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  /* The long panels — worked examples, practicals, learning outcomes,
+     self-tests, reading lists — can run a page or more. Forcing those whole
+     leaves half-empty pages and buys nothing, so let them flow and just keep
+     each heading with what follows it. */
+  /* A code block's language label is a span sitting just before its <pre>.
+     Without this it strands at the foot of a page while the code it names
+     moves to the next one. */
+  .lang{display:block;break-after:avoid;page-break-after:avoid}
+  .worked,.warn,.lo,.prac,.st,.rdg,.check,.tier{break-inside:auto}
+  .worked>h3,.worked>h4,.prac>h3,.lo>h3,.st>h3,.rdg>h3{
+    break-after:avoid;page-break-after:avoid}
+  h1,h2,h3,h4,.ch-head,.wkl{break-after:avoid;page-break-after:avoid}
+  p,li{orphans:3;widows:3}
+
+  /* on screen these scroll sideways; on paper anything past the edge is
+     simply lost, so let it wrap instead */
+  .scroll,.tbl{overflow:visible !important}
+  pre{white-space:pre-wrap;word-wrap:break-word;font-size:8.5pt;
+      line-height:1.34;background:var(--code-bg);
+      border:0.5pt solid var(--rule-soft)}
+  table{font-size:9pt;width:100%}
+
+  /* panel tints cost toner and carry no meaning in grey — a rule does the
+     same job */
+  .worked,.warn,.lo,.prac,.st,.rdg,.check,.defn{
+    background:transparent !important;
+    border-left:2.5pt solid var(--rule);padding-left:10pt}
+
+  /* a printed page cannot be clicked, so external destinations are spelled
+     out; internal cross-references and the contents list are left alone */
+  a{text-decoration:none}
+  a[href^="http"]::after{content:" <" attr(href) ">";font-size:7.4pt;
+      font-family:"IBM Plex Mono",monospace;color:var(--ink3);
+      word-break:break-all}
+  .toc a::after,a[href^="#"]::after{content:none}
+
+  /* The screen design breathes generously; on paper that whitespace is
+     charged to whoever is paying for the printing, which here is usually the
+     student. Tighten the vertical rhythm without touching type size. */
+  section{padding:0.7rem 0 !important}
+  .band{border-top:0.5pt solid var(--rule-soft)}
+  .mast{padding:0 0 1rem}
+  .mast h1{font-size:26pt;margin-bottom:0.3rem}
+  .mast .sub{font-size:12pt;margin-bottom:0.8rem}
+  .ch{padding-top:0.2rem}
+  .ch-head{margin-bottom:0.7rem}
+  .ch-n{font-size:20pt;line-height:1}
+  .ch-t h2{font-size:15pt;margin-bottom:0.2rem}
+  h2.sec{font-size:13.5pt;margin:0 0 0.45rem}
+  h3{font-size:11.4pt;margin:0.9rem 0 0.3rem}
+  h4{margin:0.7rem 0 0.25rem}
+  p{margin:0 0 0.5rem}
+  ul,ol{margin:0.35rem 0 0.6rem}
+  li{margin-bottom:0.12rem}
+  pre{margin:0.45rem 0;padding:6pt 8pt}
+  table{margin:0.45rem 0}
+  .toc ol{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+<style>
+/* week 2 practical only */
+.try{border-left:3px solid var(--warn);background:var(--warn-wash);padding:.9rem 1.2rem;margin:1.4rem 0;max-width:72ch}
+.try h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;color:var(--warn);margin:0 0 .45rem;font-weight:600}
+.try p{margin:0;font-size:.95rem;line-height:1.55}
+.try p + p{margin-top:.55rem}
+.ok{border-left:3px solid var(--ok);background:var(--ok-wash);padding:.9rem 1.2rem;margin:1.4rem 0;max-width:72ch}
+.ok h5{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ok);margin:0 0 .45rem;font-weight:600}
+.ok p{margin:0;font-size:.95rem;line-height:1.55}
+.task{font-family:"Archivo",sans-serif;font-weight:700;font-size:1rem;margin:1.8rem 0 .5rem}
+.task .k{font-family:"IBM Plex Mono",monospace;color:var(--acc);font-weight:600;margin-right:.5rem}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0 0}
+.btn{display:inline-block;font-family:"Archivo",sans-serif;font-weight:600;font-size:.9rem;padding:.5rem .95rem;border:1px solid var(--acc);color:var(--acc);text-decoration:none;border-radius:2px}
+.btn.solid{background:var(--acc);color:var(--paper)}
+.btn:hover{background:var(--wash)}
+.btn.solid:hover{background:var(--acc2)}
+.anat{font-family:"IBM Plex Mono",monospace;font-size:.95rem;background:var(--code-bg);border:1px solid var(--rule-soft);padding:1rem 1.15rem;max-width:76ch;overflow-x:auto;line-height:2.1}
+.anat .t{color:var(--acc)} .anat .a{color:var(--warn)} .anat .c{color:var(--ok)}
+@media print{.try,.ok{background:transparent!important;border-left:2.5pt solid var(--rule);padding-left:10pt}.dl{display:none}}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="kicker">EGE 2531 Web Mapping · Week 2 laboratory</p>
+    <h1>HTML, CSS and JavaScript, by building a map page</h1>
+    <p class="sub">One small page, Kiambu Health Facilities, built in six steps. It loads 60 facilities from GeoJSON, lists them, filters them and plots them. Next week Leaflet replaces the dots with a real map, and nothing else changes.</p>
+    <div class="mast-meta">
+      <span><b>3 h</b> lab + take-home</span>
+      <span><b>VS Code · Live Server · a browser</b></span>
+      <span>Not assessed</span>
+      <span>Companion to <a href="../#w2">Week 2 of the reader</a></span>
+    </div>
+    <div class="dl">
+      <a class="btn solid" href="ege2531-week2-checkpoints.zip">Download checkpoints (zip)</a>
+      <a class="btn" href="checkpoints/step6/index.html">See the finished page</a>
+      <a class="btn" href="../data/facilities.geojson" download>facilities.geojson</a>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <h2>Contents</h2>
+    <ol>
+      <li class="front"><a href="#plan"><span class="n">§</span><span>Plan and outcomes</span></a></li>
+      <li><a href="#s0"><span class="n">0</span><span>Setup</span></a></li>
+      <li><a href="#s1"><span class="n">1</span><span>HTML: the structure</span></a></li>
+      <li><a href="#s2"><span class="n">2</span><span>CSS: selectors and layout</span></a></li>
+      <li><a href="#s3"><span class="n">3</span><span>JavaScript: the language</span></a></li>
+      <li><a href="#s4"><span class="n">4</span><span>The DOM and events</span></a></li>
+      <li><a href="#s5"><span class="n">5</span><span>fetch, promises, async/await</span></a></li>
+      <li><a href="#s6"><span class="n">6</span><span>A map with no library</span></a></li>
+      <li class="front"><a href="#trouble"><span class="n">§</span><span>When it does not work</span></a></li>
+      <li class="front"><a href="#selftest"><span class="n">§</span><span>Self-test</span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<section id="plan" class="band">
+  <div class="wrap col">
+    <h2 class="sec">Plan and outcomes</h2>
+    <div class="lo"><h5>By the end of this practical you should be able to</h5><ul>
+      <li>Explain what an HTML element, tag and attribute are, and write a page skeleton from memory</li>
+      <li>Use CSS selectors (element, class, id) and build a full-height sidebar-plus-map layout with flexbox</li>
+      <li>Write JavaScript variables, objects, arrays, functions and loops, and say where JavaScript differs from Python</li>
+      <li>Change a page from JavaScript (the DOM) and react to user input (events)</li>
+      <li>Load a file with <code>fetch</code>, and explain why the data is not there on the next line</li>
+    </ul></div>
+
+    <div class="scroll"><table class="tbl">
+      <tr><th>Step</th><th>You build</th><th>Concepts</th><th>Time</th></tr>
+      <tr><td class="n">0</td><td>Project folder, Live Server running</td><td>Local server, DevTools</td><td class="n">15 min</td></tr>
+      <tr><td class="n">1</td><td>Page skeleton</td><td>Elements, tags, attributes, nesting</td><td class="n">25 min</td></tr>
+      <tr><td class="n">2</td><td>Styled full-height layout</td><td>Selectors, box model, flexbox</td><td class="n">35 min</td></tr>
+      <tr><td class="n">3</td><td>Facility data in JavaScript</td><td>Variables, objects, arrays, functions</td><td class="n">35 min</td></tr>
+      <tr><td class="n">4</td><td>Working filters</td><td>DOM, events</td><td class="n">30 min</td></tr>
+      <tr><td class="n">5</td><td>All 60 facilities from GeoJSON</td><td><code>fetch</code>, promises, <code>async</code>/<code>await</code></td><td class="n">30 min</td></tr>
+      <tr><td class="n">6</td><td>Dots on a "map"</td><td>lon/lat to pixels, coordinate order</td><td class="n">take-home</td></tr>
+    </table></div>
+
+    <ul>
+      <li><strong>Type the code. Do not paste it.</strong> It is slower, and that is the point: you notice every bracket, and your fingers learn the syntax.</li>
+      <li>Each step ends with a green <strong>Check</strong>. Do not move on until it passes.</li>
+      <li><strong>Fell behind?</strong> The <a href="ege2531-week2-checkpoints.zip">checkpoints zip</a> has a finished folder for every step. Copy the one for the step you missed and carry on. Nobody should spend the lab stuck.</li>
+      <li>Red <strong>Try it</strong> boxes ask you to break something on purpose. Knowing what an error looks like is half of debugging.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= STEP 0 ================= -->
+<section class="ch" id="s0"><div class="wrap col">
+  <div class="ch-head"><div class="ch-n">00</div><div class="ch-t"><p class="wkl">15 minutes</p><h2>Setup</h2></div></div>
+
+  <p>By the end of this step, VS Code shows your project folder and Live Server serves it at <code>http://127.0.0.1:5500</code>.</p>
+
+  <p class="task"><span class="k">0.1</span>Make the project folder</p>
+  <p>Create a folder called <code>week2-practical</code>, and inside it a folder called <code>data</code>. Put <a href="../data/facilities.geojson" download><code>facilities.geojson</code></a> in <code>data/</code>. By the end of Step 3 you will have:</p>
+<span class="lang">Folder</span>
+<pre><code>week2-practical/
+├── data/
+│   └── facilities.geojson
+├── index.html      ← Step 1
+├── style.css       ← Step 2
+└── app.js          ← Step 3</code></pre>
+
+  <p class="task"><span class="k">0.2</span>Open the folder in VS Code</p>
+  <p>Use <em>File → Open Folder</em> and choose <code>week2-practical</code> itself, not a file inside it and not the folder above it. Live Server serves whatever folder is open.</p>
+
+  <p class="task"><span class="k">0.3</span>Start Live Server</p>
+  <p>Create <code>index.html</code>, type <code>hello</code> in it and save. Right-click the file and choose <em>Open with Live Server</em>, or click <strong>Go Live</strong> in the status bar. The browser opens at <code>http://127.0.0.1:5500/index.html</code>. Change the word and save: the page reloads by itself.</p>
+
+  <p class="task"><span class="k">0.4</span>Open the developer tools</p>
+  <p>Press <strong>F12</strong> (or Ctrl+Shift+I). You will use three tabs all semester:</p>
+  <div class="scroll"><table class="tbl">
+    <tr><th>Tab</th><th>What it shows</th><th>When you use it</th></tr>
+    <tr><td><strong>Elements</strong></td><td>The page as the browser understood it</td><td>"Why is my element not where I expect?"</td></tr>
+    <tr><td><strong>Console</strong></td><td>Messages from your JavaScript, and its errors in red</td><td>Every time something does not work</td></tr>
+    <tr><td><strong>Network</strong></td><td>Every file the page asked for, with its status code</td><td>"Did my data file actually load?"</td></tr>
+  </table></div>
+
+  <div class="defn"><p><b class="term">Why a server, and not a double-click?</b> A double-clicked file opens at an address starting <code>file://</code>. For security, browsers refuse to let JavaScript <code>fetch</code> files from a <code>file://</code> page, so Step 5 would fail with a confusing CORS error. Live Server gives your folder a real <code>http://</code> address, the way the departmental VPS will later in the unit.</p></div>
+
+  <div class="ok"><h5>Check</h5><p>The address starts with <code>http://127.0.0.1:5500</code>, and saving <code>index.html</code> reloads the page by itself.</p></div>
+</div></section>
+
+<!-- ================= STEP 1 ================= -->
+<section class="ch" id="s1"><div class="wrap col">
+  <div class="ch-head"><div class="ch-n">01</div><div class="ch-t"><p class="wkl">25 minutes</p><h2>HTML: the structure</h2></div></div>
+
+  <p>HTML says <strong>what each part of the page is</strong>: a heading, a list, a sidebar, a box for the map. It says nothing about how they look. That is Step 2.</p>
+
+  <h3>Anatomy of an element</h3>
+  <p class="anat"><span class="t">&lt;p</span> <span class="a">class="subtitle"</span><span class="t">&gt;</span><span class="c">EGE 2531 · Week 2 practical</span><span class="t">&lt;/p&gt;</span></p>
+  <div class="scroll"><table class="tbl">
+    <tr><th>Part</th><th>Here</th><th>Meaning</th></tr>
+    <tr><td>Opening tag</td><td><code>&lt;p class="subtitle"&gt;</code></td><td>"A paragraph starts here"</td></tr>
+    <tr><td>Attribute</td><td><code>class="subtitle"</code></td><td>Extra information about the element, written <code>name="value"</code> inside the opening tag</td></tr>
+    <tr><td>Content</td><td><code>EGE 2531 · Week 2 practical</code></td><td>What the element contains: text, or other elements</td></tr>
+    <tr><td>Closing tag</td><td><code>&lt;/p&gt;</code></td><td>"The paragraph ends here". Same name, with a slash</td></tr>
+    <tr><td><strong>Element</strong></td><td>the whole line</td><td>Opening tag + content + closing tag</td></tr>
+  </table></div>
+  <p>A few elements have no content and no closing tag, for example <code>&lt;meta&gt;</code>, <code>&lt;link&gt;</code> and <code>&lt;input&gt;</code>. They are called <em>void</em> elements.</p>
+
+  <p><strong>Elements nest.</strong> An element can contain other elements, like folders inside folders. <code>&lt;ul&gt;</code> contains <code>&lt;li&gt;</code> items, and <code>&lt;aside&gt;</code> contains the heading, the paragraph and the list. The result is a tree, and in Step 4 JavaScript walks that tree to find elements and change them. Indent your code so you can see the tree. The browser ignores indentation; you should not.</p>
+
+  <div class="defn">
+    <p><b class="term">id</b>: a <strong>unique</strong> name. Only one element on the page may have <code>id="map"</code>. Leaflet finds its map container by id next week.</p>
+    <p><b class="term">class</b>: a <strong>group</strong>. Many elements can share <code>class="sidebar"</code>, and one element can have several classes.</p>
+  </div>
+
+  <p class="task"><span class="k">1.1</span>Type the page into <code>index.html</code></p>
+  <span class="lang">index.html</span>
+<pre><code><span class="kw">&lt;!DOCTYPE</span> html<span class="kw">&gt;</span>
+<span class="kw">&lt;html</span> lang=<span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;meta</span> charset=<span class="st">&quot;utf-8&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;meta</span> name=<span class="st">&quot;viewport&quot;</span> content=<span class="st">&quot;width=device-width, initial-scale=1&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;title</span><span class="kw">&gt;</span>Kiambu Health Facilities<span class="kw">&lt;/title</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/head</span><span class="kw">&gt;</span>
+<span class="kw">&lt;body</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;header</span> class=<span class="st">&quot;site-header&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;h1</span><span class="kw">&gt;</span>Kiambu Health Facilities<span class="kw">&lt;/h1</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;p</span> class=<span class="st">&quot;subtitle&quot;</span><span class="kw">&gt;</span>EGE 2531 · Week 2 practical<span class="kw">&lt;/p</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;/header</span><span class="kw">&gt;</span>
+
+  <span class="kw">&lt;main</span> class=<span class="st">&quot;layout&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;aside</span> class=<span class="st">&quot;sidebar&quot;</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;h2</span><span class="kw">&gt;</span>Facilities<span class="kw">&lt;/h2</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;p</span> id=<span class="st">&quot;status&quot;</span> class=<span class="st">&quot;status&quot;</span><span class="kw">&gt;</span>Three facilities, typed by hand for now.<span class="kw">&lt;/p</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;ul</span> id=<span class="st">&quot;facility-list&quot;</span> class=<span class="st">&quot;facility-list&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;li</span><span class="kw">&gt;</span>Juja Level 5 Hospital — level 5, 301 beds<span class="kw">&lt;/li</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;li</span><span class="kw">&gt;</span>Ruiru Health Centre — level 3, 32 beds<span class="kw">&lt;/li</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;li</span><span class="kw">&gt;</span>Kikuyu Health Centre — level 3, 45 beds<span class="kw">&lt;/li</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;/ul</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;p</span><span class="kw">&gt;</span>Data: <span class="kw">&lt;a</span> href=<span class="st">&quot;https://mbanibenson.github.io/jkuat-geospatial-teaching/&quot;</span><span class="kw">&gt;</span>EGE 2531 data pack<span class="kw">&lt;/a</span><span class="kw">&gt;</span> (synthetic).<span class="kw">&lt;/p</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;/aside</span><span class="kw">&gt;</span>
+
+    <span class="kw">&lt;div</span> id=<span class="st">&quot;map&quot;</span> class=<span class="st">&quot;map&quot;</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;p</span><span class="kw">&gt;</span>The map will go here.<span class="kw">&lt;/p</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;/div</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;/main</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/body</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/html</span><span class="kw">&gt;</span></code></pre>
+
+  <div class="scroll"><table class="tbl">
+    <tr><th>Element</th><th>Job</th></tr>
+    <tr><td><code>&lt;!DOCTYPE html&gt;</code></td><td>"This is modern HTML." Always the first line</td></tr>
+    <tr><td><code>&lt;head&gt;</code></td><td>Information <em>about</em> the page: character set, title, stylesheets. Not shown</td></tr>
+    <tr><td><code>&lt;meta name="viewport"&gt;</code></td><td>Makes the page fit a phone screen instead of shrinking a desktop layout</td></tr>
+    <tr><td><code>&lt;body&gt;</code></td><td>Everything the user sees</td></tr>
+    <tr><td><code>&lt;header&gt;</code> <code>&lt;main&gt;</code> <code>&lt;aside&gt;</code></td><td><em>Semantic</em> containers: they tell browsers and screen readers what each region is for</td></tr>
+    <tr><td><code>&lt;div&gt;</code></td><td>A container with no meaning of its own. The map box, here</td></tr>
+    <tr><td><code>&lt;a href="…"&gt;</code></td><td>A link. <code>href</code> is where it goes</td></tr>
+  </table></div>
+
+  <div class="ok"><h5>Check</h5><p>The title, the subtitle, three facilities in a bulleted list, and "The map will go here." It looks plain and ugly. That is correct: there is no CSS yet.</p></div>
+
+  <div class="try"><h5>Try it</h5><p>Open DevTools → <strong>Elements</strong> and expand the tree: it matches your indentation. Now delete the <code>&lt;/ul&gt;</code> tag, save, and look again. The browser quietly guessed where the list ends and showed no error. HTML is forgiving, so mistakes hide. Put the tag back.</p></div>
+</div></section>
+
+<!-- ================= STEP 2 ================= -->
+<section class="ch" id="s2"><div class="wrap col">
+  <div class="ch-head"><div class="ch-n">02</div><div class="ch-t"><p class="wkl">35 minutes</p><h2>CSS: selectors and layout</h2></div></div>
+
+  <p>CSS says <strong>how elements look and where they sit</strong>. The goal is the layout of almost every web map: a header on top, a fixed-width sidebar on the left, and a map that fills the rest of the window.</p>
+
+  <h3>Anatomy of a rule</h3>
+<span class="lang">CSS</span>
+<pre><code>.site-header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}</code></pre>
+  <p>The <strong>selector</strong> (<code>.site-header h1</code>) says <em>which</em> elements the rule applies to. Each <strong>declaration</strong> inside the braces is a <code>property: value;</code> pair. The semicolons matter. A missing one silently breaks the next line.</p>
+
+  <div class="scroll"><table class="tbl">
+    <tr><th>Selector</th><th>Written</th><th>Matches</th><th>In our page</th></tr>
+    <tr><td>Element</td><td><code>h1</code></td><td>Every <code>&lt;h1&gt;</code></td><td>Top-level headings</td></tr>
+    <tr><td>Class</td><td><code>.sidebar</code></td><td>Every element with <code>class="sidebar"</code></td><td>The <code>&lt;aside&gt;</code></td></tr>
+    <tr><td>Id</td><td><code>#map</code></td><td>The one element with <code>id="map"</code></td><td>The map box</td></tr>
+    <tr><td>Descendant</td><td><code>.site-header h1</code></td><td><code>&lt;h1&gt;</code> <em>inside</em> <code>.site-header</code></td><td>The title only</td></tr>
+    <tr><td>Group</td><td><code>html, body</code></td><td>Both</td><td>The page root</td></tr>
+  </table></div>
+  <p>The <strong>dot means class and the hash means id</strong>, here and again in JavaScript in Step 4. When two rules disagree, the more specific selector wins: an id beats a class, and a class beats an element. If they are equally specific, the later rule wins.</p>
+
+  <h3>The box model</h3>
+  <p>Every element is a rectangle made of four layers, from the inside out: <strong>content</strong>, <strong>padding</strong> (space inside the border), <strong>border</strong>, and <strong>margin</strong> (space outside it, pushing neighbours away). By default <code>width: 320px</code> sets only the content width, and padding and border are added on top. <code>* { box-sizing: border-box; }</code> makes 320px mean the whole box. Every sensible stylesheet starts with it.</p>
+
+  <h3>Flexbox</h3>
+  <p><code>display: flex</code> lays a container's children out in a row, or in a column with <code>flex-direction: column</code>. A child with <code>flex: 1</code> takes <em>all the space left over</em>. We use it twice. <code>body</code> is a column, and <code>main</code> gets <code>flex: 1</code>, so it takes all the height below the header. <code>main</code> is a row, and <code>#map</code> gets <code>flex: 1</code>, so it takes all the width beside the 320px sidebar.</p>
+
+  <p class="task"><span class="k">2.1</span>Link the stylesheet: inside <code>&lt;head&gt;</code>, under <code>&lt;title&gt;</code></p>
+<span class="lang">HTML</span>
+<pre><code><span class="kw">&lt;link</span> rel=<span class="st">&quot;stylesheet&quot;</span> href=<span class="st">&quot;style.css&quot;</span><span class="kw">&gt;</span></code></pre>
+
+  <p class="task"><span class="k">2.2</span>Type <code>style.css</code></p>
+  <span class="lang">style.css</span>
+<pre><code><span class="cm">/* Kiambu Health Facilities — EGE 2531 week 2 */</span>
+
+<span class="cm">/* Colours defined once, used everywhere with var(--name) */</span>
+:root {
+  --teal: #0E6E78;
+  --ink: #1d2327;
+  --paper: #f7f7f5;
+  --line: #d9dcd8;
+}
+
+<span class="cm">/* Width and height include padding and border — the sane box model */</span>
+* {
+  box-sizing: border-box;
+}
+
+<span class="cm">/* Let the page fill the whole window, with no default gap round the edge */</span>
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+<span class="cm">/* body stacks the header above the main area: a column flexbox */</span>
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.site-header {
+  background: var(--teal);
+  color: white;
+  padding: 12px 20px;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+<span class="cm">/* main takes all the height left over, and puts sidebar and map side by side */</span>
+.layout {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.sidebar {
+  width: 320px;
+  padding: 16px;
+  overflow-y: auto;
+  background: white;
+  border-right: 1px solid var(--line);
+}
+
+<span class="cm">/* the map takes all the width left over */</span>
+#map {
+  flex: 1;
+  position: relative;
+  background: #e3ece6;
+}
+
+<span class="cm">/* On a phone: sidebar on top, map underneath */</span>
+<span class="kw">@media</span> (max-width: 700px) {
+  .layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: auto;
+    max-height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+}</code></pre>
+  <p>The <code>@media</code> block is a <strong>media query</strong>: its rules apply only when the window is 700px wide or less. That one block makes the page usable on a phone.</p>
+
+  <div class="ok"><h5>Check</h5><p>A teal header, a white sidebar on the left, and a pale green map area filling the rest of the window down to the bottom edge, with no page scrollbar. Make the window narrow, or press Ctrl+Shift+M in DevTools: the sidebar moves above the map.</p></div>
+
+  <div class="try"><h5>Try it</h5>
+    <p>Delete <code>height: 100%;</code> from the <code>html, body</code> rule. The map area no longer reaches the bottom of the window: it stops where the sidebar's text stops. With no height on the page, <code>flex: 1</code> has no space to share out. <strong>A box is only as tall as its content unless you give it a height.</strong> A Leaflet container has no content of its own, so this is the most common reason a map appears as a blank strip. Put the line back.</p>
+    <p>In Elements, click the <code>&lt;aside&gt;</code> and find the box diagram in the Computed pane. Find the 16px padding and the 1px right border.</p>
+  </div>
+</div></section>
+
+<!-- ================= STEP 3 ================= -->
+<section class="ch" id="s3"><div class="wrap col">
+  <div class="ch-head"><div class="ch-n">03</div><div class="ch-t"><p class="wkl">35 minutes</p><h2>JavaScript: the language</h2></div></div>
+
+  <p>JavaScript is the only language a browser runs, so every interactive web map is written in it. Most of it is ideas you know from Python with different punctuation. In this step you put facility data into JavaScript and work with it in the console. The page does not change yet.</p>
+
+  <div class="scroll"><table class="tbl">
+    <tr><th>Idea</th><th>Python</th><th>JavaScript</th></tr>
+    <tr><td>Blocks</td><td>Indentation</td><td><code>{ braces }</code>. Indentation is for humans</td></tr>
+    <tr><td>End of statement</td><td>End of line</td><td><code>;</code> (write it)</td></tr>
+    <tr><td>Never changes</td><td><code>x = 5</code></td><td><code>const x = 5;</code></td></tr>
+    <tr><td>Changes</td><td><code>x = 5</code></td><td><code>let x = 5;</code> Never the old <code>var</code></td></tr>
+    <tr><td>Comment</td><td><code># note</code></td><td><code>// note</code></td></tr>
+    <tr><td>Dictionary</td><td><code>{"level": 3}</code></td><td>Object <code>{ level: 3 }</code>, read as <code>f.level</code></td></tr>
+    <tr><td>List</td><td><code>[1, 2]</code>, <code>len(a)</code></td><td>Array <code>[1, 2]</code>, <code>a.length</code></td></tr>
+    <tr><td>Loop</td><td><code>for f in fs:</code></td><td><code>for (const f of fs) { … }</code></td></tr>
+    <tr><td>Function</td><td><code>def describe(f):</code></td><td><code>function describe(f) { … }</code></td></tr>
+    <tr><td>Inline function</td><td><code>lambda f: f.level &gt;= 4</code></td><td><code>f =&gt; f.level &gt;= 4</code></td></tr>
+    <tr><td>f-string</td><td><code>f"{name}"</code></td><td><code>`${name}`</code> (backticks)</td></tr>
+    <tr><td>True/False/None</td><td><code>True False None</code></td><td><code>true false null</code> (and <code>undefined</code>)</td></tr>
+    <tr><td>and/or/not</td><td><code>and or not</code></td><td><code>&amp;&amp; || !</code></td></tr>
+    <tr><td>Equality</td><td><code>==</code></td><td><code>===</code> <strong>always</strong></td></tr>
+    <tr><td>Print</td><td><code>print(x)</code></td><td><code>console.log(x)</code></td></tr>
+  </table></div>
+
+  <div class="warn"><h5>for…of, not for…in</h5><p><code>for (const f of facilities)</code> gives you the items, which is what you want. <code>for…in</code> gives you the index numbers <em>as strings</em>, which is almost never what you want.</p></div>
+
+  <p class="task"><span class="k">3.1</span>Connect a script: just before <code>&lt;/body&gt;</code></p>
+<span class="lang">HTML</span>
+<pre><code><span class="kw">&lt;script</span> src=<span class="st">&quot;app.js&quot;</span><span class="kw">&gt;</span><span class="kw">&lt;/script</span><span class="kw">&gt;</span></code></pre>
+  <p>It goes at the bottom so the elements above it already exist when it runs. Step 4 depends on that.</p>
+
+  <p class="task"><span class="k">3.2</span>Type <code>app.js</code>. The five facilities are real rows from the data file</p>
+  <span class="lang">app.js</span>
+<pre><code><span class="cm">// Step 3 — JavaScript basics.</span>
+<span class="cm">// Nothing changes on the page yet. Open the console (F12 → Console) to see the output.</span>
+
+<span class="cm">// An array of objects. Each object is one facility, like a Python dict.</span>
+<span class="cm">// Coordinates are kept as lon and lat so there is no doubt which is which.</span>
+<span class="kw">const</span> facilities = [
+  { name: <span class="st">&quot;Juja Level 5 Hospital&quot;</span>, level: 5, beds: 301, operational: <span class="kw">true</span>, lon: 36.673763, lat: -0.804421 },
+  { name: <span class="st">&quot;Ruiru Health Centre&quot;</span>, level: 3, beds: 32, operational: <span class="kw">true</span>, lon: 36.71698, lat: -0.893475 },
+  { name: <span class="st">&quot;Kikuyu Health Centre&quot;</span>, level: 3, beds: 45, operational: <span class="kw">false</span>, lon: 36.846252, lat: -0.985171 },
+  { name: <span class="st">&quot;Juja Dispensary&quot;</span>, level: 2, beds: 2, operational: <span class="kw">true</span>, lon: 36.671381, lat: -1.186882 },
+  { name: <span class="st">&quot;Githunguri Sub-County Hospital&quot;</span>, level: 4, beds: 135, operational: <span class="kw">true</span>, lon: 36.942477, lat: -1.084828 },
+];
+
+console.log(<span class="st">&quot;Number of facilities:&quot;</span>, facilities.length);
+console.log(<span class="st">&quot;The first one:&quot;</span>, facilities[0]);
+console.log(<span class="st">&quot;Its name:&quot;</span>, facilities[0].name);
+
+<span class="cm">// A function. Backticks make a template literal: ${...} is Python&#x27;s f-string {...}.</span>
+<span class="kw">function</span> describe(facility) {
+  <span class="kw">return</span> <span class="st">`${facility.name} is level ${facility.level} with ${facility.beds} beds`</span>;
+}
+
+<span class="cm">// Loop over the array. &quot;for...of&quot; is Python&#x27;s &quot;for ... in&quot;.</span>
+<span class="kw">for</span> (<span class="kw">const</span> f <span class="kw">of</span> facilities) {
+  console.log(describe(f));
+}
+
+<span class="cm">// Keep only some items. The arrow function f =&gt; ... is Python&#x27;s lambda f: ...</span>
+<span class="kw">const</span> hospitals = facilities.filter(f =&gt; f.level &gt;= 4);
+console.log(<span class="st">&quot;Level 4 and above:&quot;</span>, hospitals.length);
+
+<span class="cm">// Add up a column. let, not const, because total changes.</span>
+<span class="kw">let</span> totalBeds = 0;
+<span class="kw">for</span> (<span class="kw">const</span> f <span class="kw">of</span> facilities) {
+  totalBeds = totalBeds + f.beds;
+}
+console.log(<span class="st">&quot;Total beds:&quot;</span>, totalBeds);
+
+<span class="cm">// === compares value AND type. == converts types first, and surprises you.</span>
+console.log(<span class="st">&quot;3 === &#x27;3&#x27; is&quot;</span>, 3 === <span class="st">&quot;3&quot;</span>);   <span class="cm">// false</span>
+console.log(<span class="st">&quot;3 == &#x27;3&#x27; is&quot;</span>, 3 == <span class="st">&quot;3&quot;</span>);     <span class="cm">// true — this is why we never use ==</span></code></pre>
+
+  <div class="ok"><h5>Check</h5><p>The Console shows 5 facilities, five "… is level … with … beds" lines, <code>Level 4 and above: 2</code> and <code>Total beds: 515</code>, with no red text.</p></div>
+
+  <p><strong>The console is also a calculator.</strong> Type these into it, pressing Enter after each. Your script's variables are available there:</p>
+<span class="lang">Console</span>
+<pre><code>facilities[2].operational
+facilities.map(f =&gt; f.name)
+facilities.filter(f =&gt; !f.operational).length
+describe(facilities[4])</code></pre>
+
+  <div class="try"><h5>Try it</h5><p>Rename <code>const facilities</code> to <code>const Facilities</code> and save. The Console says <code>ReferenceError: facilities is not defined</code>, with a file and line number. <strong>Names are case-sensitive, and the console tells you exactly where it gave up.</strong> Click the <code>app.js:…</code> link to jump to the line. Then fix it.</p></div>
+
+  <p class="task"><span class="k">3.3</span>Exercise</p>
+  <p>Write <code>bedsPerLevel(list, level)</code>, which returns the total beds at one level. In the Console, <code>bedsPerLevel(facilities, 3)</code> should give 77.</p>
+</div></section>
+
+<!-- ================= STEP 4 ================= -->
+<section class="ch" id="s4"><div class="wrap col">
+  <div class="ch-head"><div class="ch-n">04</div><div class="ch-t"><p class="wkl">30 minutes</p><h2>The DOM and events</h2></div></div>
+
+  <p>The browser turns your HTML into a tree of objects called the <strong>DOM</strong> (Document Object Model), and JavaScript can change that tree at any time. In this step JavaScript writes the facility list itself, and two filters redraw it. This is how every interactive map works: <strong>the data lives in JavaScript, and the page is redrawn from it.</strong></p>
+
+  <div class="scroll"><table class="tbl">
+    <tr><th>You want to</th><th>Write</th><th>Note</th></tr>
+    <tr><td>Find an element</td><td><code>document.querySelector("#status")</code></td><td>Takes a <strong>CSS selector</strong>, as in Step 2</td></tr>
+    <tr><td>Change its text</td><td><code>el.textContent = "Hi"</code></td><td>Shown exactly as written</td></tr>
+    <tr><td>Make an element</td><td><code>document.createElement("li")</code></td><td>Only in memory until attached</td></tr>
+    <tr><td>Attach it</td><td><code>listEl.appendChild(li)</code></td><td>Now it is visible</td></tr>
+    <tr><td>Add a class</td><td><code>li.classList.add("closed")</code></td><td>The CSS for <code>.closed</code> applies</td></tr>
+  </table></div>
+
+  <p><strong>Events</strong> are things that happen: a click, a key press, a change to a drop-down. <code>el.addEventListener("change", render)</code> means "when this changes, call <code>render</code>". It is <code>render</code>, not <code>render()</code>: you hand over the function for the browser to call later. Writing <code>render()</code> would call it once, immediately.</p>
+
+  <p class="task"><span class="k">4.1</span>In <code>index.html</code>: replace the inside of <code>&lt;aside&gt;</code>, empty the <code>#map</code> div</p>
+  <span class="lang">index.html</span>
+<pre><code><span class="kw">&lt;!DOCTYPE</span> html<span class="kw">&gt;</span>
+<span class="kw">&lt;html</span> lang=<span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;meta</span> charset=<span class="st">&quot;utf-8&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;meta</span> name=<span class="st">&quot;viewport&quot;</span> content=<span class="st">&quot;width=device-width, initial-scale=1&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;title</span><span class="kw">&gt;</span>Kiambu Health Facilities<span class="kw">&lt;/title</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;link</span> rel=<span class="st">&quot;stylesheet&quot;</span> href=<span class="st">&quot;style.css&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/head</span><span class="kw">&gt;</span>
+<span class="kw">&lt;body</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;header</span> class=<span class="st">&quot;site-header&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;h1</span><span class="kw">&gt;</span>Kiambu Health Facilities<span class="kw">&lt;/h1</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;p</span> class=<span class="st">&quot;subtitle&quot;</span><span class="kw">&gt;</span>EGE 2531 · Week 2 practical<span class="kw">&lt;/p</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;/header</span><span class="kw">&gt;</span>
+
+  <span class="kw">&lt;main</span> class=<span class="st">&quot;layout&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;aside</span> class=<span class="st">&quot;sidebar&quot;</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;h2</span><span class="kw">&gt;</span>Filter<span class="kw">&lt;/h2</span><span class="kw">&gt;</span>
+
+      <span class="kw">&lt;label</span> for=<span class="st">&quot;level-select&quot;</span><span class="kw">&gt;</span>Minimum KEPH level<span class="kw">&lt;/label</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;select</span> id=<span class="st">&quot;level-select&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;option</span> value=<span class="st">&quot;2&quot;</span><span class="kw">&gt;</span>Level 2 and above<span class="kw">&lt;/option</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;option</span> value=<span class="st">&quot;3&quot;</span><span class="kw">&gt;</span>Level 3 and above<span class="kw">&lt;/option</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;option</span> value=<span class="st">&quot;4&quot;</span><span class="kw">&gt;</span>Level 4 and above<span class="kw">&lt;/option</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;option</span> value=<span class="st">&quot;5&quot;</span><span class="kw">&gt;</span>Level 5 only<span class="kw">&lt;/option</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;/select</span><span class="kw">&gt;</span>
+
+      <span class="kw">&lt;label</span> class=<span class="st">&quot;check&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;input</span> type=<span class="st">&quot;checkbox&quot;</span> id=<span class="st">&quot;operational-only&quot;</span><span class="kw">&gt;</span>
+        Operational only
+      <span class="kw">&lt;/label</span><span class="kw">&gt;</span>
+
+      <span class="kw">&lt;p</span> id=<span class="st">&quot;status&quot;</span> class=<span class="st">&quot;status&quot;</span><span class="kw">&gt;</span>Loading…<span class="kw">&lt;/p</span><span class="kw">&gt;</span>
+      <span class="kw">&lt;ul</span> id=<span class="st">&quot;facility-list&quot;</span> class=<span class="st">&quot;facility-list&quot;</span><span class="kw">&gt;</span><span class="kw">&lt;/ul</span><span class="kw">&gt;</span>
+
+      <span class="kw">&lt;p</span> class=<span class="st">&quot;credit&quot;</span><span class="kw">&gt;</span>Data: <span class="kw">&lt;a</span> href=<span class="st">&quot;https://mbanibenson.github.io/jkuat-geospatial-teaching/&quot;</span><span class="kw">&gt;</span>EGE 2531 data pack<span class="kw">&lt;/a</span><span class="kw">&gt;</span> (synthetic).<span class="kw">&lt;/p</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;/aside</span><span class="kw">&gt;</span>
+
+    <span class="kw">&lt;div</span> id=<span class="st">&quot;map&quot;</span> class=<span class="st">&quot;map&quot;</span><span class="kw">&gt;</span><span class="kw">&lt;/div</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;/main</span><span class="kw">&gt;</span>
+
+  <span class="kw">&lt;script</span> src=<span class="st">&quot;app.js&quot;</span><span class="kw">&gt;</span><span class="kw">&lt;/script</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/body</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/html</span><span class="kw">&gt;</span></code></pre>
+  <p>The list is now <strong>empty</strong>, because JavaScript fills it. <code>for="level-select"</code> ties the label to the drop-down: clicking the label focuses the drop-down, and screen readers announce the label.</p>
+
+  <p class="task"><span class="k">4.2</span>Append to <code>style.css</code></p>
+<span class="lang">CSS</span>
+<pre><code><span class="cm">/* ---- Step 4: form controls and the list ---- */</span>
+
+.sidebar label {
+  display: block;
+  margin: 12px 0 4px;
+  font-weight: 600;
+}
+
+.sidebar label.check {
+  font-weight: normal;
+}
+
+.sidebar select {
+  width: 100%;
+  padding: 6px;
+  font: inherit;
+}
+
+.status {
+  margin: 16px 0 8px;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.status.error {
+  color: #b3261e;
+}
+
+.facility-list {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.facility-list li {
+  margin-bottom: 4px;
+}
+
+<span class="cm">/* A class added by JavaScript: facilities that are not operational */</span>
+.facility-list li.closed {
+  color: #8a8f8c;
+  text-decoration: line-through;
+}
+
+.credit {
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: #666;
+}</code></pre>
+
+  <p class="task"><span class="k">4.3</span>Replace <code>app.js</code></p>
+  <span class="lang">app.js</span>
+<pre><code><span class="cm">// Step 4 — the DOM and events.</span>
+<span class="cm">// The facility list is now written by JavaScript, and the filters redraw it.</span>
+
+<span class="kw">const</span> facilities = [
+  { name: <span class="st">&quot;Juja Level 5 Hospital&quot;</span>, level: 5, beds: 301, operational: <span class="kw">true</span>, lon: 36.673763, lat: -0.804421 },
+  { name: <span class="st">&quot;Ruiru Health Centre&quot;</span>, level: 3, beds: 32, operational: <span class="kw">true</span>, lon: 36.71698, lat: -0.893475 },
+  { name: <span class="st">&quot;Kikuyu Health Centre&quot;</span>, level: 3, beds: 45, operational: <span class="kw">false</span>, lon: 36.846252, lat: -0.985171 },
+  { name: <span class="st">&quot;Juja Dispensary&quot;</span>, level: 2, beds: 2, operational: <span class="kw">true</span>, lon: 36.671381, lat: -1.186882 },
+  { name: <span class="st">&quot;Githunguri Sub-County Hospital&quot;</span>, level: 4, beds: 135, operational: <span class="kw">true</span>, lon: 36.942477, lat: -1.084828 },
+];
+
+<span class="cm">// Find the elements once. querySelector takes a CSS selector — the same ones as style.css.</span>
+<span class="kw">const</span> levelSelect = document.querySelector(<span class="st">&quot;#level-select&quot;</span>);
+<span class="kw">const</span> operationalBox = document.querySelector(<span class="st">&quot;#operational-only&quot;</span>);
+<span class="kw">const</span> statusEl = document.querySelector(<span class="st">&quot;#status&quot;</span>);
+<span class="kw">const</span> listEl = document.querySelector(<span class="st">&quot;#facility-list&quot;</span>);
+
+<span class="cm">// Does this facility pass the current filters?</span>
+<span class="kw">function</span> matchesFilters(facility) {
+  <span class="kw">const</span> minLevel = Number(levelSelect.value);   <span class="cm">// .value is always a string</span>
+  <span class="kw">if</span> (facility.level &lt; minLevel) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">if</span> (operationalBox.checked &amp;&amp; !facility.operational) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">return</span> <span class="kw">true</span>;
+}
+
+<span class="cm">// Redraw the list from the data. Called at the start and after every change.</span>
+<span class="kw">function</span> render() {
+  <span class="kw">const</span> shown = facilities.filter(matchesFilters);
+  statusEl.textContent = <span class="st">`Showing ${shown.length} of ${facilities.length} facilities`</span>;
+
+  listEl.innerHTML = <span class="st">&quot;&quot;</span>;                         <span class="cm">// empty the list</span>
+  <span class="kw">for</span> (<span class="kw">const</span> f <span class="kw">of</span> shown) {
+    <span class="kw">const</span> li = document.createElement(<span class="st">&quot;li&quot;</span>);     <span class="cm">// make a new &lt;li&gt;</span>
+    li.textContent = <span class="st">`${f.name} — level ${f.level}, ${f.beds} beds`</span>;
+    <span class="kw">if</span> (!f.operational) li.classList.add(<span class="st">&quot;closed&quot;</span>);
+    listEl.appendChild(li);                      <span class="cm">// put it in the &lt;ul&gt;</span>
+  }
+}
+
+<span class="cm">// Events: &quot;when this control changes, run render&quot;.</span>
+levelSelect.addEventListener(<span class="st">&quot;change&quot;</span>, render);
+operationalBox.addEventListener(<span class="st">&quot;change&quot;</span>, render);
+
+render();</code></pre>
+
+  <p><strong>Follow the flow.</strong> On load, <code>render()</code> runs once and draws 5 facilities. When the user picks "Level 4 and above", the browser fires <code>change</code> and calls <code>render</code> again. <code>render</code> reads the filters, filters the array, empties the list and rebuilds it. The data never changes. Only the view of it does.</p>
+
+  <div class="ok"><h5>Check</h5><p>"Showing 5 of 5 facilities", with Kikuyu Health Centre struck through. Level 4 and above gives 2. "Operational only" at level 2 gives 4.</p></div>
+
+  <div class="try"><h5>Try it</h5>
+    <p>Remove <code>Number(…)</code> so the line reads <code>const minLevel = levelSelect.value;</code>. It still works, by luck: <code>&lt;</code> quietly converts <code>"4"</code> to 4. <code>===</code> would not, and with <code>+</code>, <code>"4" + 1</code> gives <code>"41"</code>. Values from form controls are always strings, so convert them yourself.</p>
+    <p>Move the <code>&lt;script&gt;</code> tag into <code>&lt;head&gt;</code>. The Console says <code>Cannot read properties of null</code>: the script ran before the elements existed, and <code>querySelector</code> found nothing. Move it back.</p>
+  </div>
+
+  <p class="task"><span class="k">4.4</span>Exercise</p>
+  <p>Add a <strong>Reset</strong> button that sets the drop-down to level 2, unticks the box and redraws. You need <code>&lt;button id="reset"&gt;</code>, a <code>"click"</code> event, <code>levelSelect.value = "2"</code> and <code>operationalBox.checked = false</code>.</p>
+</div></section>
+
+<!-- ================= STEP 5 ================= -->
+<section class="ch" id="s5"><div class="wrap col">
+  <div class="ch-head"><div class="ch-n">05</div><div class="ch-t"><p class="wkl">30 minutes</p><h2>fetch, promises and async/await</h2></div></div>
+
+  <p>Five hand-typed facilities is not a map. In this step the page loads all 60 from <code>data/facilities.geojson</code> over HTTP, the same way it will later load from PostGIS and GeoServer. There is one idea to understand, and it causes more confusion than anything else in this unit: <strong>JavaScript never waits.</strong></p>
+
+  <h3>Why it does not wait</h3>
+  <p>Python runs a line, waits for it to finish, and moves on. A browser cannot: while it waited two seconds for a file over a slow network, nothing on the page could be clicked or scrolled. So <code>fetch</code> returns <em>immediately</em> with a <strong>promise</strong>, an object that stands for "the result, once it arrives". Your code tells the promise what to do when it arrives, and carries on.</p>
+  <p>Paste this into the Console (the one time pasting is fine):</p>
+<span class="lang">Console</span>
+<pre><code><span class="kw">const</span> wait = ms =&gt; <span class="kw">new</span> Promise(resolve =&gt; setTimeout(resolve, ms));
+console.log(<span class="st">&quot;A&quot;</span>);
+wait(2000).then(() =&gt; console.log(<span class="st">&quot;C&quot;</span>));
+console.log(<span class="st">&quot;B&quot;</span>);</code></pre>
+  <p>It prints <strong>A, B</strong>, and C two seconds later. <code>.then(…)</code> means "when this promise is fulfilled, run this function".</p>
+
+  <div class="warn"><h5>The bug everyone writes</h5>
+    <p>You will write this at least once this semester:</p>
+<pre><code><span class="cm">// WRONG — data is still undefined when the last line runs</span>
+<span class="kw">let</span> data;
+fetch(<span class="st">&quot;data/facilities.geojson&quot;</span>).then(r =&gt; r.json()).then(d =&gt; { data = d; });
+console.log(data.features.length);   <span class="cm">// TypeError: Cannot read properties of undefined</span></code></pre>
+    <p>Nothing is broken. The fetch has not finished when the last line runs. <strong>The fix is always the same: do the work inside the handler</strong>, the code that runs once the data has arrived.</p>
+  </div>
+
+  <h3>Two ways to write it correctly</h3>
+<span class="lang">JavaScript</span>
+<pre><code><span class="cm">// 1. With .then() — a chain of &quot;and when that&#x27;s done...&quot;</span>
+fetch(<span class="st">&quot;data/facilities.geojson&quot;</span>)
+  .then(response =&gt; response.json())
+  .then(geojson =&gt; console.log(geojson.features.length))
+  .<span class="kw">catch</span>(err =&gt; console.error(<span class="st">&quot;failed:&quot;</span>, err));
+
+<span class="cm">// 2. With async/await — reads top to bottom, like Python</span>
+<span class="kw">async</span> <span class="kw">function</span> load() {
+  <span class="kw">const</span> response = <span class="kw">await</span> fetch(<span class="st">&quot;data/facilities.geojson&quot;</span>);
+  <span class="kw">const</span> geojson = <span class="kw">await</span> response.json();
+  console.log(geojson.features.length);
+}
+load();</code></pre>
+  <p><code>await</code> means "pause <em>this function</em> until the promise settles". The rest of the page keeps running. <code>await</code> works only inside a function marked <code>async</code>. We use <code>async</code>/<code>await</code> from here on because it reads like Python. Examples online use both styles, so learn to recognise both.</p>
+
+  <h3>A Feature, as JavaScript sees it</h3>
+<span class="lang">GeoJSON</span>
+<pre><code>{
+  <span class="kw">&quot;type&quot;</span>: <span class="st">&quot;Feature&quot;</span>,
+  <span class="kw">&quot;properties&quot;</span>: { <span class="kw">&quot;name&quot;</span>: <span class="st">&quot;Ngewa Health Centre&quot;</span>, <span class="kw">&quot;county&quot;</span>: <span class="st">&quot;Kiambu&quot;</span>, <span class="kw">&quot;level&quot;</span>: 3, <span class="kw">&quot;beds&quot;</span>: 47, <span class="kw">&quot;operational&quot;</span>: true },
+  <span class="kw">&quot;geometry&quot;</span>: { <span class="kw">&quot;type&quot;</span>: <span class="st">&quot;Point&quot;</span>, <span class="kw">&quot;coordinates&quot;</span>: [36.62885, -1.177803] }
+}</code></pre>
+  <p>The attributes are in <code>feature.properties</code>. The location is <code>feature.geometry.coordinates</code>, written <strong>[longitude, latitude]</strong>: x first, then y. The new code turns each Feature into the flat object <code>render()</code> already understands, so nothing else changes.</p>
+
+  <p class="task"><span class="k">5.1</span>Replace <code>app.js</code>. Compare it with Step 4: only the top and the bottom change</p>
+  <span class="lang">app.js</span>
+<pre><code><span class="cm">// Step 5 — fetch, promises and async/await.</span>
+<span class="cm">// The five hand-typed facilities are gone: all 60 now come from the GeoJSON file.</span>
+
+<span class="kw">const</span> DATA_URL = <span class="st">&quot;data/facilities.geojson&quot;</span>;
+
+<span class="kw">let</span> facilities = [];   <span class="cm">// empty until the file has arrived</span>
+
+<span class="kw">const</span> levelSelect = document.querySelector(<span class="st">&quot;#level-select&quot;</span>);
+<span class="kw">const</span> operationalBox = document.querySelector(<span class="st">&quot;#operational-only&quot;</span>);
+<span class="kw">const</span> statusEl = document.querySelector(<span class="st">&quot;#status&quot;</span>);
+<span class="kw">const</span> listEl = document.querySelector(<span class="st">&quot;#facility-list&quot;</span>);
+
+<span class="kw">function</span> matchesFilters(facility) {
+  <span class="kw">const</span> minLevel = Number(levelSelect.value);
+  <span class="kw">if</span> (facility.level &lt; minLevel) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">if</span> (operationalBox.checked &amp;&amp; !facility.operational) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">return</span> <span class="kw">true</span>;
+}
+
+<span class="kw">function</span> render() {
+  <span class="kw">const</span> shown = facilities.filter(matchesFilters);
+  statusEl.textContent = <span class="st">`Showing ${shown.length} of ${facilities.length} facilities`</span>;
+
+  listEl.innerHTML = <span class="st">&quot;&quot;</span>;
+  <span class="kw">for</span> (<span class="kw">const</span> f <span class="kw">of</span> shown) {
+    <span class="kw">const</span> li = document.createElement(<span class="st">&quot;li&quot;</span>);
+    li.textContent = <span class="st">`${f.name} — level ${f.level}, ${f.beds} beds`</span>;
+    <span class="kw">if</span> (!f.operational) li.classList.add(<span class="st">&quot;closed&quot;</span>);
+    listEl.appendChild(li);
+  }
+}
+
+<span class="cm">// Turn one GeoJSON Feature into the flat object the rest of the code expects.</span>
+<span class="cm">// GeoJSON coordinates are [longitude, latitude] — x first, then y.</span>
+<span class="kw">function</span> toFacility(feature) {
+  <span class="kw">const</span> p = feature.properties;
+  <span class="kw">return</span> {
+    name: p.name,
+    level: p.level,
+    beds: p.beds,
+    operational: p.operational,
+    lon: feature.geometry.coordinates[0],
+    lat: feature.geometry.coordinates[1],
+  };
+}
+
+<span class="cm">// async lets us write await: &quot;pause THIS function until the promise settles&quot;.</span>
+<span class="cm">// The rest of the page keeps running while we wait.</span>
+<span class="kw">async</span> <span class="kw">function</span> loadFacilities() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> response = <span class="kw">await</span> fetch(DATA_URL);
+    <span class="kw">if</span> (!response.ok) {
+      <span class="cm">// fetch does NOT fail on a 404 — we have to check ourselves</span>
+      <span class="kw">throw</span> <span class="kw">new</span> Error(<span class="st">`HTTP ${response.status}`</span>);
+    }
+    <span class="kw">const</span> geojson = <span class="kw">await</span> response.json();
+    facilities = geojson.features.map(toFacility);
+    render();          <span class="cm">// only now is there anything to draw</span>
+  } <span class="kw">catch</span> (err) {
+    statusEl.textContent = <span class="st">`Could not load the facilities (${err.message}). Is Live Server running, and is the file in data/?`</span>;
+    statusEl.classList.add(<span class="st">&quot;error&quot;</span>);
+    console.error(err);
+  }
+}
+
+levelSelect.addEventListener(<span class="st">&quot;change&quot;</span>, render);
+operationalBox.addEventListener(<span class="st">&quot;change&quot;</span>, render);
+
+loadFacilities();</code></pre>
+
+  <ul>
+    <li><code>geojson.features.map(toFacility)</code> builds a new array by calling <code>toFacility</code> on every Feature. It is Python's <code>[to_facility(f) for f in features]</code>.</li>
+    <li><code>render()</code> is called <strong>inside</strong> <code>loadFacilities</code>, after the data has arrived. That is the fix for the bug above.</li>
+    <li><code>try { … } catch (err) { … }</code> is Python's <code>try/except</code>. The user sees a message they can act on instead of an empty page.</li>
+    <li><strong><code>fetch</code> does not treat 404 as an error.</strong> A "not found" reply is still a reply. Check <code>response.ok</code> yourself.</li>
+  </ul>
+
+  <div class="ok"><h5>Check</h5><p>"Showing 60 of 60 facilities". Level 4 and above gives 19; level 5 only gives 8; "Operational only" at level 2 gives 54. In the <strong>Network</strong> tab, reload and find <code>facilities.geojson</code>: status 200, about 14 kB.</p></div>
+
+  <div class="try"><h5>Try it</h5>
+    <p><strong>The 404.</strong> Rename the file to <code>facility.geojson</code> and reload. You get a red HTTP 404 message in the sidebar and a red request in Network. The page fails politely. Rename it back.</p>
+    <p><strong>The bug.</strong> Add the three WRONG lines to the end of <code>app.js</code>. The Console shows <code>Cannot read properties of undefined (reading 'features')</code>, but the list still shows 60, because <code>loadFacilities</code> did its work in the right place. Delete them.</p>
+    <p><strong>file://.</strong> Stop Live Server and double-click <code>index.html</code>. The fetch fails with a CORS or <code>file://</code> error. That is why Step 0 set up a server.</p>
+  </div>
+</div></section>
+
+<!-- ================= STEP 6 ================= -->
+<section class="ch" id="s6"><div class="wrap col">
+  <div class="ch-head"><div class="ch-n">06</div><div class="ch-t"><p class="wkl">Extension and take-home</p><h2>A map with no mapping library</h2></div></div>
+
+  <p>In this step you plot each facility as a dot inside <code>#map</code> by converting longitude and latitude into screen positions. It is a crude map, deliberately so. What goes wrong with it is the best explanation of what Leaflet does for you next week.</p>
+
+  <p>Choose a box of the world to draw. Roughly, Kiambu is 36.5°E to 37.4°E and 1.35°S to 0.75°S. A facility's position across the box is how far its longitude is from the west edge, as a fraction of the width. Its position down the box is measured from the <strong>north</strong> edge, because screens count downwards and latitude counts upwards:</p>
+  <div class="eq"><span class="f"><var>x</var> = <span class="frac"><span class="t">lon − west</span><span class="b">east − west</span></span> &nbsp;&nbsp;&nbsp; <var>y</var> = <span class="frac"><span class="t">north − lat</span><span class="b">north − south</span></span></span>
+    <p class="whr">Both run from 0 to 1 inside the box. Multiplied by 100, they become CSS percentages for <code>left</code> and <code>top</code>.</p></div>
+
+  <p class="task"><span class="k">6.1</span>In <code>app.js</code>, under the other <code>querySelector</code> lines</p>
+<span class="lang">JavaScript</span>
+<pre><code><span class="kw">const</span> mapEl = document.querySelector(<span class="st">&quot;#map&quot;</span>);
+
+<span class="cm">// The box of the world we are drawing: roughly Kiambu County, in degrees.</span>
+<span class="kw">const</span> BOUNDS = { west: 36.5, east: 37.4, south: -1.35, north: -0.75 };</code></pre>
+
+  <p class="task"><span class="k">6.2</span>Add <code>drawDots</code>, and call <code>drawDots(shown);</code> as the last line of <code>render()</code></p>
+<span class="lang">JavaScript</span>
+<pre><code><span class="cm">// Place one dot per facility. left/top are percentages of the #map box.</span>
+<span class="kw">function</span> drawDots(list) {
+  mapEl.innerHTML = <span class="st">&quot;&quot;</span>;
+  <span class="kw">for</span> (<span class="kw">const</span> f <span class="kw">of</span> list) {
+    <span class="kw">const</span> x = (f.lon - BOUNDS.west) / (BOUNDS.east - BOUNDS.west);    <span class="cm">// 0 at west edge, 1 at east</span>
+    <span class="kw">const</span> y = (BOUNDS.north - f.lat) / (BOUNDS.north - BOUNDS.south); <span class="cm">// 0 at top, 1 at bottom: screens count downwards</span>
+
+    <span class="kw">const</span> dot = document.createElement(<span class="st">&quot;div&quot;</span>);
+    dot.className = <span class="st">`dot level-${f.level}`</span>;
+    dot.style.left = <span class="st">`${x * 100}%`</span>;
+    dot.style.top = <span class="st">`${y * 100}%`</span>;
+    dot.title = <span class="st">`${f.name} (level ${f.level})`</span>;   <span class="cm">// hover to see the name</span>
+    <span class="kw">if</span> (!f.operational) dot.classList.add(<span class="st">&quot;closed&quot;</span>);
+    mapEl.appendChild(dot);
+  }
+}</code></pre>
+
+  <p class="task"><span class="k">6.3</span>Append to <code>style.css</code></p>
+<span class="lang">CSS</span>
+<pre><code><span class="cm">/* ---- Step 6: the dots ---- */</span>
+
+.dot {
+  position: absolute;             <span class="cm">/* placed relative to #map, which is position: relative */</span>
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;          <span class="cm">/* centre the dot on its point, not its top-left corner */</span>
+  border-radius: 50%;
+  background: var(--teal);
+  border: 1px solid white;
+}
+
+.dot.level-4 { width: 14px; height: 14px; margin: -7px 0 0 -7px; }
+.dot.level-5 { width: 18px; height: 18px; margin: -9px 0 0 -9px; background: #084a51; }
+
+.dot.closed {
+  background: white;
+  border: 2px solid #8a8f8c;
+}</code></pre>
+  <p><code>position: absolute</code> on the dots and <code>position: relative</code> on <code>#map</code> (from Step 2) work together: <code>left</code> and <code>top</code> are measured from the corner of the map box, not the page. The complete file is <code>step6/app.js</code> in the checkpoints, and you can <a href="checkpoints/step6/index.html">see it running</a>.</p>
+
+  <div class="ok"><h5>Check</h5><p>60 dots: bigger, darker dots for levels 4 and 5, and hollow dots for the 6 facilities that are not operational. Hover a dot to see its name. Change the filters: the dots and the list update together, because <code>render()</code> draws both.</p></div>
+
+  <div class="try"><h5>Try it: coordinate order</h5><p>In <code>toFacility</code>, swap <code>coordinates[0]</code> and <code>coordinates[1]</code>. The status still says 60, but <strong>every dot has vanished</strong>. Longitude is now −1.2, about 4,000% of the box width off the left of the page. If you build Leaflet markers by hand from swapped coordinates, they land at 36.8°N, 1.0°W: in the Mediterranean, off south-east Spain. Either way, <strong>when points are missing or in the sea, check the coordinate order first.</strong> GeoJSON is [lon, lat]. Leaflet's <code>L.marker([lat, lon])</code> is the other way round.</p></div>
+
+  <div class="prac"><div class="ph">Take-home questions, answered in writing</div><div class="pb"><ol>
+    <li>Make the window tall and narrow, then short and wide. What happens to the pattern of dots? Why does a real map not do this?</li>
+    <li>There are no roads, county boundary or towns behind the dots. What would you need in order to draw them, and where would that data come from?</li>
+    <li>Your page cannot zoom in on Juja. List what would have to change in <code>drawDots</code> to support zooming and panning.</li>
+    <li>The formula treats a degree of longitude as the same distance as a degree of latitude. That is nearly true near the equator. Would it be true in Norway?</li>
+  </ol><p>Your answers are the list of problems a web map library solves: tiles, projections, zoom and pan. That is Week 3.</p></div></div>
+</div></section>
+
+<!-- ================= TROUBLESHOOTING ================= -->
+<section id="trouble" class="band">
+  <div class="wrap col">
+    <h2 class="sec">When it does not work</h2>
+    <p>Open the <strong>Console</strong> first, every time.</p>
+    <div class="scroll"><table class="tbl">
+      <tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+      <tr><td>Page does not update on save</td><td>Live Server not running, or a different copy of the file</td><td>Address should start <code>http://127.0.0.1:5500</code>; check VS Code has the right folder open</td></tr>
+      <tr><td>Styles do nothing</td><td><code>&lt;link&gt;</code> missing or misspelt</td><td>Network tab: is <code>style.css</code> there, status 200?</td></tr>
+      <tr><td>One rule is ignored</td><td>Missing <code>;</code> or <code>}</code> above it, or <code>.</code>/<code>#</code> mixed up</td><td>Elements → Styles: struck-through rules lost to a more specific one</td></tr>
+      <tr><td>Map area is a thin strip</td><td>Nothing gives the page a height</td><td><code>html, body { height: 100%; }</code> and <code>flex: 1</code> (Step 2)</td></tr>
+      <tr><td><code>Cannot read properties of null</code></td><td><code>querySelector</code> found nothing</td><td>Compare selector with HTML; <code>&lt;script&gt;</code> at the end of <code>&lt;body&gt;</code></td></tr>
+      <tr><td><code>… of undefined</code> after a fetch</td><td>Data used before it arrived</td><td>Work inside the <code>async</code> function, after <code>await</code> (Step 5)</td></tr>
+      <tr><td><code>… is not defined</code></td><td>Misspelt or wrong-case name</td><td>Click the file:line link in the Console</td></tr>
+      <tr><td>Red HTTP 404 message</td><td>Wrong path or file name</td><td>Paths are relative to <code>index.html</code>, and case-sensitive on a server</td></tr>
+      <tr><td>CORS error</td><td>Page opened as <code>file://</code></td><td>Use Live Server (Step 0)</td></tr>
+      <tr><td>Dots missing, status says 60</td><td>Coordinates swapped</td><td>GeoJSON is [lon, lat] (Step 6)</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<section id="selftest" class="band">
+  <div class="wrap col">
+    <div class="check" style="margin-top:0"><h5>Self-test</h5><ol>
+      <li>In <code>&lt;a href="map.html" class="nav"&gt;Map&lt;/a&gt;</code>, name the element, both attributes and the content. <em>(Step 1)</em></li>
+      <li>Write a selector for every <code>&lt;li&gt;</code> inside the element with id <code>facility-list</code>, and one for every element with class <code>closed</code>. <em>(Step 2)</em></li>
+      <li>Why does the sidebar stay 320px while the map grows with the window? Name the two properties responsible. <em>(Step 2)</em></li>
+      <li><code>levelSelect.value</code> is <code>"4"</code>. What is <code>levelSelect.value + 1</code>, and how do you get 5? <em>(Step 4)</em></li>
+      <li>A student writes <code>const data = fetch("data/facilities.geojson");</code> then uses <code>data.features</code>. What is <code>data</code> actually holding, and what two changes fix it? <em>(Step 5)</em></li>
+    </ol></div>
+    <p class="rdg"><b>Next.</b> Finish Step 6 and its questions, then Practical 2 in the reader, <a href="../#w2">GeoJSON by hand</a>. In Week 3, Leaflet replaces <code>drawDots</code> with a real, zoomable map, and your HTML, CSS, filters and <code>loadFacilities</code> stay almost unchanged. <b>Reference:</b> MDN's "Getting started with the web" and "Using Fetch".</p>
+    <p class="rdg"><b>EGE 2531 Web Mapping</b> · Week 2 practical · Jomo Kenyatta University of Agriculture and Technology · September 2026. Facility data is synthetic.</p>
+  </div>
+</section>
+</body>
+</html>
